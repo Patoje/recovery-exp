@@ -1,0 +1,20 @@
+# Configuración alternativa de Gitea: adjuntos y LFS en MinIO.
+# Se usa junto con original.yml y el perfil "minio" (MINIO=1 en make).
+services:
+  gitea:
+    environment:
+      GITEA__attachment__STORAGE_TYPE: minio
+      GITEA__attachment__MINIO_ENDPOINT: minio:9000
+      GITEA__attachment__MINIO_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      GITEA__attachment__MINIO_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+      GITEA__attachment__MINIO_BUCKET: ${MINIO_BUCKET}
+      GITEA__attachment__MINIO_USE_SSL: "false"
+      GITEA__lfs__STORAGE_TYPE: minio
+      GITEA__lfs__MINIO_ENDPOINT: minio:9000
+      GITEA__lfs__MINIO_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      GITEA__lfs__MINIO_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+      GITEA__lfs__MINIO_BUCKET: ${MINIO_BUCKET}
+      GITEA__lfs__MINIO_USE_SSL: "false"
+    depends_on:
+      minio:
+        condition: service_healthy
