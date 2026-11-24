@@ -21,6 +21,21 @@ log "construyendo runner"
 log "levantando postgres + gitea"
 "${ORIG[@]}" up -d --wait postgres gitea
 
+# Como una instalación normal: SECRET_KEY aleatoria, generada una sola vez y escrita solo en app.ini.
+# Con INSTALL_LOCK=true Gitea 28.4.0 deja SECRET_KEY vacía; INTERNAL_TOKEN, LFS_JWT_SECRET,
+# [oauth2] JWT_SECRET y jwt/private.pem sí los genera en el primer arranque y quedan en /data.
+log "generando SECRET_KEY en app.ini"
+secret_key="$("${ORIG[@]}" exec -T -u git gitea gitea generate secret SECRET_KEY)"
+[ -n "$secret_key" ] || { echo "up: no se pudo generar SECRET_KEY" >&2; exit 1; }
+"${ORIG[@]}" exec -T -u git gitea sh -c 'f=/data/gitea/conf/app.ini
+  awk -v k="$1" '"'"'/^\[/{s=$0} s=="[security]" && $1=="SECRET_KEY"{print "SECRET_KEY = " k; next} {print}'"'"' "$f" > "$f.new" &&
+  cat "$f.new" > "$f" && rm "$f.new"' sh "$secret_key"
+"${ORIG[@]}" restart gitea
+"${ORIG[@]}" up -d --wait gitea
+in_ini="$("${ORIG[@]}" exec -T gitea awk -F' *= *' '/^\[/{s=$0} s=="[security]" && $1=="SECRET_KEY"{printf "%s", $2}' /data/gitea/conf/app.ini)"
+[ "$in_ini" = "$secret_key" ] || { echo "up: SECRET_KEY no quedó en app.ini" >&2; exit 1; }
+unset secret_key in_ini
+
 log "creando administrador"
 "${ORIG[@]}" exec -T -u git gitea gitea admin user create --admin \
   --username "$GITEA_ADMIN_USER" --password "$GITEA_ADMIN_PASSWORD" \
@@ -33,6 +48,7 @@ restic_version="$("${ORIG[@]}" --profile tools run --rm --no-deps restic version
 cat > "$RUN_DIR/run.json" <<EOF
 {
   "run_id": $(json_str "$RUN_ID"),
+  "env_version": $(json_str "$(cat "$ROOT/ENV_VERSION")"),
   "created_at": $(json_str "$(iso_ms "$(now_ms)")"),
   "incident_minutes": ${INCIDENT_MINUTES},
   "seed": ${SEED},

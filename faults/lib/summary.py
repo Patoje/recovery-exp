@@ -1,7 +1,7 @@
 """Builds results/summary.md from results/faults/*/*/result.json (prints Markdown).
 
-For each scenario and baseline, the latest batch is reported. Earlier batches are
-counted but never deleted.
+For each environment version, scenario and baseline, the latest batch is reported.
+Earlier batches are counted but never deleted. Results without "env_version" are v1.
 """
 
 import glob
@@ -12,13 +12,15 @@ from collections import defaultdict
 ROOT = "/work"
 CONTROLS = {"02-db-creds-missing", "15-corrupt-pack"}
 BASELINES = ["b0", "b1"]
+ENVS = ["v2", "v1"]  # current first
 
-results = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))  # scen -> baseline -> batch -> [r]
+# env -> scen -> baseline -> batch -> [r]
+results = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(list))))
 for path in sorted(glob.glob(f"{ROOT}/results/faults/*/*/result.json")):
     with open(path) as f:
         r = json.load(f)
     r["_dir"] = os.path.relpath(os.path.dirname(path), ROOT)
-    results[r["scenario"]][r["baseline"]][r["batch"]].append(r)
+    results[r.get("env_version", "v1")][r["scenario"]][r["baseline"]][r["batch"]].append(r)
 
 
 SUSPENSION = "harness: suspensión del host"
@@ -52,43 +54,62 @@ def summarize(batches):
 
 
 lines = ["# Resumen de escenarios de falla", "",
-         "Generado por `make summary` a partir de `results/faults/*/*/result.json`. Para cada escenario y "
-         "línea base se muestra el último lote (en escenarios repetidos, todas las repeticiones). "
+         "Generado por `make summary` a partir de `results/faults/*/*/result.json`. Para cada versión del entorno, "
+         "escenario y línea base se muestra el último lote (en escenarios repetidos, todas las repeticiones). "
          "Nada se borra: las corridas anteriores y las invalid se conservan.", "",
+         "Entornos: **v1** (`b0-v1`, `SECRET_KEY` vacía en `app.ini`) y **v2** (`make up` genera una `SECRET_KEY` "
+         "aleatoria y la escribe solo en `app.ini`). Los resultados sin `env_version` son del entorno v1.", "",
          "`confirm`: la falla ocurrió de verdad; si no, la corrida es `invalid` y no cuenta. Controles: 02 y 15. "
          "`Suspensión`: corridas invalid por \"harness: suspensión del host\" (evento Sleep de `pmset` o hueco "
-         "> 90 s entre intentos consecutivos de testigos posteriores, exitosos o fallidos), sobre todos los lotes.", ""]
-lines += ["| Falla | confirm | B0 | B1 | Suspensión (invalid / total) | t restauración→fin B0 (s) | Resultados |",
-          "|---|---|---|---|---|---|---|"]
+         "> 90 s entre intentos consecutivos de testigos posteriores, exitosos o fallidos), sobre todos los lotes."]
 repeated_detail = []
-for scen in sorted(results):
-    row, dirs, rto, confirm_txt = {}, [], "—", "—"
-    susp_total = susp_inv = 0
-    for b in BASELINES:
-        batches = results[scen].get(b, {})
-        if not batches:
-            row[b] = "—"
-            continue
-        allruns = [r for v in batches.values() for r in v]
-        susp_total += len(allruns)
-        susp_inv += sum(1 for r in allruns if is_susp(r))
-        c, res, single, runs = summarize(batches)
-        row[b] = res
-        if b == "b0" or confirm_txt == "—":
-            confirm_txt = c
-        if single:
-            dirs.append(f"`{single['_dir']}`")
-            if b == "b0" and single.get("restore_to_baseline_end_s") is not None:
-                rto = str(single["restore_to_baseline_end_s"])
-        else:
-            dirs.append(f"`results/faults/{scen}/` ({len(runs)} corridas)")
-            repeated_detail.append((scen, b, runs))
-    name = scen + (" (control)" if scen in CONTROLS else "")
-    lines.append(f"| {name} | {confirm_txt} | {row.get('b0', '—')} | {row.get('b1', '—')} | "
-                 f"{susp_inv} / {susp_total} | {rto} | {'<br>'.join(dirs)} |")
+b0_by_env = defaultdict(dict)  # env -> scen -> (confirm, b0)
+for env in ENVS:
+    if not results.get(env):
+        continue
+    lines += ["", f"## Entorno {env}", "",
+              "| Falla | confirm | B0 | B1 | Suspensión (invalid / total) | t restauración→fin B0 (s) | Resultados |",
+              "|---|---|---|---|---|---|---|"]
+    for scen in sorted(results[env]):
+        row, dirs, rto, confirm_txt = {}, [], "—", "—"
+        susp_total = susp_inv = 0
+        for b in BASELINES:
+            batches = results[env][scen].get(b, {})
+            if not batches:
+                row[b] = "—"
+                continue
+            allruns = [r for v in batches.values() for r in v]
+            susp_total += len(allruns)
+            susp_inv += sum(1 for r in allruns if is_susp(r))
+            c, res, single, runs = summarize(batches)
+            row[b] = res
+            if b == "b0" or confirm_txt == "—":
+                confirm_txt = c
+            if single:
+                dirs.append(f"`{single['_dir']}`")
+                if b == "b0" and single.get("restore_to_baseline_end_s") is not None:
+                    rto = str(single["restore_to_baseline_end_s"])
+            else:
+                dirs.append(f"`results/faults/{scen}/` ({len(runs)} corridas {env})")
+                repeated_detail.append((env, scen, b, runs))
+        if "b0" in results[env][scen]:
+            b0_by_env[env][scen] = (confirm_txt, row["b0"], rto)
+        name = scen + (" (control)" if scen in CONTROLS else "")
+        lines.append(f"| {name} | {confirm_txt} | {row.get('b0', '—')} | {row.get('b1', '—')} | "
+                     f"{susp_inv} / {susp_total} | {rto} | {'<br>'.join(dirs)} |")
 
-for scen, b, runs in repeated_detail:
-    lines += ["", f"## {scen}: repeticiones ({b.upper()})", "",
+if b0_by_env.get("v1") and b0_by_env.get("v2"):
+    lines += ["", "## Comparación de B0: entorno v1 contra v2", "",
+              "| Falla | confirm v1 | B0 v1 | confirm v2 | B0 v2 | t v1 (s) | t v2 (s) | ¿Cambió B0? |",
+              "|---|---|---|---|---|---|---|---|"]
+    for scen in sorted(set(b0_by_env["v1"]) | set(b0_by_env["v2"])):
+        c1, r1, t1 = b0_by_env["v1"].get(scen, ("—", "—", "—"))
+        c2, r2, t2 = b0_by_env["v2"].get(scen, ("—", "—", "—"))
+        changed = "—" if "—" in (r1, r2) else ("no" if r1 == r2 else "**sí**")
+        lines.append(f"| {scen} | {c1} | {r1} | {c2} | {r2} | {t1} | {t2} | {changed} |")
+
+for env, scen, b, runs in repeated_detail:
+    lines += ["", f"## {scen}: repeticiones ({b.upper()}, entorno {env})", "",
               f"| Corrida | Estado | confirm | {b.upper()} | Detalle |", "|---|---|---|---|---|"]
     for r in runs:
         if is_susp(r):

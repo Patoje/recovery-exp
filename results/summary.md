@@ -1,8 +1,12 @@
 # Resumen de escenarios de falla
 
-Generado por `make summary` a partir de `results/faults/*/*/result.json`. Para cada escenario y línea base se muestra el último lote (en escenarios repetidos, todas las repeticiones). Nada se borra: las corridas anteriores y las invalid se conservan.
+Generado por `make summary` a partir de `results/faults/*/*/result.json`. Para cada versión del entorno, escenario y línea base se muestra el último lote (en escenarios repetidos, todas las repeticiones). Nada se borra: las corridas anteriores y las invalid se conservan.
+
+Entornos: **v1** (`b0-v1`, `SECRET_KEY` vacía en `app.ini`) y **v2** (`make up` genera una `SECRET_KEY` aleatoria y la escribe solo en `app.ini`). Los resultados sin `env_version` son del entorno v1.
 
 `confirm`: la falla ocurrió de verdad; si no, la corrida es `invalid` y no cuenta. Controles: 02 y 15. `Suspensión`: corridas invalid por "harness: suspensión del host" (evento Sleep de `pmset` o hueco > 90 s entre intentos consecutivos de testigos posteriores, exitosos o fallidos), sobre todos los lotes.
+
+## Entorno v1
 
 | Falla | confirm | B0 | B1 | Suspensión (invalid / total) | t restauración→fin B0 (s) | Resultados |
 |---|---|---|---|---|---|---|
@@ -10,7 +14,7 @@ Generado por `make summary` a partir de `results/faults/*/*/result.json`. Para c
 | 00-healthy-large | valid | pass | — | 0 / 1 | 14.8 | `results/faults/00-healthy-large/20261123T233848Z-r01` |
 | 01-appini-excluded | valid | pass | — | 0 / 1 | 14.3 | `results/faults/01-appini-excluded/20261123T234452Z-r01` |
 | 02-db-creds-missing (control) | valid | fail en `restore` | — | 0 / 1 | 2.7 | `results/faults/02-db-creds-missing/20261123T235047Z-r01` |
-| 03-concurrent-push | valid 10/18 corridas | pass 10/10, fail 0/10 (válidas) | — | 8 / 18 | — | `results/faults/03-concurrent-push/` (18 corridas) |
+| 03-concurrent-push | valid 10/18 corridas | pass 10/10, fail 0/10 (válidas) | — | 8 / 18 | — | `results/faults/03-concurrent-push/` (18 corridas v1) |
 | 04-attachments-excluded | valid | pass | — | 0 / 1 | 13.9 | `results/faults/04-attachments-excluded/20261124T025430Z-r01` |
 | 05-lfs-excluded | valid | pass | — | 0 / 1 | 14.0 | `results/faults/05-lfs-excluded/20261124T030028Z-r01` |
 | 06-repo-after-dump | valid | pass | — | 0 / 1 | 14.4 | `results/faults/06-repo-after-dump/20261124T030626Z-r01` |
@@ -25,7 +29,7 @@ Generado por `make summary` a partir de `results/faults/*/*/result.json`. Para c
 | 15-corrupt-pack (control) | valid | fail en `restic_check` | — | 0 / 1 | — | `results/faults/15-corrupt-pack/20261124T043800Z-r01` |
 | 16-casefold-refs | valid | pass | — | 0 / 1 | 14.4 | `results/faults/16-casefold-refs/20261124T044351Z-r01` |
 
-## 03-concurrent-push: repeticiones (B0)
+## 03-concurrent-push: repeticiones (B0, entorno v1)
 
 | Corrida | Estado | confirm | B0 | Detalle |
 |---|---|---|---|---|
@@ -51,3 +55,6 @@ Generado por `make summary` a partir de `results/faults/*/*/result.json`. Para c
 ## Hallazgos
 
 - **13 — repositorio de Restic en solo lectura.** Con el repositorio en solo lectura, restic reintenta crear el lock unos 14 min antes de fallar (`Save(<lock/…>) returned error, retrying after …: read-only file system`). Durante todo ese tiempo el procedimiento de referencia deja Gitea detenido, y el cron no lo nota porque no propaga el código de salida. Evidencia: `results/faults/13-readonly-repo-cron/20261124T035656Z-r01/evidence/cron.log` (corrida invalid por la fase backup, conservada).
+
+- **08 — ruta del ejecutable distinta en la restauración.** Gitea 28.4.0 regenera los hooks al arrancar (`routers/init.go:97:syncAppConfForGit() [I] re-sync repository hooks ...`). La advertencia de la documentación sobre regenerar los hooks después de cambiar la ruta del ejecutable no aplica a esta versión. La falla no se produce y el 08 queda `invalid`; no se agregaron desviaciones. Evidencia: `results/faults/08-binary-path-changed/*/evidence/hooks_before_first_start.txt` y el log de Gitea en `run.log`.
+- **SECRET_KEY vacía con `INSTALL_LOCK=true`.** La instalación de Gitea 28.4.0 con `GITEA__security__INSTALL_LOCK=true` y sin `SECRET_KEY` deja `[security] SECRET_KEY =` vacía en `app.ini`, y Gitea usa su clave interna por defecto, la misma en todas las instalaciones. Sí genera en el primer arranque `INTERNAL_TOKEN`, `[server] LFS_JWT_SECRET`, `[oauth2] JWT_SECRET` y `jwt/private.pem`. Afecta a todos los resultados del entorno v1. En el entorno v2, `make up` genera la clave una vez y la escribe solo en `app.ini`. Evidencia: `results/faults/00-healthy/20261124T063110Z-r01` (huella `e3b0c442…`, sha256 de un texto vacío).

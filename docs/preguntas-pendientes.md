@@ -4,6 +4,8 @@ Decisiones que no están cubiertas por lo ya aprobado. Ninguna se tomó; el trab
 
 ## 1. Falla 08: Gitea 28.4.0 regenera los hooks al arrancar
 
+**Decidido: opción A.** El 08 queda `invalid` y se registra en "Hallazgos". Sin desviaciones nuevas.
+
 **Qué pasó.** En las dos corridas del escenario 08 (`results/faults/08-binary-path-changed/`) los 27 hooks restaurados apuntaban a `/usr/local/bin/gitea` antes del primer arranque (`evidence/hooks_before_first_start.txt`). Después del arranque apuntan a `/opt/gitea/bin/gitea`. El log de Gitea muestra:
 
 ```
@@ -21,6 +23,8 @@ Gitea detecta al arrancar que cambió la ruta del ejecutable y reescribe los hoo
 Mientras no decidas, el 08 queda `invalid` en `results/summary.md`.
 
 ## 2. SECRET_KEY vacía en el entorno original
+
+**Decidido: opción B, con condiciones.** `make up` genera la clave una vez y la escribe solo en `app.ini` (entorno v2). B0 no cambia. Los resultados anteriores quedan como entorno v1 y la parte C se repite en v2.
 
 **Qué pasó.** Al probar B1 en `00-healthy` (`results/faults/00-healthy/20261124T063110Z-r01`), la huella de `SECRET_KEY` declarada y la que está en uso son iguales (`e3b0c44298fc…`), pero esa es la sha256 de un texto vacío. En `app.ini`, `[security] SECRET_KEY =` está vacía. El entorno de la etapa 1 arranca Gitea con `INSTALL_LOCK=true` y sin `SECRET_KEY`, y Gitea 28 no la genera (sí genera `INTERNAL_TOKEN` y los JWT). Con la clave vacía, Gitea usa su clave interna por defecto, la misma en todas las instalaciones. El check de B1 cumple la especificación (compara la huella declarada con la que está en uso) y detecta un cambio como el de la falla 07, que sigue siendo válida. Pero en una corrida sana compara vacío contra vacío.
 

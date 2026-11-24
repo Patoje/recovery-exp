@@ -42,7 +42,7 @@ Cada paso es un objetivo de `make` y un script en `scripts/`. Los pasos trabajan
 | Comando | Script | Qué hace | Salida |
 |---|---|---|---|
 | `make reset` | `reset.sh` | Borra contenedores, redes y volúmenes de los dos proyectos, incluido el repositorio de Restic, y `runs/CURRENT`. No borra resultados de corridas. | — |
-| `make up` | `up.sh` | Crea una corrida nueva, construye el runner, levanta PostgreSQL + Gitea, crea el administrador e inicializa el repositorio de Restic. | `run.json` |
+| `make up` | `up.sh` | Crea una corrida nueva, construye el runner, levanta PostgreSQL + Gitea, genera la `SECRET_KEY` en `app.ini` (entorno v2), crea el administrador e inicializa el repositorio de Restic. | `run.json` |
 | `make seed` | `seed.sh` → `seed/seed.py` | Carga el dataset determinista (semilla `SEED`). | `dataset.json`, `secrets/totp.json` |
 | `make witness-pre` | `witness.sh pre` | Un commit, un issue, un adjunto y un objeto LFS testigo. | `witnesses_pre.json` |
 | `make backup` | `backup.sh` (+ `inventory.sh` como hook) | Backup de referencia. El inventario se toma con Gitea detenido, antes de `pg_dump`. | `backup.json`, `inventory.json`, `restic-backup.jsonl` |
@@ -59,6 +59,7 @@ Para usar la variante MinIO, anteponé `MINIO=1` a cada comando, por ejemplo `MI
 ### Original (`compose/original.yml`, proyecto `recexp`)
 
 - `postgres` y `gitea`. Gitea se configura contra PostgreSQL con variables `GITEA__*`, que la imagen escribe en `/data/gitea/conf/app.ini`.
+- Secretos de Gitea (entorno v2, archivo `ENV_VERSION`). Con `INSTALL_LOCK=true`, Gitea 28.4.0 deja `[security] SECRET_KEY` vacía. `make up` la genera una sola vez con `gitea generate secret SECRET_KEY`, la escribe solo en `app.ini` (no en variables `GITEA__` ni en `compose/restore.yml`) y reinicia Gitea antes de crear datos. `INTERNAL_TOKEN`, `[server] LFS_JWT_SECRET`, `[oauth2] JWT_SECRET` y `jwt/private.pem` los genera Gitea en el primer arranque. En el entorno v1 (tag `b0-v1`), `SECRET_KEY` quedaba vacía. `run.json` y cada `result.json` registran `env_version`.
 - `restic` (perfil `tools`), que se ejecuta a demanda. Su repositorio es el volumen dedicado `recexp_restic-repo`.
 - `runner` (perfil `tools`), que se ejecuta a demanda.
 - `minio` (perfil `minio`, inactivo por defecto). `compose/original.minio.yml` configura Gitea con `STORAGE_TYPE = minio` en `[attachment]` y `[lfs]`.
