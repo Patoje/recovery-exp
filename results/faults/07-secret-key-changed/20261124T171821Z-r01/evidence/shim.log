@@ -1,0 +1,50 @@
+[shim] 2026-11-24T17:18:21Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:18:21Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools down -v --remove-orphans
+[shim] 2026-11-24T17:24:05Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:05Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --no-lock --no-cache check --read-data
+[shim] 2026-11-24T17:24:06Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:06Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools down -v --remove-orphans
+[shim] 2026-11-24T17:24:06Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:06Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --no-lock --no-cache snapshots --json --latest 1
+[shim] 2026-11-24T17:24:07Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:07Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --no-lock --no-cache restore e607ae253dcd5305c300d9b7faf16786758c8d734fe304e8d058ff38a55ac29e --target /
+[shim] 2026-11-24T17:24:08Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:08Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait postgres
+[shim] 2026-11-24T17:24:11Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:11Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -ec pg_restore --exit-on-error -U "$POSTGRES_USER" -d "$POSTGRES_DB" /dump/gitea.dump
+[shim] 2026-11-24T17:24:12Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:12Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait gitea
+[shim] 2026-11-24T17:24:17Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:17Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait --wait-timeout 300
+[shim] 2026-11-24T17:24:18Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:18Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner curl -s -o /dev/null -w %{http_code} http://gitea:3000/
+[shim] 2026-11-24T17:24:19Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:19Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner curl -s -o /dev/null -w %{http_code} http://gitea:3000/api/v1/version
+[shim] 2026-11-24T17:24:19Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:19Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner curl -s -o /dev/null -w %{http_code} -u alice:Test-User-Pass-1 http://gitea:3000/api/v1/user
+[shim] 2026-11-24T17:24:19Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:19Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner sh -c curl -fsS -u "$B0_USER:$B0_PASSWORD" "$GITEA_URL/api/v1/repos/search?limit=50" \
+        | python3 -c "import sys, json; print(len(json.load(sys.stdin)[\"data\"]))"
+[shim] 2026-11-24T17:24:20Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:20Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner sh -c git clone -q "http://$B0_USER:$B0_PASSWORD@gitea:3000/$B0_CLONE_REPO.git" /tmp/clone \
+        && git -C /tmp/clone rev-parse HEAD
+[shim] 2026-11-24T17:24:21Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:21Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T gitea cat /data/gitea/conf/app.ini
+[shim] 2026-11-24T17:24:21Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:21Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T gitea sh -c stat -c %Y /proc/$(pidof gitea)
+[shim] 2026-11-24T17:24:21Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:21Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T gitea stat -c %Y /data/gitea/conf/app.ini
+[shim] 2026-11-24T17:24:21Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml
+[shim] 2026-11-24T17:24:21Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/07-secret-key-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner python3 -c 
+import base64, json, os, sys, urllib.error, urllib.request
+sys.path.insert(0, "/work/pylib")
+import gitea
+s = json.load(open(sys.argv[1]))
+auth = base64.b64encode((s["user"] + ":" + os.environ["SEED_USER_PASSWORD"]).encode()).decode()
+req = urllib.request.Request("http://gitea:3000/api/v1/user",
+                             headers={"Authorization": "Basic " + auth, "X-Gitea-OTP": gitea.totp(s["secret_base32"])})
+try:
+    print(urllib.request.urlopen(req, timeout=10).status)
+except urllib.error.HTTPError as e:
+    print(e.code)
+ /runs/20261124T171823Z/secrets/totp.json

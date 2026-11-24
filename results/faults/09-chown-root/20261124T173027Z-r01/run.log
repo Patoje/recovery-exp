@@ -1,0 +1,288 @@
+[17:30:27] escenario 09-chown-root r1, baseline b0, docker=/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker, shim=1
+[17:30:27] == fase: reset
+[17:30:27] borrando proyecto de restauración
+ Container recexp-restore-gitea-1 Stopping 
+ Container recexp-restore-gitea-1 Stopped 
+ Container recexp-restore-gitea-1 Removing 
+ Container recexp-restore-gitea-1 Removed 
+ Container recexp-restore-postgres-1 Stopping 
+ Container recexp-restore-postgres-1 Stopped 
+ Container recexp-restore-postgres-1 Removing 
+ Container recexp-restore-postgres-1 Removed 
+ Volume recexp-restore_pg-data Removing 
+ Volume recexp-restore_pg-dump Removing 
+ Volume recexp-restore_gitea-data Removing 
+ Network recexp-restore_restore-net Removing 
+ Volume recexp-restore_pg-data Removed 
+ Network recexp-restore_restore-net Removed 
+ Volume recexp-restore_gitea-data Removed 
+ Volume recexp-restore_pg-dump Removed 
+[17:30:28] borrando proyecto original
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+ Container recexp-gitea-1 Removing 
+ Container recexp-gitea-1 Removed 
+ Container recexp-postgres-1 Stopping 
+ Container recexp-postgres-1 Stopped 
+ Container recexp-postgres-1 Removing 
+ Container recexp-postgres-1 Removed 
+ Volume recexp_pg-dump Removing 
+ Volume recexp_gitea-data Removing 
+ Volume recexp_pg-data Removing 
+ Volume recexp_restic-repo Removing 
+ Network recexp_default Removing 
+ Volume recexp_pg-dump Removed 
+ Volume recexp_pg-data Removed 
+ Volume recexp_gitea-data Removed 
+ Volume recexp_restic-repo Removed 
+ Network recexp_default Removed 
+[17:30:28] estado limpio
+[17:30:28] == fase: prepare
+[17:30:28] == fase: up
+[17:30:28] corrida 20261124T173028Z
+[17:30:28] construyendo runner
+ Image recexp-runner:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 536B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 462B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#5 resolve docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b done
+#5 DONE 0.0s
+
+#6 [2/2] RUN apt-get update  && apt-get install -y --no-install-recommends git git-lfs curl ca-certificates postgresql-client  && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 exporting to image
+#7 exporting layers done
+#7 exporting manifest sha256:c7497007937aade70bfbd960dc8fea6a749593ffaf24042fe3fd420d83d8013c done
+#7 exporting config sha256:48acff3cd6334fb3b0a68428004ae571406be6db90ccf0ce5251b8aac6d633bf done
+#7 exporting attestation manifest sha256:8ea2d577286c11644fdf73bf4ce4a3c0c197e0d8780b19671e859503408d0d19 done
+#7 exporting manifest list sha256:a5e8ff11f1aa452d27e416a25216c34c46c071715296d7811b269bc3afc15f23 done
+#7 naming to docker.io/library/recexp-runner:local done
+#7 unpacking to docker.io/library/recexp-runner:local done
+#7 DONE 0.0s
+
+#8 resolving provenance for metadata file
+#8 DONE 0.0s
+ Image recexp-runner:local Built 
+[17:30:29] levantando postgres + gitea
+ Network recexp_default Creating 
+ Volume recexp_pg-data Creating 
+ Volume recexp_pg-dump Creating 
+ Volume recexp_gitea-data Creating 
+ Volume recexp_pg-data Created 
+ Volume recexp_pg-dump Created 
+ Volume recexp_gitea-data Created 
+ Network recexp_default Created 
+ Container recexp-postgres-1 Creating 
+ Container recexp-postgres-1 Created 
+ Container recexp-gitea-1 Creating 
+ Container recexp-gitea-1 Created 
+ Container recexp-postgres-1 Starting 
+ Container recexp-postgres-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[17:30:37] generando SECRET_KEY en app.ini
+ Container recexp-gitea-1 Restarting 
+ Container recexp-gitea-1 Started 
+ Container recexp-gitea-1 Running 
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[17:30:43] creando administrador
+New user 'exp-admin' has been successfully created!
+[17:30:43] inicializando repositorio de Restic
+ Volume recexp_restic-repo Creating 
+ Volume recexp_restic-repo Created 
+ Container recexp-restic-run-461f42e9977e Creating 
+ Container recexp-restic-run-461f42e9977e Created 
+created restic repository ed18a8dc18 at /repo
+
+Please note that knowledge of your password is required to access
+the repository. Losing your password means that your data is
+irrecoverably lost.
+ Container recexp-restic-run-39ab6f61be85 Creating 
+ Container recexp-restic-run-39ab6f61be85 Created 
+[17:30:47] listo: /Users/patohe/Desktop/recovery-exp/runs/20261124T173028Z
+[17:30:47] == fase: seed
+ Container recexp-runner-run-70c6f9f09254 Creating 
+ Container recexp-runner-run-70c6f9f09254 Created 
+Updated Git hooks.
+Git LFS initialized.
+Updated Git hooks.
+Git LFS initialized.
+seed ok: 8 repos, 29 issues, total 21543159 bytes
+[17:30:56] == fase: witness_pre
+ Container recexp-runner-run-cb74d0c3540d Creating 
+ Container recexp-runner-run-cb74d0c3540d Created 
+warning: You appear to have cloned an empty repository.
+Updated Git hooks.
+Git LFS initialized.
+witness commit 3eba9ec8-f511-4348-8c8e-b0ad588ea588
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (1/1), 33 KB | 0 B/s, done.
+witness lfs 6e4a2dc0-0477-4f7c-9e24-73ff5ee3a399
+witness issue cdbf7fb1-e819-4854-8b0d-2651c1a1ee76
+witness attachment d83a33be-8198-4492-899a-7a7286a3438f
+[17:30:58] == fase: before_backup
+[17:30:58] == fase: backup
+[17:30:58] paso: stop_gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[17:30:58] hook de inventario: /Users/patohe/Desktop/recovery-exp/scripts/inventory.sh
+ Container recexp-runner-run-197b43bf1992 Creating 
+ Container recexp-runner-run-197b43bf1992 Created 
+inventory ok: 117 tables, 9 repos
+[17:30:59] paso: pg_dump
+-rw-r--r--    1 root     root        382168 Nov 24 17:30 /dump/gitea.dump
+[17:30:59] paso: restic_backup
+ Container recexp-restic-run-5c6e958ef924 Creating 
+ Container recexp-restic-run-5c6e958ef924 Created 
+ Container recexp-restic-run-7a270d616d1c Creating 
+ Container recexp-restic-run-7a270d616d1c Created 
+[17:31:01] paso: start_gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[17:31:07] backup.json: ok
+[17:31:07] == fase: declare
+ Container recexp-runner-run-1539f30c42fe Creating 
+ Container recexp-runner-run-1539f30c42fe Created 
+[17:31:08] declared.json: gitea 28.4.0, encoding UTF8
+[17:31:08] == fase: after_backup
+[17:31:08] == fase: witness_post
+ Container recexp-runner-run-647f9ce947ff Creating 
+ Container recexp-runner-run-647f9ce947ff Created 
+Updated Git hooks.
+Git LFS initialized.
+witness commit e3f2f6dc-993a-474c-af80-35a25e080d07
+witness issue 06c81aed-aef2-4030-bd2f-bfb1e14d2732
+witness attachment 772c7601-5389-47b5-bb1c-10af36b65688
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (1/1), 33 KB | 0 B/s, done.
+witness lfs d058592f-f444-4430-9d90-9079e675595f
+Updated Git hooks.
+Git LFS initialized.
+witness commit d79cbc9f-afb0-43ba-b0b1-603c581a02b3
+[17:36:10] == fase: baseline
+[17:36:10] paso: restic_check
+ Volume recexp-restore_pg-dump Creating 
+ Volume recexp-restore_gitea-data Creating 
+ Volume recexp-restore_pg-dump Created 
+ Volume recexp-restore_gitea-data Created 
+ Container recexp-restore-restic-run-acc6cc828948 Creating 
+ Container recexp-restore-restic-run-acc6cc828948 Created 
+load indexes
+check all packs
+check snapshots, trees and blobs
+[0:00] 100.00%  1 / 1 snapshots
+read all data
+[0:00] 100.00%  2 / 2 packs
+no errors were found
+[17:36:10] paso: restore
+[17:36:10] paso: fresh_volumes
+ Volume recexp-restore_pg-dump Removing 
+ Volume recexp-restore_gitea-data Removing 
+ Volume recexp-restore_gitea-data Removed 
+ Volume recexp-restore_pg-dump Removed 
+[17:36:10] paso: resolve_snapshot
+ Volume recexp-restore_pg-dump Creating 
+ Volume recexp-restore_gitea-data Creating 
+ Volume recexp-restore_pg-dump Created 
+ Volume recexp-restore_gitea-data Created 
+ Container recexp-restore-restic-run-46f82f0abf74 Creating 
+ Container recexp-restore-restic-run-46f82f0abf74 Created 
+[17:36:11] paso: restic_restore
+ Container recexp-restore-restic-run-511d5f75a439 Creating 
+ Container recexp-restore-restic-run-511d5f75a439 Created 
+restoring snapshot 7a9c1e1c of [/dump /data] at 2026-11-24 17:30:59.78554346 +0000 UTC by root@gitea-original to /
+Summary: Restored 1668 files/dirs (4.812 MiB) in 0:00
+[shim] 2026-11-24T17:36:12Z evento after_restic_restore
+[17:36:12] paso: start_postgres
+ Network recexp-restore_restore-net Creating 
+ Volume recexp-restore_pg-data Creating 
+ Volume recexp-restore_pg-data Created 
+ Network recexp-restore_restore-net Created 
+ Container recexp-restore-postgres-1 Creating 
+ Container recexp-restore-postgres-1 Created 
+ Container recexp-restore-postgres-1 Starting 
+ Container recexp-restore-postgres-1 Started 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+[17:36:15] paso: pg_restore
+[17:36:16] paso: start_gitea
+ Container recexp-restore-postgres-1 Running 
+ Container recexp-restore-gitea-1 Creating 
+ Container recexp-restore-gitea-1 Created 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+ Container recexp-restore-gitea-1 Starting 
+ Container recexp-restore-gitea-1 Started 
+ Container recexp-restore-gitea-1 Waiting 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+ Container recexp-restore-gitea-1 Healthy 
+[17:36:22] restore.json: ok
+[17:36:22] paso: compose_up_healthy
+ Container recexp-restore-gitea-1 Running 
+ Container recexp-restore-postgres-1 Running 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-gitea-1 Waiting 
+ Container recexp-restore-gitea-1 Healthy 
+ Container recexp-restore-postgres-1 Healthy 
+[17:36:22] paso: http_root
+ Container recexp-restore-runner-run-ead3755bd5d1 Creating 
+ Container recexp-restore-runner-run-ead3755bd5d1 Created 
+[17:36:23] paso: http_version
+ Container recexp-restore-runner-run-ce208884e405 Creating 
+ Container recexp-restore-runner-run-ce208884e405 Created 
+[17:36:24] paso: api_login
+ Container recexp-restore-runner-run-8fb496bb6b01 Creating 
+ Container recexp-restore-runner-run-8fb496bb6b01 Created 
+[17:36:24] paso: repo_list
+ Container recexp-restore-runner-run-e87d4215f38e Creating 
+ Container recexp-restore-runner-run-e87d4215f38e Created 
+[17:36:24] paso: git_clone
+ Container recexp-restore-runner-run-dccebef861ca Creating 
+ Container recexp-restore-runner-run-dccebef861ca Created 
+[17:36:25] B0: pass (/Users/patohe/Desktop/recovery-exp/runs/20261124T173028Z/b0.json)
+[17:36:25] == fase: confirm
+[ok] se aplicó el chown después de restic restore
+[ok] /data/git/repositories sigue siendo de root con Gitea en marcha
+[ok] /data/gitea/attachments sigue siendo de root con Gitea en marcha
+[ok] /data/git/lfs sigue siendo de root con Gitea en marcha
+[ok] /data/git y /data/gitea siguen siendo de git (sin auto-reparación)
+results/faults/09-chown-root/20261124T173027Z-r01: status=pass triggered=- max_gap_s=60.0 sleeps=0
+[17:36:29] resultado: pass  -> /Users/patohe/Desktop/recovery-exp/results/faults/09-chown-root/20261124T173027Z-r01/result.json

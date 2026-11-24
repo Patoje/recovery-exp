@@ -1,0 +1,1 @@
+     27 /opt/gitea/bin/gitea hook

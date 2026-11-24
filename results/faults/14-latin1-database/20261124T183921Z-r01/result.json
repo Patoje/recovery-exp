@@ -1,0 +1,131 @@
+{
+  "scenario": "14-latin1-database",
+  "batch": "20261124T183921Z",
+  "repetition": 1,
+  "run_id": "20261124T183922Z",
+  "baseline": "b0",
+  "env_version": "v2",
+  "status": "fail",
+  "reason": "",
+  "started_at": "2026-11-24T18:39:21.231Z",
+  "finished_at": "2026-11-24T18:45:20.215Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 23
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-24T18:39:21.239Z",
+      "duration_ms": 862
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T18:39:22.115Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-24T18:39:22.133Z",
+      "duration_ms": 20955
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-24T18:39:43.101Z",
+      "duration_ms": 9416
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-24T18:39:52.531Z",
+      "duration_ms": 1474
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T18:39:54.018Z",
+      "duration_ms": 735
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T18:39:54.766Z",
+      "duration_ms": 9239
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T18:40:04.018Z",
+      "duration_ms": 1633
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T18:40:05.666Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-24T18:40:05.684Z",
+      "duration_ms": 301196
+    },
+    {
+      "name": "baseline",
+      "exit_code": 1,
+      "started_at": "2026-11-24T18:45:06.893Z",
+      "duration_ms": 6500
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-24T18:45:13.415Z",
+      "duration_ms": 6515
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 1,
+    "result": "fail",
+    "first_failed_step": "restore"
+  },
+  "restore_to_baseline_end_s": 5.6,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] se creó el testigo con emoji",
+      "[ok] el dump se cargó sin --exit-on-error (shim)",
+      "[ok] el PostgreSQL restaurado usa LATIN1 (LATIN1)",
+      "[ok] pg_restore informó caracteres sin equivalente en LATIN1",
+      "[obs] resumen de pg_restore: pg_restore: warning: errors ignored on restore: 2",
+      "[obs] código de salida de pg_restore en restore.json: 1",
+      "[obs] filas en issue de la base restaurada: 0",
+      "[obs] arranque de Gitea sobre la base LATIN1: healthy; versión {\"version\":\"28.4.0\"}"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-24T18:45:23+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261124T183922Z/witnesses_post.json",
+      "max_gap_s": 60.0,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "fail",
+      "reason": ""
+    }
+  }
+}

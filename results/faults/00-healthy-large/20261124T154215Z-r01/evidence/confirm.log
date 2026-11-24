@@ -1,0 +1,5 @@
+[ok] docker resuelve al binario real
+[ok] no hay registro de modificaciones del shim
+[ok] el log de la corrida no tiene líneas [shim]
+[ok] dataset grande de 536870912 bytes registrado
+[obs] duración de restic restore (ms): 1714

@@ -1,0 +1,6 @@
+[ok] el índice muestra que el rango solo toca el blob del commit testigo
+[ok] el rango no toca blobs del dump ni de app.ini
+[ok] los bytes del rango quedaron en cero
+[ok] el pack cambió (sha256 antes/después distintos)
+[ok] la restauración usó la copia dañada
+[ok] el repositorio original sigue íntegro (restic check)

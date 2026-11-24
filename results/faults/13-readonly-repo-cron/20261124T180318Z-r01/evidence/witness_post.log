@@ -1,0 +1,58 @@
+ Container recexp-runner-run-bbdf1cc2c690 Creating 
+ Container recexp-runner-run-bbdf1cc2c690 Created 
+Updated Git hooks.
+Git LFS initialized.
+witness commit 6b289b9d-cb92-49fb-b825-42bc97a90f24
+witness issue 79fef282-2406-4c6c-95a0-ec9d16594e1b
+witness attachment f74fc538-b585-4853-8362-3f2e38f01ee6
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (1/1), 33 KB | 0 B/s, done.
+witness lfs c35ac4c5-7bc0-4f10-8d5b-3a56bc3b4e6d
+Updated Git hooks.
+Git LFS initialized.
+witness commit 6cf8228d-5c4f-4496-8686-0c950964933f
+witness issue failed at minute 6: URLError(gaierror(-2, 'Name or service not known'))
+witness attachment failed at minute 7: URLError(gaierror(-2, 'Name or service not known'))
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness lfs failed at minute 8: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmpxivu39z5'])
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness commit failed at minute 9: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmp6xsjdwbp'])
+witness issue failed at minute 10: URLError(gaierror(-2, 'Name or service not known'))
+witness attachment failed at minute 11: URLError(gaierror(-2, 'Name or service not known'))
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness lfs failed at minute 12: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmpg7y_gh98'])
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness commit failed at minute 13: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmp1rjcud74'])
+witness issue failed at minute 14: URLError(gaierror(-2, 'Name or service not known'))
+witness attachment failed at minute 15: URLError(gaierror(-2, 'Name or service not known'))
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness lfs failed at minute 16: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmp9h85pytu'])
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness commit failed at minute 17: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmpgzgpqlpj'])
+witness issue failed at minute 18: URLError(gaierror(-2, 'Name or service not known'))
+witness attachment failed at minute 19: URLError(gaierror(-2, 'Name or service not known'))
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness lfs failed at minute 20: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmpeia7od1a'])
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness commit failed at minute 21: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmprmvov4n1'])
+witness issue failed at minute 22: URLError(gaierror(-2, 'Name or service not known'))
+witness attachment failed at minute 23: URLError(gaierror(-2, 'Name or service not known'))
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness lfs failed at minute 24: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmp6uj1lq2d'])
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness commit failed at minute 25: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmpxb7_j_8n'])
+witness issue failed at minute 26: URLError(gaierror(-2, 'Name or service not known'))
+witness attachment failed at minute 27: URLError(gaierror(-2, 'Name or service not known'))
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness lfs failed at minute 28: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmp8q4jgd07'])
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness commit failed at minute 29: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmp2ubi8u5z'])
+witness issue failed at minute 30: URLError(gaierror(-2, 'Name or service not known'))
+witness attachment failed at minute 31: URLError(gaierror(-2, 'Name or service not known'))
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness lfs failed at minute 32: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmpyi48ft01'])
+fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+witness commit failed at minute 33: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmpbdbt6rl3'])
+witness issue failed at minute 34: URLError(gaierror(-2, 'Name or service not known'))
+witness attachment 81078cb5-3c7c-4eea-8ecb-f615187bb033

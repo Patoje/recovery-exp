@@ -1,0 +1,5 @@
+[ok] app.ini del snapshot: [attachment] STORAGE_TYPE = minio
+[ok] app.ini del snapshot: [lfs] STORAGE_TYPE = minio
+[ok] el snapshot no contiene datos del bucket (0 rutas)
+[ok] el adjunto testigo no está en el snapshot (0)
+[ok] minio no resuelve desde la red de restauración

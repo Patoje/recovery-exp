@@ -1,0 +1,4 @@
+[shim] 2026-11-24T18:45:23Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/15-corrupt-pack/restore.override.yml
+[shim] 2026-11-24T18:45:23Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/15-corrupt-pack/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools down -v --remove-orphans
+[shim] 2026-11-24T18:51:14Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/15-corrupt-pack/restore.override.yml
+[shim] 2026-11-24T18:51:14Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/15-corrupt-pack/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --no-lock --no-cache check --read-data
