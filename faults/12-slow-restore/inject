@@ -1,0 +1,5 @@
+. "$FAULT_DIR/../lib/common.sh"
+before_backup() {
+  "${ORIG[@]}" --profile tools run --rm --no-deps -T runner python3 faults/lib/large_dataset.py \
+    > "$FAULT_EVIDENCE/large_dataset.json"
+}

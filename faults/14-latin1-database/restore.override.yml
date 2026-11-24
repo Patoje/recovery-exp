@@ -1,0 +1,4 @@
+services:
+  postgres:
+    environment:
+      POSTGRES_INITDB_ARGS: "--encoding=LATIN1 --locale=C"

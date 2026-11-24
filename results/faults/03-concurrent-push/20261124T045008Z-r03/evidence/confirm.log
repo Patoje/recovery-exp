@@ -1,0 +1,7 @@
+[ok] Gitea guarda ramas en la base (tabla branch con filas antes del backup: 22)
+[ok] hubo pushes entre el inicio de pg_dump y el fin de restic (6)
+[ok] Gitea siguió en marcha durante el backup (stop omitido por el shim)
+[ok] se leyeron ramas de la base restaurada
+[ok] se leyeron refs del disco restaurado
+[obs] restic_backup inició: 2026-11-24T05:02:23.064Z
+[ok] inconsistencia base/disco en el sistema restaurado (5 diferencias)

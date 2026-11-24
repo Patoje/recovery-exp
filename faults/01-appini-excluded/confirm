@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+found="$(orig_restic find 'app.ini*' | grep -c '/app.ini')"
+check "restic find 'app.ini*' no encuentra nada en el snapshot (encontrados: $found)" test "$found" -eq 0
+check "se inspeccionó el volumen restaurado antes del primer arranque" grep -qx "# scan ok" "$FAULT_EVIDENCE/ini_files_after_restore.txt"
+check "el volumen restaurado no tenía ningún .ini antes del primer arranque" sh -c "! grep -v \"^#\" \"$FAULT_EVIDENCE/ini_files_after_restore.txt\" | grep -q ."
+observe "variables GITEA__ del entorno de restauración" "$("${REST[@]}" config --format json | grep -o '"GITEA__[A-Za-z_]*"' | sort -u | tr '\n' ' ')"
+confirm_done

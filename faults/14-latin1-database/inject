@@ -1,0 +1,6 @@
+. "$FAULT_DIR/../lib/common.sh"
+export FAULT_RESTORE_OVERRIDE="$FAULT_DIR/restore.override.yml"
+before_backup() {
+  "${ORIG[@]}" --profile tools run --rm --no-deps -T runner python3 faults/14-latin1-database/emoji_witness.py \
+    "/runs/$(basename "$RUN_DIR")/witnesses_pre.json" > "$FAULT_EVIDENCE/emoji_witness.json"
+}

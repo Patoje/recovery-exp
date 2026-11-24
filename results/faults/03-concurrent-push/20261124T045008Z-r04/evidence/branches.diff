@@ -1,0 +1,7 @@
+10c10,13
+< alice/concurrent main 32ac4ddcf07d886217cc8371eb2b15c100c2672f
+---
+> alice/concurrent c-00006 0ad463e09060e56c81e66cb5be48b3910a5c4163
+> alice/concurrent c-00007 a3837ddc505cc6bf55c16314752af00f9b02506f
+> alice/concurrent c-00008 b07dcdd220a6593e10edb241ec1964e6b1c091bf
+> alice/concurrent main b07dcdd220a6593e10edb241ec1964e6b1c091bf

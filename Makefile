@@ -3,7 +3,7 @@
 SHELL := /bin/bash
 SNAPSHOT ?= latest
 
-.PHONY: reset up seed witness-pre backup inventory witness-post restore b0 run clean-runs
+.PHONY: reset up seed witness-pre backup inventory witness-post restore b0 run fault faults summary
 
 reset:        ## borra contenedores, redes y volúmenes (incluye repo Restic)
 	scripts/reset.sh
@@ -35,5 +35,13 @@ b0:           ## línea base B0 (incluye restic check y restauración)
 run:          ## corrida completa (después de make reset)
 	scripts/run.sh
 
-clean-runs:   ## borra los resultados de corridas anteriores
-	rm -rf runs/*/ runs/CURRENT
+fault:        ## escenario de falla: make fault N=07 [BASELINE=b0]
+	BASELINE=$(or $(BASELINE),b0) faults/lib/runner.sh $(N)
+
+faults:       ## todos los escenarios, en orden (00-healthy, 00-healthy-large, 01..16)
+	for s in 00-healthy 00-healthy-large 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16; do \
+	  BASELINE=$(or $(BASELINE),b0) faults/lib/runner.sh $$s; \
+	done; $(MAKE) summary
+
+summary:      ## genera results/summary.md
+	docker run --rm -v $(CURDIR):/work:ro recexp-runner:local python3 /work/faults/lib/summary.py > results/summary.md

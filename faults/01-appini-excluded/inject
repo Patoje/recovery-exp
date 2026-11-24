@@ -1,0 +1,6 @@
+. "$FAULT_DIR/../lib/common.sh"
+on_event() {
+  # Configuración disponible en el volumen restaurado antes del primer arranque.
+  [ "$1" = after_restic_restore ] || return 0
+  vol_sh recexp-restore_gitea-data 'echo "# scan ok"; find /data -name "*.ini*"' > "$FAULT_EVIDENCE/ini_files_after_restore.txt"
+}

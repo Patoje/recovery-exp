@@ -1,0 +1,2 @@
+# scan ok
+     27 /usr/local/bin/gitea hook

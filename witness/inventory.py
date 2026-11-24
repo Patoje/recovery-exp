@@ -5,7 +5,8 @@ and the database session uses default_transaction_read_only=on.
 
   - row count per table (schema public)
   - refs of every repository (name -> SHA)
-  - sha256 of the pre-backup witness files as stored in /data
+  - sha256 of the pre-backup witness files as stored in /data (or in MinIO when
+    STORAGE_TYPE = minio)
 
 Writes <run>/inventory.json.
 """
@@ -68,6 +69,32 @@ def sha256_file(path):
     return h.hexdigest()
 
 
+def read_ini(path="/data/gitea/conf/app.ini"):
+    sections, cur = {}, ""
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            if line.startswith("[") and line.endswith("]"):
+                cur = line[1:-1]
+            elif "=" in line and not line.startswith(("#", ";")):
+                k, v = line.split("=", 1)
+                sections.setdefault(cur, {})[k.strip()] = v.strip()
+    return sections
+
+
+def stored_object_sha256(section, local_path, key):
+    """sha256 of an attachment or LFS object, on local disk or in MinIO (STORAGE_TYPE = minio)."""
+    cfg = read_ini().get(section, {})
+    if cfg.get("STORAGE_TYPE") != "minio":
+        return local_path, sha256_file(local_path)
+    base = cfg.get("MINIO_BASE_PATH", {"attachment": "attachments/", "lfs": "lfs/"}[section])
+    url = f"http://{cfg['MINIO_ENDPOINT']}/{cfg['MINIO_BUCKET']}/{base}{key}"
+    data = subprocess.run(["curl", "-fsS", "--aws-sigv4", "aws:amz:us-east-1:s3",
+                           "--user", f"{cfg['MINIO_ACCESS_KEY_ID']}:{cfg['MINIO_SECRET_ACCESS_KEY']}", url],
+                          check=True, stdout=subprocess.PIPE).stdout
+    return url, hashlib.sha256(data).hexdigest()
+
+
 def witness_files(pre):
     files = []
     for w in pre["witnesses"]:
@@ -80,12 +107,14 @@ def witness_files(pre):
                           "sha256": hashlib.sha256(blob).hexdigest()})
         elif w["type"] == "lfs":
             oid = w["lfs_oid"]
-            path = os.path.join(LFS_ROOT, oid[0:2], oid[2:4], oid[4:])
-            files.append({"witness_id": w["id"], "type": "lfs", "location": path, "sha256": sha256_file(path)})
+            rel = f"{oid[0:2]}/{oid[2:4]}/{oid[4:]}"
+            loc, digest = stored_object_sha256("lfs", os.path.join(LFS_ROOT, rel), rel)
+            files.append({"witness_id": w["id"], "type": "lfs", "location": loc, "sha256": digest})
         elif w["type"] == "attachment":
             u = w["attachment_uuid"]
-            path = os.path.join(ATTACH_ROOT, u[0], u[1], u)
-            files.append({"witness_id": w["id"], "type": "attachment", "location": path, "sha256": sha256_file(path)})
+            rel = f"{u[0]}/{u[1]}/{u}"
+            loc, digest = stored_object_sha256("attachment", os.path.join(ATTACH_ROOT, rel), rel)
+            files.append({"witness_id": w["id"], "type": "attachment", "location": loc, "sha256": digest})
     return files
 
 

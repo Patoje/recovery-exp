@@ -1,0 +1,128 @@
+{
+  "scenario": "15-corrupt-pack",
+  "batch": "20261124T043800Z",
+  "repetition": 1,
+  "run_id": "20261124T043801Z",
+  "baseline": "b0",
+  "status": "fail",
+  "reason": "",
+  "started_at": "2026-11-24T04:38:00.280Z",
+  "finished_at": "2026-11-24T04:43:48.353Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 4
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-24T04:38:00.292Z",
+      "duration_ms": 994
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T04:38:01.299Z",
+      "duration_ms": 43
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-24T04:38:01.355Z",
+      "duration_ms": 13017
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-24T04:38:14.390Z",
+      "duration_ms": 9880
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-24T04:38:24.287Z",
+      "duration_ms": 1404
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T04:38:25.704Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T04:38:25.720Z",
+      "duration_ms": 8931
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T04:38:34.663Z",
+      "duration_ms": 832
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T04:38:35.507Z",
+      "duration_ms": 9301
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-24T04:38:44.822Z",
+      "duration_ms": 301100
+    },
+    {
+      "name": "baseline",
+      "exit_code": 1,
+      "started_at": "2026-11-24T04:43:45.934Z",
+      "duration_ms": 1035
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-24T04:43:46.989Z",
+      "duration_ms": 1346
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 1,
+    "result": "fail",
+    "first_failed_step": "restic_check"
+  },
+  "restore_to_baseline_end_s": null,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] el índice muestra que el rango solo toca el blob del commit testigo",
+      "[ok] el rango no toca blobs del dump ni de app.ini",
+      "[ok] los bytes del rango quedaron en cero",
+      "[ok] el pack cambió (sha256 antes/después distintos)",
+      "[ok] la restauración usó la copia dañada",
+      "[ok] el repositorio original sigue íntegro (restic check)"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-24T06:27:24+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261124T043801Z/witnesses_post.json",
+      "max_gap_s": 60.0,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "fail",
+      "reason": ""
+    }
+  }
+}

@@ -1,0 +1,9 @@
+. "$FAULT_DIR/../lib/common.sh"
+export FAULT_RESTORE_OVERRIDE="$FAULT_DIR/restore.override.yml"
+prepare() { docker build -q -t recexp-fault08:local "$FAULT_DIR" > "$FAULT_EVIDENCE/image_id.txt"; }
+on_event() {
+  # Hooks tal como quedan después de restic restore, antes del primer arranque de Gitea.
+  [ "$1" = after_restic_restore ] || return 0
+  vol_sh recexp-restore_gitea-data 'echo "# scan ok"; grep -h -o "^[^ ]*gitea hook" /data/git/repositories/*/*.git/hooks/*.d/gitea | sort | uniq -c' \
+    > "$FAULT_EVIDENCE/hooks_before_first_start.txt"
+}

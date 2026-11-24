@@ -1,0 +1,133 @@
+{
+  "scenario": "13-readonly-repo-cron",
+  "batch": "20261124T054919Z",
+  "repetition": 1,
+  "run_id": "20261124T054920Z",
+  "baseline": "b0",
+  "status": "pass",
+  "reason": "",
+  "started_at": "2026-11-24T05:49:19.288Z",
+  "finished_at": "2026-11-24T06:25:12.419Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 16
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:49:19.298Z",
+      "duration_ms": 1233
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:49:20.543Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:49:20.558Z",
+      "duration_ms": 13666
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:49:34.238Z",
+      "duration_ms": 9234
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:49:43.485Z",
+      "duration_ms": 1389
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:49:44.888Z",
+      "duration_ms": 5
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:49:44.906Z",
+      "duration_ms": 2109992
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T06:24:54.912Z",
+      "duration_ms": 939
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T06:24:55.863Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-24T06:24:55.881Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-24T06:24:55.899Z",
+      "duration_ms": 14699
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-24T06:25:10.618Z",
+      "duration_ms": 1546
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 13.9,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] el repositorio tiene un solo snapshot (1)",
+      "[ok] ciclo 2: backup.json con status failed",
+      "[ok] ciclo 2: el cron ignoró el código de salida",
+      "[ok] ciclo 3: backup.json con status failed",
+      "[ok] ciclo 3: el cron ignoró el código de salida",
+      "[ok] el shim montó el repositorio en solo lectura en los ciclos 2 y 3",
+      "[ok] latest restaurado = snapshot del ciclo 1",
+      "[ok] witnesses_post.json registra incident_minutes 35",
+      "[obs] intentos de testigo fallidos (Gitea detenido): 28",
+      "[obs] duración de los ciclos 2 y 3 (ms): 834602 861735 ",
+      "[obs] error de restic en el ciclo 2: "
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-24T06:27:18+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261124T054920Z/witnesses_post.json",
+      "max_gap_s": 60.0,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "pass",
+      "reason": ""
+    }
+  }
+}

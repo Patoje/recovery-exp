@@ -1,0 +1,29 @@
+. "$FAULT_DIR/../lib/common.sh"
+
+# Ciclo como en un cron típico: la salida va a un log y el código de salida no se propaga.
+cron_cycle() {
+  local n="$1" rc=0
+  mkdir -p "$RUN_DIR/cycle-$n"
+  FAULT_ORIG_OVERRIDE="$FAULT_DIR/original.ro.yml" "$ROOT/scripts/backup.sh" "$RUN_DIR/cycle-$n" \
+    >> "$FAULT_EVIDENCE/cron.log" 2>&1 || rc=$?
+  echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) ciclo $n: backup.sh salió con $rc; cron lo ignora" >> "$FAULT_EVIDENCE/cron_exit.log"
+  return 0
+}
+
+backup() {
+  # Ciclo 1 normal (procedimiento de referencia, con inventario).
+  INVENTORY_HOOK="$ROOT/scripts/inventory.sh" "$ROOT/scripts/backup.sh" "$RUN_DIR" || return
+  echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) ciclo 1: backup.sh salió con 0" >> "$FAULT_EVIDENCE/cron_exit.log"
+  # Testigos posteriores, uno por minuto, durante los tres ciclos.
+  "${ORIG[@]}" --profile tools run --rm --no-deps -T -e INCIDENT_MINUTES="$FAULT_INCIDENT_MINUTES" runner \
+    python3 witness/witness.py post --run-dir "/runs/$(basename "$RUN_DIR")" > "$FAULT_EVIDENCE/witness_post.log" 2>&1 &
+  local wpid=$! t0
+  t0="$(date +%s)"
+  # Ciclos a mitad de minuto. Si el ciclo anterior se pasó de su hora, el siguiente empieza enseguida.
+  local d
+  d=$((t0 + 330 - $(date +%s))); [ "$d" -gt 0 ] && sleep "$d"; cron_cycle 2
+  d=$((t0 + 630 - $(date +%s))); [ "$d" -gt 0 ] && sleep "$d"; cron_cycle 3
+  wait "$wpid"
+}
+
+witness_post() { :; }  # ya corrieron dentro de backup()

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+check "dataset grande de 536870912 bytes registrado" grep -q '"total_bytes": 536870912' "$FAULT_EVIDENCE/large_dataset.json"
+check "el shim agregó --limit-download 2048 a restic restore" grep -q 'restore: restic + --limit-download 2048' "$FAULT_SHIM_LOG"
+ms="$(grep -o '"name":"restic_restore","status":"[a-z]*","started_at":"[^"]*","finished_at":"[^"]*","duration_ms":[0-9]*' "$RUN_DIR/restore.json" | grep -o '[0-9]*$')"
+# 536870912 B a 2 MiB/s = 256 s; se exige al menos el 90 %.
+check "restic restore tardó al menos 230 s (${ms:-?} ms)" test "${ms:-0}" -ge 230000
+observe "tasa efectiva de restic restore (MiB/s, sobre 512 MiB)" "$(awk -v ms="${ms:-0}" 'BEGIN{ if (ms>0) printf "%.2f", 512/(ms/1000); else print "n/a" }')"
+confirm_done

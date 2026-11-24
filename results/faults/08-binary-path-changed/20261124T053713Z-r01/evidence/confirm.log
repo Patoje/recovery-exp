@@ -1,0 +1,9 @@
+[ok] se inspeccionaron los hooks antes del primer arranque
+[ok] antes del primer arranque los hooks apuntaban a /usr/local/bin/gitea
+[obs] hooks después de la línea base:      27 /opt/gitea/bin/gitea hook 
+[fail] los hooks siguen apuntando a /usr/local/bin/gitea (sin regenerar)
+[ok] /usr/local/bin/gitea no existe en el contenedor restaurado
+[fail] el Gitea en marcha es /opt/gitea/bin/gitea (/bin/busybox)
+[shim] 2026-11-24T05:43:08Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/08-binary-path-changed/restore.override.yml
+[shim] 2026-11-24T05:43:08Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/08-binary-path-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env ps -aq gitea
+[obs] log de Gitea sobre hooks: 2026/11/24 05:43:01 routers/init.go:97:syncAppConfForGit() [I] re-sync repository hooks ... 

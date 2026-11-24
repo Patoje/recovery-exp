@@ -1,0 +1,7 @@
+. "$FAULT_DIR/../lib/common.sh"
+on_event() {
+  # Solo subdirectorios: /data/git y /data/gitea siguen siendo de git, así el arranque de la imagen no lo revierte.
+  [ "$1" = after_restic_restore ] || return 0
+  vol_sh recexp-restore_gitea-data 'chown -R root:root /data/git/repositories /data/gitea/attachments /data/git/lfs && stat -c "%U %n" /data/git /data/gitea /data/git/repositories /data/gitea/attachments /data/git/lfs' \
+    > "$FAULT_EVIDENCE/owners_after_chown.txt"
+}

@@ -1,0 +1,5 @@
+[ok] se aplicó el chown después de restic restore
+[ok] /data/git/repositories sigue siendo de root con Gitea en marcha
+[ok] /data/gitea/attachments sigue siendo de root con Gitea en marcha
+[ok] /data/git/lfs sigue siendo de root con Gitea en marcha
+[ok] /data/git y /data/gitea siguen siendo de git (sin auto-reparación)

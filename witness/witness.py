@@ -2,7 +2,8 @@
 
   pre:  one commit, one issue, one attachment and one LFS object, before the backup.
   post: one witness per minute after the backup, rotating commit -> issue -> attachment -> LFS,
-        until the incident time T = start + INCIDENT_MINUTES.
+        until the incident time T = start + INCIDENT_MINUTES. An attempt that fails (for example,
+        Gitea unavailable) is recorded under "failed_attempts" and the next minute goes on.
 
 Every witness records type, unique id (uuid4), creation time and sha256.
 Writes <run>/witnesses_pre.json or <run>/witnesses_post.json.
@@ -117,7 +118,15 @@ def run_post(w, run_dir, minutes):
         if delay > 0:
             time.sleep(delay)
         kind = ROTATION[(i - 1) % len(ROTATION)]
-        rec = w.make(kind, issue_number=issue_number)
+        attempted_at = gitea.now_iso()
+        try:
+            rec = w.make(kind, issue_number=issue_number)
+        except Exception as e:  # Gitea unavailable: record the attempt and go on with the next minute
+            out.setdefault("failed_attempts", []).append(
+                {"type": kind, "minute": i, "status": "failed", "attempted_at": attempted_at, "error": repr(e)[:300]})
+            print(f"witness {kind} failed at minute {i}: {e!r}", flush=True)
+            gitea.write_json(path, out)
+            continue
         rec["minute"] = i
         out["witnesses"].append(rec)
         gitea.write_json(path, out)

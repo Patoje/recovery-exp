@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# La falla ocurrió si, en el sistema restaurado, las ramas de la base no coinciden con las refs en disco.
+. "$FAULT_DIR/../lib/common.sh"
+check "Gitea guarda ramas en la base (tabla branch con filas antes del backup: $(cat "$FAULT_EVIDENCE/branch_rows_before.txt"))" test "$(cat "$FAULT_EVIDENCE/branch_rows_before.txt")" -gt 0
+start="$(grep -o '"name":"restic_backup","status":"[a-z]*","started_at":"[^"]*"' "$RUN_DIR/backup.json" | grep -o '20[^"]*Z')"
+dump="$(grep -o '"name":"pg_dump","status":"[a-z]*","started_at":"[^"]*"' "$RUN_DIR/backup.json" | grep -o '20[^"]*Z')"
+end="$(grep -o '"name":"restic_backup","status":"[a-z]*","started_at":"[^"]*","finished_at":"[^"]*"' "$RUN_DIR/backup.json" | grep -o '"finished_at":"[^"]*"' | cut -d'"' -f4)"
+during="$(awk -v a="$dump" -v b="$end" '$1>=a && $1<=b' "$FAULT_EVIDENCE/pusher.log" | wc -l | tr -d ' ')"
+check "hubo pushes entre el inicio de pg_dump y el fin de restic ($during)" test "$during" -gt 0
+check "Gitea siguió en marcha durante el backup (stop omitido por el shim)" grep -q "'stop gitea' omitido" "$FAULT_RUN_LOG"
+rest_db_branches > "$FAULT_EVIDENCE/restored_db_branches.txt"
+rest_disk_branches > "$FAULT_EVIDENCE/restored_disk_branches.txt"
+check "se leyeron ramas de la base restaurada" test -s "$FAULT_EVIDENCE/restored_db_branches.txt"
+check "se leyeron refs del disco restaurado" test -s "$FAULT_EVIDENCE/restored_disk_branches.txt"
+diff "$FAULT_EVIDENCE/restored_db_branches.txt" "$FAULT_EVIDENCE/restored_disk_branches.txt" > "$FAULT_EVIDENCE/branches.diff"
+n="$(grep -c '^[<>]' "$FAULT_EVIDENCE/branches.diff")"
+observe "restic_backup inició" "$start"
+check "inconsistencia base/disco en el sistema restaurado ($n diferencias)" test "$n" -gt 0
+confirm_done

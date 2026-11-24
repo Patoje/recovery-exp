@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+n="$(snap_ls /data/gitea/attachments | grep -c '^/data/gitea/attachments')"
+check "el snapshot no contiene /data/gitea/attachments ($n entradas)" test "$n" -eq 0
+ctl="$(snap_ls /data/gitea | grep -c '^/data/gitea/conf')"
+check "el snapshot sí contiene /data/gitea/conf (control del listado: $ctl)" test "$ctl" -gt 0
+rows="$(orig_sql 'select count(*) from attachment')"
+check "la base de la corrida tiene filas en attachment ($rows)" test "${rows:-0}" -gt 0
+observe "adjuntos en disco restaurado" "$(vol_sh recexp-restore_gitea-data 'find /data/gitea/attachments -type f 2>/dev/null | wc -l')"
+confirm_done

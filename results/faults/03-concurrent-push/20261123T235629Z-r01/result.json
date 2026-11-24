@@ -1,0 +1,129 @@
+{
+  "scenario": "03-concurrent-push",
+  "batch": "20261123T235629Z",
+  "repetition": 1,
+  "run_id": "20261123T235630Z",
+  "baseline": "b0",
+  "status": "pass",
+  "reason": "",
+  "started_at": "2026-11-23T23:56:29.434Z",
+  "finished_at": "2026-11-24T00:02:17.965Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 1
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-23T23:56:29.443Z",
+      "duration_ms": 703
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-23T23:56:30.161Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-23T23:56:30.179Z",
+      "duration_ms": 12877
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-23T23:56:43.070Z",
+      "duration_ms": 9364
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-23T23:56:52.447Z",
+      "duration_ms": 1307
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-23T23:56:53.767Z",
+      "duration_ms": 2457
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-23T23:56:56.236Z",
+      "duration_ms": 3989
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-23T23:57:00.282Z",
+      "duration_ms": 884
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-23T23:57:01.181Z",
+      "duration_ms": 142
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-23T23:57:01.336Z",
+      "duration_ms": 301092
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-24T00:02:02.442Z",
+      "duration_ms": 14452
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-24T00:02:16.912Z",
+      "duration_ms": 776
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 13.6,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] Gitea guarda ramas en la base (tabla branch con filas antes del backup: 22)",
+      "[ok] hubo pushes entre el inicio de pg_dump y el fin de restic (5)",
+      "[ok] Gitea siguió en marcha durante el backup (stop omitido por el shim)",
+      "[ok] se leyeron ramas de la base restaurada",
+      "[ok] se leyeron refs del disco restaurado",
+      "[obs] restic_backup inició: 2026-11-23T23:56:57.331Z",
+      "[ok] inconsistencia base/disco en el sistema restaurado (4 diferencias)"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-24T06:25:51+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261123T235630Z/witnesses_post.json",
+      "max_gap_s": 60.2,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "pass",
+      "reason": ""
+    }
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "scenario": "04-attachments-excluded",
+  "batch": "20261124T025430Z",
+  "repetition": 1,
+  "run_id": "20261124T025431Z",
+  "baseline": "b0",
+  "status": "pass",
+  "reason": "",
+  "started_at": "2026-11-24T02:54:30.879Z",
+  "finished_at": "2026-11-24T03:00:25.759Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 2
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-24T02:54:30.890Z",
+      "duration_ms": 948
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T02:54:31.850Z",
+      "duration_ms": 5
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-24T02:54:31.868Z",
+      "duration_ms": 14037
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-24T02:54:45.918Z",
+      "duration_ms": 9750
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-24T02:54:55.684Z",
+      "duration_ms": 1470
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T02:54:57.170Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T02:54:57.189Z",
+      "duration_ms": 9061
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T02:55:06.263Z",
+      "duration_ms": 841
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T02:55:07.117Z",
+      "duration_ms": 5
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-24T02:55:07.135Z",
+      "duration_ms": 301046
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:00:08.194Z",
+      "duration_ms": 14753
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:00:22.980Z",
+      "duration_ms": 2525
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 13.9,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] el snapshot no contiene /data/gitea/attachments (0 entradas)",
+      "[ok] el snapshot sí contiene /data/gitea/conf (control del listado: 1)",
+      "[ok] la base de la corrida tiene filas en attachment (15)",
+      "[obs] adjuntos en disco restaurado: 0"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-24T06:26:45+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261124T025431Z/witnesses_post.json",
+      "max_gap_s": 60.1,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "pass",
+      "reason": ""
+    }
+  }
+}

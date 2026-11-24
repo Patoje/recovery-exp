@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+check "kernel de la VM con ext4 casefold" grep -q supported "$FAULT_EVIDENCE/kernel_casefold.txt"
+check "se crearon las dos ramas" grep -q '"case-test"' "$FAULT_EVIDENCE/case_branches.json"
+heads="/data/git/repositories/alice/notes.git/refs/heads"
+n="$(snap_ls "$heads" | grep -c -i "^$heads/case-test$")"
+check "el snapshot tiene las dos refs sueltas ($n)" test "$n" -eq 2
+check "el directorio de datos restaurado tiene casefold (+F)" grep -q -E '^[^ ]*F[^ ]* ' "$FAULT_EVIDENCE/casefold_fs.txt"
+check "la restauración usó el volumen casefold" grep -q "restore: + -f $FAULT_DIR/restore.override.yml" "$FAULT_SHIM_LOG"
+ondisk="$(docker run --rm -v "$FAULT_CASEFOLD_MNT/data:/data:ro" --entrypoint sh "$RESTIC_IMG" -c "ls $heads | grep -i -x case-test")"
+printf '%s\n' "$ondisk" > "$FAULT_EVIDENCE/restored_case_refs.txt"
+check "en el disco restaurado queda una sola ref ($(printf '%s' "$ondisk" | tr '\n' ' '))" test "$(printf '%s\n' "$ondisk" | grep -c .)" -eq 1
+observe "SHA de la ref que quedó" "$(docker run --rm -v "$FAULT_CASEFOLD_MNT/data:/data:ro" --entrypoint sh "$RESTIC_IMG" -c "cat $heads/case-test")"
+confirm_done

@@ -1,0 +1,126 @@
+{
+  "scenario": "07-secret-key-changed",
+  "batch": "20261124T031230Z",
+  "repetition": 1,
+  "run_id": "20261124T031232Z",
+  "baseline": "b0",
+  "status": "pass",
+  "reason": "",
+  "started_at": "2026-11-24T03:12:30.993Z",
+  "finished_at": "2026-11-24T03:18:24.761Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 50
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:12:31.001Z",
+      "duration_ms": 1056
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:12:32.070Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:12:32.086Z",
+      "duration_ms": 13014
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:12:45.113Z",
+      "duration_ms": 10444
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:12:55.571Z",
+      "duration_ms": 1407
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:12:56.990Z",
+      "duration_ms": 5
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:12:57.010Z",
+      "duration_ms": 9011
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:13:06.033Z",
+      "duration_ms": 824
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:13:06.870Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:13:06.886Z",
+      "duration_ms": 301148
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:18:08.048Z",
+      "duration_ms": 15010
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:18:23.077Z",
+      "duration_ms": 1427
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 14.0,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] el app.ini en uso tiene la SECRET_KEY inyectada",
+      "[ok] la huella en uso difiere de la declarada al hacer el backup",
+      "[ok] el proceso de Gitea arrancó después de escribirse ese app.ini",
+      "[obs] login API de la cuenta con TOTP (código correcto): HTTP 401"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-24T06:26:54+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261124T031232Z/witnesses_post.json",
+      "max_gap_s": 60.0,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "pass",
+      "reason": ""
+    }
+  }
+}

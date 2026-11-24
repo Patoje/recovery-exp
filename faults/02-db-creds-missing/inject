@@ -1,0 +1,6 @@
+. "$FAULT_DIR/../lib/common.sh"
+prepare() {
+  # .env presente para la herramienta, pero sin credenciales de la base en el entorno restaurado.
+  grep -v '^POSTGRES_' "$ROOT/.env" > "$FAULT_EVIDENCE/restore.env"
+  export FAULT_RESTORE_ENV_FILE="$FAULT_EVIDENCE/restore.env"
+}

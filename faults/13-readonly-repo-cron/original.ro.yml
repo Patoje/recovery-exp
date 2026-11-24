@@ -1,0 +1,5 @@
+# Ciclos 2 y 3: repositorio de Restic montado en solo lectura.
+services:
+  restic:
+    volumes:
+      - restic-repo:/repo:ro

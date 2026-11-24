@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+check "se aplicó el chown después de restic restore" test -s "$FAULT_EVIDENCE/owners_after_chown.txt"
+owners="$(rest_gitea stat -c '%U %n' /data/git /data/gitea /data/git/repositories /data/gitea/attachments /data/git/lfs)"
+printf '%s\n' "$owners" > "$FAULT_EVIDENCE/owners_after_baseline.txt"
+for p in /data/git/repositories /data/gitea/attachments /data/git/lfs; do
+  check "$p sigue siendo de root con Gitea en marcha" sh -c "grep -qx 'root $p' '$FAULT_EVIDENCE/owners_after_baseline.txt'"
+done
+check "/data/git y /data/gitea siguen siendo de git (sin auto-reparación)" sh -c "grep -qx 'git /data/git' '$FAULT_EVIDENCE/owners_after_baseline.txt' && grep -qx 'git /data/gitea' '$FAULT_EVIDENCE/owners_after_baseline.txt'"
+confirm_done

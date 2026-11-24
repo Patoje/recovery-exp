@@ -1,0 +1,4 @@
+services:
+  gitea:
+    environment:
+      GITEA__security__SECRET_KEY: ${FAULT_INJECTED_SECRET_KEY}

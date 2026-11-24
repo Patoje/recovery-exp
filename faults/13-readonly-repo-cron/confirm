@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+n="$(orig_restic snapshots --json | grep -o '"short_id"' | wc -l | tr -d ' ')"
+check "el repositorio tiene un solo snapshot ($n)" test "$n" -eq 1
+for c in 2 3; do
+  check "ciclo $c: backup.json con status failed" grep -q '"status": "failed"' "$RUN_DIR/cycle-$c/backup.json"
+  check "ciclo $c: el cron ignoró el código de salida" grep -q "ciclo $c: backup.sh salió con [1-9][0-9]*; cron lo ignora" "$FAULT_EVIDENCE/cron_exit.log"
+done
+check "el shim montó el repositorio en solo lectura en los ciclos 2 y 3" test "$(grep -c 'original: + -f .*original.ro.yml' "$FAULT_SHIM_LOG")" -gt 0
+c1="$(json_field "$RUN_DIR/backup.json" id)"
+r="$(json_field "$RUN_DIR/restore.json" snapshot_id)"
+check "latest restaurado = snapshot del ciclo 1" test -n "$c1" -a "$c1" = "$r"
+check "witnesses_post.json registra incident_minutes 35" grep -q '"incident_minutes": 35' "$RUN_DIR/witnesses_post.json"
+observe "intentos de testigo fallidos (Gitea detenido)" "$(grep -c '"status": "failed"' "$RUN_DIR/witnesses_post.json")"
+observe "duración de los ciclos 2 y 3 (ms)" "$(grep -h -o '"duration_ms": [0-9]*' "$RUN_DIR/cycle-2/backup.json" "$RUN_DIR/cycle-3/backup.json" | grep -o '[0-9]*$' | tr '\n' ' ')"
+observe "error de restic en el ciclo 2" "$(grep -m1 -i 'fatal' "$FAULT_EVIDENCE/cron.log")"
+confirm_done

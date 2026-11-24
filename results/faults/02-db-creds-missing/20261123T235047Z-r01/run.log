@@ -1,0 +1,302 @@
+[23:50:47] escenario 02-db-creds-missing r1, baseline b0, docker=/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker, shim=1
+[23:50:47] == fase: reset
+[23:50:47] borrando proyecto de restauración
+[shim] 2026-11-23T23:50:47Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-23T23:50:47Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools down -v --remove-orphans
+ Container recexp-restore-gitea-1 Stopping 
+ Container recexp-restore-gitea-1 Stopped 
+ Container recexp-restore-gitea-1 Removing 
+ Container recexp-restore-gitea-1 Removed 
+ Container recexp-restore-postgres-1 Stopping 
+ Container recexp-restore-postgres-1 Stopped 
+ Container recexp-restore-postgres-1 Removing 
+ Container recexp-restore-postgres-1 Removed 
+ Volume recexp-restore_gitea-data Removing 
+ Volume recexp-restore_pg-dump Removing 
+ Volume recexp-restore_pg-data Removing 
+ Network recexp-restore_restore-net Removing 
+ Volume recexp-restore_gitea-data Removed 
+ Volume recexp-restore_pg-dump Removed 
+ Volume recexp-restore_pg-data Removed 
+ Network recexp-restore_restore-net Removed 
+[23:50:47] borrando proyecto original
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+ Container recexp-gitea-1 Removing 
+ Container recexp-gitea-1 Removed 
+ Container recexp-postgres-1 Stopping 
+ Container recexp-postgres-1 Stopped 
+ Container recexp-postgres-1 Removing 
+ Container recexp-postgres-1 Removed 
+ Volume recexp_pg-dump Removing 
+ Volume recexp_restic-repo Removing 
+ Volume recexp_gitea-data Removing 
+ Volume recexp_pg-data Removing 
+ Network recexp_default Removing 
+ Volume recexp_pg-dump Removed 
+ Volume recexp_restic-repo Removed 
+ Volume recexp_gitea-data Removed 
+ Volume recexp_pg-data Removed 
+ Network recexp_default Removed 
+[23:50:48] estado limpio
+[23:50:48] == fase: prepare
+[23:50:48] == fase: up
+[23:50:48] corrida 20261123T235048Z
+[23:50:48] construyendo runner
+ Image recexp-runner:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 536B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 462B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#5 resolve docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b done
+#5 DONE 0.0s
+
+#6 [2/2] RUN apt-get update  && apt-get install -y --no-install-recommends git git-lfs curl ca-certificates postgresql-client  && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 exporting to image
+#7 exporting layers done
+#7 exporting manifest sha256:c7497007937aade70bfbd960dc8fea6a749593ffaf24042fe3fd420d83d8013c done
+#7 exporting config sha256:48acff3cd6334fb3b0a68428004ae571406be6db90ccf0ce5251b8aac6d633bf done
+#7 exporting attestation manifest sha256:07e77166acf3490366a9a9711ae706d22b76b92139eb1aec560867d796d0fcc2 done
+#7 exporting manifest list sha256:73f8ba3e3a9ff6764c921c678af0a420d3cdbe53b959f067fd077f42c88f850a done
+#7 naming to docker.io/library/recexp-runner:local done
+#7 unpacking to docker.io/library/recexp-runner:local done
+#7 DONE 0.0s
+
+#8 resolving provenance for metadata file
+#8 DONE 0.0s
+ Image recexp-runner:local Built 
+[23:50:49] levantando postgres + gitea
+ Volume recexp_pg-dump Creating 
+ Volume recexp_gitea-data Creating 
+ Network recexp_default Creating 
+ Volume recexp_pg-data Creating 
+ Volume recexp_pg-dump Created 
+ Volume recexp_gitea-data Created 
+ Volume recexp_pg-data Created 
+ Network recexp_default Created 
+ Container recexp-postgres-1 Creating 
+ Container recexp-postgres-1 Created 
+ Container recexp-gitea-1 Creating 
+ Container recexp-gitea-1 Created 
+ Container recexp-postgres-1 Starting 
+ Container recexp-postgres-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[23:50:57] creando administrador
+New user 'exp-admin' has been successfully created!
+[23:50:57] inicializando repositorio de Restic
+ Volume recexp_restic-repo Creating 
+ Volume recexp_restic-repo Created 
+ Container recexp-restic-run-cecfbfee9459 Creating 
+ Container recexp-restic-run-cecfbfee9459 Created 
+created restic repository 33c6117b7c at /repo
+
+Please note that knowledge of your password is required to access
+the repository. Losing your password means that your data is
+irrecoverably lost.
+ Container recexp-restic-run-fa3f2489999b Creating 
+ Container recexp-restic-run-fa3f2489999b Created 
+[23:51:01] listo: /Users/patohe/Desktop/recovery-exp/runs/20261123T235048Z
+[23:51:01] == fase: seed
+ Container recexp-runner-run-41faf9a269bc Creating 
+ Container recexp-runner-run-41faf9a269bc Created 
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (5/5), 1.3 MB | 0 B/s, done.
+Updated Git hooks.
+Git LFS initialized.
+seed ok: 8 repos, 29 issues, total 21510405 bytes
+[23:51:11] == fase: witness_pre
+ Container recexp-runner-run-76ab72801c18 Creating 
+ Container recexp-runner-run-76ab72801c18 Created 
+warning: You appear to have cloned an empty repository.
+Updated Git hooks.
+Git LFS initialized.
+witness commit fe5fe7d0-3112-4d10-bfee-81963875ca94
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (1/1), 33 KB | 0 B/s, done.
+witness lfs 9de3806a-a921-4306-a409-086eb8b556fc
+witness issue 993b2cdf-c6da-4644-bc37-f975e8d08bec
+witness attachment 58b0ee94-bf18-4a02-aff0-6329cd68ca82
+[23:51:12] == fase: before_backup
+[23:51:12] == fase: backup
+[23:51:12] paso: stop_gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[23:51:12] hook de inventario: /Users/patohe/Desktop/recovery-exp/scripts/inventory.sh
+ Container recexp-runner-run-633faf5562de Creating 
+ Container recexp-runner-run-633faf5562de Created 
+inventory ok: 117 tables, 9 repos
+[23:51:13] paso: pg_dump
+-rw-r--r--    1 root     root        382106 Nov 23 23:51 /dump/gitea.dump
+[23:51:13] paso: restic_backup
+ Container recexp-restic-run-afef05f37f65 Creating 
+ Container recexp-restic-run-afef05f37f65 Created 
+ Container recexp-restic-run-9d3e924f1de2 Creating 
+ Container recexp-restic-run-9d3e924f1de2 Created 
+[23:51:17] paso: start_gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[23:51:22] backup.json: ok
+[23:51:22] == fase: declare
+ Container recexp-runner-run-517f852bbf39 Creating 
+ Container recexp-runner-run-517f852bbf39 Created 
+[23:51:23] declared.json: gitea 28.4.0, encoding UTF8
+[23:51:23] == fase: after_backup
+[23:51:23] == fase: witness_post
+ Container recexp-runner-run-103e7797009b Creating 
+ Container recexp-runner-run-103e7797009b Created 
+Updated Git hooks.
+Git LFS initialized.
+witness commit b5228785-d319-4e9e-90ba-2920262211da
+witness issue 246b5db6-b77f-4269-bb69-1e594464ab7e
+witness attachment 36622ac9-2321-40a8-a5be-b6c05e863db9
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (1/1), 33 KB | 0 B/s, done.
+witness lfs 2c9b2157-543a-4c8f-a9f7-0d130607ad4e
+Updated Git hooks.
+Git LFS initialized.
+witness commit 31aaa8ce-fb38-4545-868c-dd7575609aaa
+[23:56:24] == fase: baseline
+[23:56:24] paso: restic_check
+[shim] 2026-11-23T23:56:24Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261123T235047Z-r01/evidence/restore.env
+[shim] 2026-11-23T23:56:24Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-23T23:56:24Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261123T235047Z-r01/evidence/restore.env --profile tools run --rm --no-deps restic --no-lock --no-cache check --read-data
+time="2026-11-23T20:56:24-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:24-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:24-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:24-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:24-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:24-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:24-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:24-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:24-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+ Volume recexp-restore_pg-dump Creating 
+ Volume recexp-restore_gitea-data Creating 
+ Volume recexp-restore_pg-dump Created 
+ Volume recexp-restore_gitea-data Created 
+ Container recexp-restore-restic-run-76a6be9c162d Creating 
+ Container recexp-restore-restic-run-76a6be9c162d Created 
+load indexes
+check all packs
+check snapshots, trees and blobs
+[0:00] 100.00%  1 / 1 snapshots
+read all data
+[0:00] 100.00%  2 / 2 packs
+no errors were found
+[23:56:25] paso: restore
+[23:56:25] paso: fresh_volumes
+[shim] 2026-11-23T23:56:25Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261123T235047Z-r01/evidence/restore.env
+[shim] 2026-11-23T23:56:25Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-23T23:56:25Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261123T235047Z-r01/evidence/restore.env --profile tools down -v --remove-orphans
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+ Volume recexp-restore_gitea-data Removing 
+ Volume recexp-restore_pg-dump Removing 
+ Volume recexp-restore_gitea-data Removed 
+ Volume recexp-restore_pg-dump Removed 
+[23:56:25] paso: resolve_snapshot
+[shim] 2026-11-23T23:56:25Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261123T235047Z-r01/evidence/restore.env
+[shim] 2026-11-23T23:56:25Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-23T23:56:25Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261123T235047Z-r01/evidence/restore.env --profile tools run --rm --no-deps restic --no-lock --no-cache snapshots --json --latest 1
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:25-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+ Volume recexp-restore_pg-dump Creating 
+ Volume recexp-restore_gitea-data Creating 
+ Volume recexp-restore_pg-dump Created 
+ Volume recexp-restore_gitea-data Created 
+ Container recexp-restore-restic-run-a1bc16a409be Creating 
+ Container recexp-restore-restic-run-a1bc16a409be Created 
+[23:56:26] paso: restic_restore
+[shim] 2026-11-23T23:56:26Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261123T235047Z-r01/evidence/restore.env
+[shim] 2026-11-23T23:56:26Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-23T23:56:26Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261123T235047Z-r01/evidence/restore.env --profile tools run --rm --no-deps restic --no-lock --no-cache restore 0f69e1cb0b854508810f18a20b00b99bff78d41339fc16cf056d2fcb6997a716 --target /
+time="2026-11-23T20:56:26-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:26-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:26-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:26-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:26-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:26-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:26-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:26-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:26-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+ Container recexp-restore-restic-run-af280e58316b Creating 
+ Container recexp-restore-restic-run-af280e58316b Created 
+restoring snapshot 0f69e1cb of [/dump /data] at 2026-11-23 23:51:14.360577783 +0000 UTC by root@gitea-original to /
+Summary: Restored 1668 files/dirs (4.812 MiB) in 0:00
+[23:56:27] paso: start_postgres
+[shim] 2026-11-23T23:56:27Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261123T235047Z-r01/evidence/restore.env
+[shim] 2026-11-23T23:56:27Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-23T23:56:27Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261123T235047Z-r01/evidence/restore.env up -d --wait postgres
+time="2026-11-23T20:56:27-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:27-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:27-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:27-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:27-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:27-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:27-03:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:27-03:00" level=warning msg="The \"POSTGRES_PASSWORD\" variable is not set. Defaulting to a blank string."
+time="2026-11-23T20:56:27-03:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+ Volume recexp-restore_pg-data Creating 
+ Network recexp-restore_restore-net Creating 
+ Volume recexp-restore_pg-data Created 
+ Network recexp-restore_restore-net Created 
+ Container recexp-restore-postgres-1 Creating 
+ Container recexp-restore-postgres-1 Created 
+ Container recexp-restore-postgres-1 Starting 
+ Container recexp-restore-postgres-1 Started 
+ Container recexp-restore-postgres-1 Waiting 
+container recexp-restore-postgres-1 exited (1)
+[23:56:28] falló: start_postgres (código 1)
+[23:56:28] restore.json: failed
+[23:56:28] falló: restore (código 1)
+[23:56:28] B0: fail (/Users/patohe/Desktop/recovery-exp/runs/20261123T235048Z/b0.json)
+[23:56:28] == fase: confirm
+[ok] el env-file de restauración no tiene POSTGRES_*
+[ok] existe el contenedor postgres de restauración
+[ok] el postgres restaurado no recibió POSTGRES_PASSWORD
+[obs] últimas líneas del postgres restaurado:         See PostgreSQL documentation about "trust":        https://www.postgresql.org/docs/current/auth-trust.html 
+[23:56:29] resultado: fail  -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261123T235047Z-r01/result.json

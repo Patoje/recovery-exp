@@ -1,0 +1,379 @@
+[03:30:20] escenario 10-newer-gitea r1, baseline b0, docker=/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker, shim=1
+[03:30:20] == fase: reset
+[03:30:20] borrando proyecto de restauración
+ Container recexp-restore-gitea-1 Stopping 
+ Container recexp-restore-gitea-1 Stopped 
+ Container recexp-restore-gitea-1 Removing 
+ Container recexp-restore-gitea-1 Removed 
+ Container recexp-restore-postgres-1 Stopping 
+ Container recexp-restore-postgres-1 Stopped 
+ Container recexp-restore-postgres-1 Removing 
+ Container recexp-restore-postgres-1 Removed 
+ Volume recexp-restore_pg-dump Removing 
+ Volume recexp-restore_pg-data Removing 
+ Network recexp-restore_restore-net Removing 
+ Volume recexp-restore_gitea-data Removing 
+ Volume recexp-restore_pg-dump Removed 
+ Volume recexp-restore_pg-data Removed 
+ Network recexp-restore_restore-net Removed 
+ Volume recexp-restore_gitea-data Removed 
+[03:30:20] borrando proyecto original
+[shim] 2026-11-24T03:30:20Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:20Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml -f /Users/patohe/Desktop/recovery-exp/compose/original.minio.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile minio --profile tools down -v --remove-orphans
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+ Container recexp-gitea-1 Removing 
+ Container recexp-gitea-1 Removed 
+ Container recexp-postgres-1 Stopping 
+ Container recexp-postgres-1 Stopped 
+ Container recexp-postgres-1 Removing 
+ Container recexp-postgres-1 Removed 
+ Volume recexp_gitea-data Removing 
+ Volume recexp_pg-dump Removing 
+ Volume recexp_pg-data Removing 
+ Volume recexp_restic-repo Removing 
+ Network recexp_default Removing 
+ Volume recexp_gitea-data Removed 
+ Volume recexp_pg-dump Removed 
+ Volume recexp_restic-repo Removed 
+ Volume recexp_pg-data Removed 
+ Network recexp_default Removed 
+[03:30:21] estado limpio
+[03:30:21] == fase: prepare
+[03:30:21] == fase: up
+[03:30:21] corrida 20261124T033021Z
+[03:30:21] construyendo runner
+[shim] 2026-11-24T03:30:21Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:21Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools build runner
+ Image recexp-runner:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 536B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 462B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 resolving provenance for metadata file
+#5 DONE 0.0s
+
+#6 [1/2] FROM docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#6 resolve docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b 0.0s done
+#6 DONE 0.0s
+
+#7 [2/2] RUN apt-get update  && apt-get install -y --no-install-recommends git git-lfs curl ca-certificates postgresql-client  && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers done
+#8 exporting manifest sha256:c7497007937aade70bfbd960dc8fea6a749593ffaf24042fe3fd420d83d8013c done
+#8 exporting config sha256:48acff3cd6334fb3b0a68428004ae571406be6db90ccf0ce5251b8aac6d633bf done
+#8 exporting attestation manifest sha256:a5f3b1d493fa2f06976058043145dd943a733cd27a1c5c5e4925b1c3a58f594b done
+#8 exporting manifest list sha256:b0e5fac33fe7159d8a6c315dbebf5ce32858733897df7aa31acef00001284dd6 done
+#8 naming to docker.io/library/recexp-runner:local done
+#8 unpacking to docker.io/library/recexp-runner:local done
+#8 DONE 0.0s
+ Image recexp-runner:local Built 
+[03:30:22] levantando postgres + gitea
+[shim] 2026-11-24T03:30:22Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:22Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait postgres gitea
+ Image gitea/gitea@sha256:87a67ee09d3ae0d1df5fda5dcda3e2a1f9236a45b0a59025d6e00e46adc43bef Pulling 
+ 5de55e5ef9c0 Pulling fs layer 0B
+ b5b3f716ca66 Pulling fs layer 0B
+ 9afe0f70ee33 Pulling fs layer 0B
+ f5a1e489e1fb Pulling fs layer 0B
+ 25bdf5dd5ca7 Pulling fs layer 0B
+ 5de55e5ef9c0 Download complete 0B
+ 25bdf5dd5ca7 Download complete 0B
+ 5de55e5ef9c0 Extracting 1B
+ 5de55e5ef9c0 Extracting 1B
+ 5de55e5ef9c0 Extracting 1B
+ 5de55e5ef9c0 Extracting 1B
+ 5de55e5ef9c0 Extracting 1B
+ f5a1e489e1fb Download complete 0B
+ 5de55e5ef9c0 Extracting 1B
+ 5de55e5ef9c0 Extracting 1B
+ 5de55e5ef9c0 Extracting 1B
+ 5de55e5ef9c0 Extracting 1B
+ 5de55e5ef9c0 Extracting 1B
+ 44136fa355b3 Already exists 0B
+ 5de55e5ef9c0 Pull complete 0B
+ 9afe0f70ee33 Downloading 1.049MB
+ 9afe0f70ee33 Downloading 2.097MB
+ b5b3f716ca66 Downloading 1.049MB
+ 9afe0f70ee33 Downloading 3.146MB
+ b5b3f716ca66 Downloading 3.146MB
+ 9afe0f70ee33 Downloading 6.291MB
+ b5b3f716ca66 Downloading 3.146MB
+ 9afe0f70ee33 Downloading 8.389MB
+ b5b3f716ca66 Downloading 6.291MB
+ 9afe0f70ee33 Downloading 11.53MB
+ 9afe0f70ee33 Downloading 15.73MB
+ b5b3f716ca66 Downloading 8.389MB
+ c6c9d300d9b4 Download complete 0B
+ b5b3f716ca66 Downloading 12.58MB
+ 9afe0f70ee33 Downloading 17.83MB
+ b5b3f716ca66 Downloading 14.68MB
+ 9afe0f70ee33 Downloading 20.97MB
+ b5b3f716ca66 Downloading 20.97MB
+ 9afe0f70ee33 Download complete 0B
+ 9afe0f70ee33 Extracting 1B
+ b5b3f716ca66 Downloading 25.17MB
+ 9afe0f70ee33 Extracting 1B
+ b5b3f716ca66 Downloading 28.31MB
+ 9afe0f70ee33 Extracting 1B
+ b5b3f716ca66 Downloading 31.46MB
+ 9afe0f70ee33 Pull complete 0B
+ b5b3f716ca66 Downloading 33.55MB
+ 25bdf5dd5ca7 Pull complete 0B
+ f5a1e489e1fb Pull complete 0B
+ b5b3f716ca66 Downloading 36.7MB
+ b5b3f716ca66 Downloading 39.85MB
+ b5b3f716ca66 Download complete 0B
+ b5b3f716ca66 Extracting 1B
+ b5b3f716ca66 Extracting 1B
+ b5b3f716ca66 Extracting 1B
+ b5b3f716ca66 Extracting 1B
+ b5b3f716ca66 Pull complete 0B
+ Image gitea/gitea@sha256:87a67ee09d3ae0d1df5fda5dcda3e2a1f9236a45b0a59025d6e00e46adc43bef Pulled 
+ Network recexp_default Creating 
+ Volume recexp_gitea-data Creating 
+ Volume recexp_pg-data Creating 
+ Volume recexp_pg-dump Creating 
+ Volume recexp_gitea-data Created 
+ Volume recexp_pg-dump Created 
+ Volume recexp_pg-data Created 
+ Network recexp_default Created 
+ Container recexp-postgres-1 Creating 
+ Container recexp-postgres-1 Created 
+ Container recexp-gitea-1 Creating 
+ Container recexp-gitea-1 Created 
+ Container recexp-postgres-1 Starting 
+ Container recexp-postgres-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[03:30:37] creando administrador
+[shim] 2026-11-24T03:30:37Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:37Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -u git gitea gitea admin user create --admin --username exp-admin --password Test-Admin-Pass-1 --email exp-admin@example.test --must-change-password=false
+New user 'exp-admin' has been successfully created!
+[03:30:37] inicializando repositorio de Restic
+[shim] 2026-11-24T03:30:37Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:37Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic init
+ Volume recexp_restic-repo Creating 
+ Volume recexp_restic-repo Created 
+ Container recexp-restic-run-a8d1a1c00820 Creating 
+ Container recexp-restic-run-a8d1a1c00820 Created 
+created restic repository 9b25acbdf3 at /repo
+
+Please note that knowledge of your password is required to access
+the repository. Losing your password means that your data is
+irrecoverably lost.
+[shim] 2026-11-24T03:30:41Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:41Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic version
+ Container recexp-restic-run-52ff0fdb0203 Creating 
+ Container recexp-restic-run-52ff0fdb0203 Created 
+[shim] 2026-11-24T03:30:41Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:41Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools config --images
+[03:30:41] listo: /Users/patohe/Desktop/recovery-exp/runs/20261124T033021Z
+[03:30:41] == fase: seed
+[shim] 2026-11-24T03:30:41Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:41Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner python3 seed/seed.py --run-dir /runs/20261124T033021Z
+ Container recexp-runner-run-8db18d273063 Creating 
+ Container recexp-runner-run-8db18d273063 Created 
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (5/5), 1.3 MB | 0 B/s, done.
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (5/5), 2.0 MB | 0 B/s, done.
+seed ok: 8 repos, 29 issues, total 21371924 bytes
+[03:30:50] == fase: witness_pre
+[shim] 2026-11-24T03:30:50Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:50Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner python3 witness/witness.py pre --run-dir /runs/20261124T033021Z
+ Container recexp-runner-run-21a098c3ee4b Creating 
+ Container recexp-runner-run-21a098c3ee4b Created 
+warning: You appear to have cloned an empty repository.
+Updated Git hooks.
+Git LFS initialized.
+witness commit 0754d794-023b-4348-aece-5a8e07f4706a
+Updated Git hooks.
+Git LFS initialized.
+witness lfs 355d9c93-b1a2-477f-ac84-36048d5d0fcf
+witness issue ecbfc2fa-bd52-4d30-bbae-9e5b8478e6b3
+witness attachment bc7351e0-d3af-4662-92fc-2c676ffa2bb4
+[03:30:52] == fase: before_backup
+[03:30:52] == fase: backup
+[03:30:52] paso: stop_gitea
+[shim] 2026-11-24T03:30:52Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:52Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env stop gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[03:30:52] hook de inventario: /Users/patohe/Desktop/recovery-exp/scripts/inventory.sh
+[shim] 2026-11-24T03:30:52Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:52Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner python3 witness/inventory.py --run-dir /runs/20261124T033021Z
+ Container recexp-runner-run-d2c8c6973b2d Creating 
+ Container recexp-runner-run-d2c8c6973b2d Created 
+inventory ok: 116 tables, 9 repos
+[03:30:53] paso: pg_dump
+[shim] 2026-11-24T03:30:53Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:53Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -ec rm -f /dump/gitea.dump; pg_dump -U "$POSTGRES_USER" -Fc -f /dump/gitea.dump "$POSTGRES_DB"; ls -l /dump/gitea.dump
+-rw-r--r--    1 root     root        375679 Nov 24 03:30 /dump/gitea.dump
+[03:30:53] paso: restic_backup
+[shim] 2026-11-24T03:30:53Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:53Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic backup --json --host gitea-original --tag run=20261124T033021Z --exclude /data/gitea/log --exclude /data/gitea/indexers /dump /data
+ Container recexp-restic-run-4cdfd2c572f0 Creating 
+ Container recexp-restic-run-4cdfd2c572f0 Created 
+[shim] 2026-11-24T03:30:54Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:54Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic snapshots --json 388bb5ae0f36d6bb34a4332343291041e8ee13b3143209d0754d708ac897b7f6
+ Container recexp-restic-run-e9eb131a82b4 Creating 
+ Container recexp-restic-run-e9eb131a82b4 Created 
+[03:30:55] paso: start_gitea
+[shim] 2026-11-24T03:30:55Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:30:55Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[03:31:01] backup.json: ok
+[03:31:01] == fase: declare
+[shim] 2026-11-24T03:31:01Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:31:01Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env ps -q gitea
+[shim] 2026-11-24T03:31:01Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:31:01Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner curl -fsS http://gitea:3000/api/v1/version
+ Container recexp-runner-run-da4d6568385f Creating 
+ Container recexp-runner-run-da4d6568385f Created 
+[shim] 2026-11-24T03:31:01Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:31:01Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T gitea cat /data/gitea/conf/app.ini
+[shim] 2026-11-24T03:31:02Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:31:02Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T gitea sha256sum
+[shim] 2026-11-24T03:31:02Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:31:02Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -c psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Atc "show server_encoding"
+[03:31:02] declared.json: gitea 1.27.3, encoding UTF8
+[03:31:02] == fase: after_backup
+[03:31:02] == fase: witness_post
+[shim] 2026-11-24T03:31:02Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml
+[shim] 2026-11-24T03:31:02Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/10-newer-gitea/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner python3 witness/witness.py post --run-dir /runs/20261124T033021Z
+ Container recexp-runner-run-944237168993 Creating 
+ Container recexp-runner-run-944237168993 Created 
+Updated Git hooks.
+Git LFS initialized.
+witness commit 938b9a47-866d-4cf3-a5c6-039ee55cbee0
+witness issue 77e9fdb3-53fc-47fa-bf58-3c75a6750024
+witness attachment cb2eb5fb-f9d2-431a-89d1-299904cadbe3
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (1/1), 33 KB | 0 B/s, done.
+witness lfs a7323e0a-6f26-4290-96d7-49519f8bf84e
+Updated Git hooks.
+Git LFS initialized.
+witness commit 663eec13-93b5-4140-84a7-fdba6215cc43
+[03:36:03] == fase: baseline
+[03:36:03] paso: restic_check
+ Volume recexp-restore_pg-dump Creating 
+ Volume recexp-restore_gitea-data Creating 
+ Volume recexp-restore_pg-dump Created 
+ Volume recexp-restore_gitea-data Created 
+ Container recexp-restore-restic-run-34af726ad584 Creating 
+ Container recexp-restore-restic-run-34af726ad584 Created 
+load indexes
+check all packs
+check snapshots, trees and blobs
+[0:00] 100.00%  1 / 1 snapshots
+read all data
+[0:00] 100.00%  2 / 2 packs
+no errors were found
+[03:36:04] paso: restore
+[03:36:04] paso: fresh_volumes
+ Volume recexp-restore_gitea-data Removing 
+ Volume recexp-restore_pg-dump Removing 
+ Volume recexp-restore_gitea-data Removed 
+ Volume recexp-restore_pg-dump Removed 
+[03:36:04] paso: resolve_snapshot
+ Volume recexp-restore_pg-dump Creating 
+ Volume recexp-restore_gitea-data Creating 
+ Volume recexp-restore_pg-dump Created 
+ Volume recexp-restore_gitea-data Created 
+ Container recexp-restore-restic-run-fc18c5ba26b6 Creating 
+ Container recexp-restore-restic-run-fc18c5ba26b6 Created 
+[03:36:05] paso: restic_restore
+ Container recexp-restore-restic-run-0cd277a04ec0 Creating 
+ Container recexp-restore-restic-run-0cd277a04ec0 Created 
+restoring snapshot 388bb5ae of [/dump /data] at 2026-11-24 03:30:53.726584604 +0000 UTC by root@gitea-original to /
+Summary: Restored 1661 files/dirs (4.798 MiB) in 0:00
+[03:36:06] paso: start_postgres
+ Network recexp-restore_restore-net Creating 
+ Volume recexp-restore_pg-data Creating 
+ Volume recexp-restore_pg-data Created 
+ Network recexp-restore_restore-net Created 
+ Container recexp-restore-postgres-1 Creating 
+ Container recexp-restore-postgres-1 Created 
+ Container recexp-restore-postgres-1 Starting 
+ Container recexp-restore-postgres-1 Started 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+[03:36:08] paso: pg_restore
+[03:36:09] paso: start_gitea
+[shim] 2026-11-24T03:36:09Z evento before_gitea_start
+ Container recexp-restore-postgres-1 Running 
+ Container recexp-restore-gitea-1 Creating 
+ Container recexp-restore-gitea-1 Created 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+ Container recexp-restore-gitea-1 Starting 
+ Container recexp-restore-gitea-1 Started 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-gitea-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+ Container recexp-restore-gitea-1 Healthy 
+[03:36:15] restore.json: ok
+[03:36:15] paso: compose_up_healthy
+ Container recexp-restore-gitea-1 Running 
+ Container recexp-restore-postgres-1 Running 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+ Container recexp-restore-gitea-1 Waiting 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+ Container recexp-restore-gitea-1 Healthy 
+[03:36:16] paso: http_root
+ Container recexp-restore-runner-run-6253e23afa89 Creating 
+ Container recexp-restore-runner-run-6253e23afa89 Created 
+[03:36:17] paso: http_version
+ Container recexp-restore-runner-run-19c53c9c3d7e Creating 
+ Container recexp-restore-runner-run-19c53c9c3d7e Created 
+[03:36:17] paso: api_login
+ Container recexp-restore-runner-run-ebaf7bfc74ad Creating 
+ Container recexp-restore-runner-run-ebaf7bfc74ad Created 
+[03:36:17] paso: repo_list
+ Container recexp-restore-runner-run-7faa8694f7f1 Creating 
+ Container recexp-restore-runner-run-7faa8694f7f1 Created 
+[03:36:18] paso: git_clone
+ Container recexp-restore-runner-run-fc07026e896a Creating 
+ Container recexp-restore-runner-run-fc07026e896a Created 
+[03:36:18] B0: pass (/Users/patohe/Desktop/recovery-exp/runs/20261124T033021Z/b0.json)
+[03:36:18] == fase: confirm
+[ok] el backup se hizo con 1.27.3 (gitea/gitea@sha256:87a67ee09d3ae0d1df5fda5dcda3e2a1f9236a45b0a59025d6e00e46adc43bef)
+[ok] la restauración usa otra imagen (gitea/gitea@sha256:aa90e8f00b755b0d665214ab9c14447ea44d3190dbe6b6d0cb46cd9c4f55d309)
+[obs] versión declarada: 1.27.3
+[ok] se guardó la base antes del primer arranque
+[ok] las migraciones cambiaron la versión de la base (343 -> 358)
+results/faults/10-newer-gitea/20261124T033020Z-r01: status=pass triggered=- max_gap_s=60.0 sleeps=0
+[03:36:22] resultado: pass  -> /Users/patohe/Desktop/recovery-exp/results/faults/10-newer-gitea/20261124T033020Z-r01/result.json

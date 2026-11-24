@@ -1,0 +1,126 @@
+{
+  "scenario": "05-lfs-excluded",
+  "batch": "20261124T030028Z",
+  "repetition": 1,
+  "run_id": "20261124T030029Z",
+  "baseline": "b0",
+  "status": "pass",
+  "reason": "",
+  "started_at": "2026-11-24T03:00:28.586Z",
+  "finished_at": "2026-11-24T03:06:23.563Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 2
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:00:28.597Z",
+      "duration_ms": 1038
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:00:29.651Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:00:29.672Z",
+      "duration_ms": 12958
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:00:42.645Z",
+      "duration_ms": 10332
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:00:52.994Z",
+      "duration_ms": 1542
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:00:54.553Z",
+      "duration_ms": 8
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:00:54.573Z",
+      "duration_ms": 9117
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:01:03.707Z",
+      "duration_ms": 903
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:01:04.625Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:01:04.644Z",
+      "duration_ms": 301104
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:06:05.763Z",
+      "duration_ms": 14905
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:06:20.689Z",
+      "duration_ms": 2625
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 14.0,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] el snapshot no contiene /data/git/lfs (0 entradas)",
+      "[ok] el snapshot sí contiene /data/git/repositories (control del listado: 1)",
+      "[ok] la base de la corrida tiene filas en lfs_meta_object (12)",
+      "[obs] objetos LFS en disco restaurado: 0"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-24T06:26:48+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261124T030029Z/witnesses_post.json",
+      "max_gap_s": 60.1,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "pass",
+      "reason": ""
+    }
+  }
+}

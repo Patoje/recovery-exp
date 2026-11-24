@@ -1,0 +1,5 @@
+UNKNOWN /data/git
+UNKNOWN /data/gitea
+root /data/git/repositories
+root /data/gitea/attachments
+root /data/git/lfs

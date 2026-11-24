@@ -1,0 +1,3 @@
+services:
+  gitea:
+    image: recexp-fault08:local

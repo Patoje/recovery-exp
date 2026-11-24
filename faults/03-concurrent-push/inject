@@ -1,0 +1,13 @@
+. "$FAULT_DIR/../lib/common.sh"
+before_backup() {
+  orig_sql "select count(*) from branch" > "$FAULT_EVIDENCE/branch_rows_before.txt"
+  docker rm -f recexp-pusher >/dev/null 2>&1
+  "${ORIG[@]}" --profile tools run -d --no-deps --name recexp-pusher runner python3 faults/03-concurrent-push/pusher.py || return
+  # Esperar a que haya pushes en curso antes de empezar el backup.
+  for _ in $(seq 1 60); do docker logs recexp-pusher 2>&1 | grep -q ' push 3$' && return 0; sleep 1; done
+  return 1
+}
+after_backup() {
+  docker logs recexp-pusher > "$FAULT_EVIDENCE/pusher.log" 2>&1
+  docker rm -f recexp-pusher >/dev/null
+}

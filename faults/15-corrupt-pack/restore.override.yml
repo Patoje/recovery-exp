@@ -1,0 +1,5 @@
+# La restauración (y B0) usan la copia dañada del repositorio de Restic.
+volumes:
+  restic-repo:
+    external: true
+    name: ${FAULT_CORRUPT_VOLUME}

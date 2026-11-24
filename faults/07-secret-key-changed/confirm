@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+running="$(rest_gitea cat /data/gitea/conf/app.ini | ini_get security SECRET_KEY)"
+check "el app.ini en uso tiene la SECRET_KEY inyectada" test "$running" = "$FAULT_INJECTED_SECRET_KEY"
+fp="$(printf '%s' "$running" | sha256_stdin)"
+declared="$(json_field "$RUN_DIR/declared.json" secret_key_sha256)"
+check "la huella en uso difiere de la declarada al hacer el backup" test -n "$declared" -a "$fp" != "$declared"
+pid_start="$(rest_gitea sh -c 'stat -c %Y /proc/$(pidof gitea)')"
+ini_mtime="$(rest_gitea stat -c %Y /data/gitea/conf/app.ini)"
+check "el proceso de Gitea arrancó después de escribirse ese app.ini" test "${pid_start:-0}" -ge "${ini_mtime:-9999999999}"
+otp_code="$("${REST[@]}" --profile tools run --rm --no-deps -T runner python3 -c '
+import base64, json, os, sys, urllib.error, urllib.request
+sys.path.insert(0, "/work/pylib")
+import gitea
+s = json.load(open(sys.argv[1]))
+auth = base64.b64encode((s["user"] + ":" + os.environ["SEED_USER_PASSWORD"]).encode()).decode()
+req = urllib.request.Request("http://gitea:3000/api/v1/user",
+                             headers={"Authorization": "Basic " + auth, "X-Gitea-OTP": gitea.totp(s["secret_base32"])})
+try:
+    print(urllib.request.urlopen(req, timeout=10).status)
+except urllib.error.HTTPError as e:
+    print(e.code)
+' "/runs/$(basename "$RUN_DIR")/secrets/totp.json" 2>/dev/null | tail -1)"
+observe "login API de la cuenta con TOTP (código correcto)" "HTTP $otp_code"
+confirm_done

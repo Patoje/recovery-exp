@@ -1,0 +1,9 @@
+. "$FAULT_DIR/../lib/common.sh"
+on_event() {
+  # Secuencia fija: pg_dump (ya hecho) -> crear repositorio y push -> copia de repositorios (restic).
+  [ "$1" = after_pg_dump ] || return 0
+  "${ORIG[@]}" up -d --wait gitea || return
+  "${ORIG[@]}" --profile tools run --rm --no-deps -T runner python3 faults/06-repo-after-dump/late.py \
+    > "$FAULT_EVIDENCE/late_commit.txt" || return
+  "${ORIG[@]}" stop gitea
+}

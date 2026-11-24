@@ -1,0 +1,8 @@
+# Volumen de datos de Gitea en un directorio ext4 con casefold (+F) dentro de la VM de Docker.
+volumes:
+  gitea-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${FAULT_CASEFOLD_MNT}/data

@@ -1,0 +1,224 @@
+[04:38:00] escenario 15-corrupt-pack r1, baseline b0, docker=/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker, shim=1
+[04:38:00] == fase: reset
+[04:38:00] borrando proyecto de restauración
+[shim] 2026-11-24T04:38:00Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/15-corrupt-pack/restore.override.yml
+[shim] 2026-11-24T04:38:00Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/15-corrupt-pack/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools down -v --remove-orphans
+ Container recexp-restore-gitea-1 Stopping 
+ Container recexp-restore-gitea-1 Stopped 
+ Container recexp-restore-gitea-1 Removing 
+ Container recexp-restore-gitea-1 Removed 
+ Container recexp-restore-postgres-1 Stopping 
+ Container recexp-restore-postgres-1 Stopped 
+ Container recexp-restore-postgres-1 Removing 
+ Container recexp-restore-postgres-1 Removed 
+ Volume recexp-restore_pg-dump Removing 
+ Volume recexp-restore_pg-data Removing 
+ Volume recexp-restore_gitea-data Removing 
+ Network recexp-restore_restore-net Removing 
+ Volume recexp-restore_pg-dump Removed 
+ Volume recexp-restore_pg-data Removed 
+ Network recexp-restore_restore-net Removed 
+ Volume recexp-restore_gitea-data Removed 
+[04:38:00] borrando proyecto original
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+ Container recexp-gitea-1 Removing 
+ Container recexp-gitea-1 Removed 
+ Container recexp-postgres-1 Stopping 
+ Container recexp-postgres-1 Stopped 
+ Container recexp-postgres-1 Removing 
+ Container recexp-postgres-1 Removed 
+ Volume recexp_pg-data Removing 
+ Volume recexp_gitea-data Removing 
+ Volume recexp_restic-repo Removing 
+ Volume recexp_pg-dump Removing 
+ Network recexp_default Removing 
+ Volume recexp_pg-data Removed 
+ Volume recexp_restic-repo Removed 
+ Volume recexp_gitea-data Removed 
+ Volume recexp_pg-dump Removed 
+ Network recexp_default Removed 
+[04:38:01] estado limpio
+[04:38:01] == fase: prepare
+[04:38:01] == fase: up
+[04:38:01] corrida 20261124T043801Z
+[04:38:01] construyendo runner
+ Image recexp-runner:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 536B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 462B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#5 resolve docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b done
+#5 DONE 0.0s
+
+#6 [2/2] RUN apt-get update  && apt-get install -y --no-install-recommends git git-lfs curl ca-certificates postgresql-client  && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 exporting to image
+#7 exporting layers done
+#7 exporting manifest sha256:c7497007937aade70bfbd960dc8fea6a749593ffaf24042fe3fd420d83d8013c done
+#7 exporting config sha256:48acff3cd6334fb3b0a68428004ae571406be6db90ccf0ce5251b8aac6d633bf done
+#7 exporting attestation manifest sha256:db6e5baf0fc78ee05338d101e2e10087856b9cfd6b22e914a39dc385808f08a7 done
+#7 exporting manifest list sha256:e37dbb56c3f69369da0a094fc5b2366957df480b285df4469566fb2c86bb4602 done
+#7 naming to docker.io/library/recexp-runner:local done
+#7 unpacking to docker.io/library/recexp-runner:local done
+#7 DONE 0.0s
+
+#8 resolving provenance for metadata file
+#8 DONE 0.0s
+ Image recexp-runner:local Built 
+[04:38:02] levantando postgres + gitea
+ Network recexp_default Creating 
+ Volume recexp_pg-data Creating 
+ Volume recexp_gitea-data Creating 
+ Volume recexp_pg-dump Creating 
+ Volume recexp_pg-data Created 
+ Volume recexp_pg-dump Created 
+ Volume recexp_gitea-data Created 
+ Network recexp_default Created 
+ Container recexp-postgres-1 Creating 
+ Container recexp-postgres-1 Created 
+ Container recexp-gitea-1 Creating 
+ Container recexp-gitea-1 Created 
+ Container recexp-postgres-1 Starting 
+ Container recexp-postgres-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[04:38:10] creando administrador
+New user 'exp-admin' has been successfully created!
+[04:38:10] inicializando repositorio de Restic
+ Volume recexp_restic-repo Creating 
+ Volume recexp_restic-repo Created 
+ Container recexp-restic-run-33a322c04e22 Creating 
+ Container recexp-restic-run-33a322c04e22 Created 
+created restic repository c2b62badf4 at /repo
+
+Please note that knowledge of your password is required to access
+the repository. Losing your password means that your data is
+irrecoverably lost.
+ Container recexp-restic-run-2701733eebcf Creating 
+ Container recexp-restic-run-2701733eebcf Created 
+[04:38:14] listo: /Users/patohe/Desktop/recovery-exp/runs/20261124T043801Z
+[04:38:14] == fase: seed
+ Container recexp-runner-run-88be73dc5513 Creating 
+ Container recexp-runner-run-88be73dc5513 Created 
+Updated Git hooks.
+Git LFS initialized.
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (5/5), 2.0 MB | 0 B/s, done.
+seed ok: 8 repos, 29 issues, total 21510050 bytes
+[04:38:24] == fase: witness_pre
+ Container recexp-runner-run-ae2a6632570d Creating 
+ Container recexp-runner-run-ae2a6632570d Created 
+warning: You appear to have cloned an empty repository.
+Updated Git hooks.
+Git LFS initialized.
+witness commit 158bc22f-b49d-47cf-ab54-367aef824043
+Updated Git hooks.
+Git LFS initialized.
+witness lfs fc428252-aad8-4497-bc73-0b6b6dec55e4
+witness issue 4bdbb5ac-6826-4caf-81dc-3027114d89cf
+witness attachment 10c99314-2840-4a2b-a86d-bf9b85639c05
+[04:38:25] == fase: before_backup
+[04:38:25] == fase: backup
+[04:38:25] paso: stop_gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[04:38:25] hook de inventario: /Users/patohe/Desktop/recovery-exp/scripts/inventory.sh
+ Container recexp-runner-run-c41f804c9f0c Creating 
+ Container recexp-runner-run-c41f804c9f0c Created 
+inventory ok: 117 tables, 9 repos
+[04:38:26] paso: pg_dump
+-rw-r--r--    1 root     root        382135 Nov 24 04:38 /dump/gitea.dump
+[04:38:26] paso: restic_backup
+ Container recexp-restic-run-7ce80a459302 Creating 
+ Container recexp-restic-run-7ce80a459302 Created 
+ Container recexp-restic-run-9c7f2760da23 Creating 
+ Container recexp-restic-run-9c7f2760da23 Created 
+[04:38:28] paso: start_gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[04:38:34] backup.json: ok
+[04:38:34] == fase: declare
+ Container recexp-runner-run-0ffccc35f8dc Creating 
+ Container recexp-runner-run-0ffccc35f8dc Created 
+[04:38:35] declared.json: gitea 28.4.0, encoding UTF8
+[04:38:35] == fase: after_backup
+[04:38:44] == fase: witness_post
+ Container recexp-runner-run-19f70b27fc6a Creating 
+ Container recexp-runner-run-19f70b27fc6a Created 
+Updated Git hooks.
+Git LFS initialized.
+witness commit 4daa7a9c-945a-4bf5-b82d-9ddafc402760
+witness issue 3df98967-c630-4b36-9d43-fc3d3e6a3c54
+witness attachment b0f43cf9-a9ae-4e18-ba39-0689aa400957
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (1/1), 33 KB | 0 B/s, done.
+witness lfs 34d59757-495e-4607-97f7-dc3cbf35f958
+Updated Git hooks.
+Git LFS initialized.
+witness commit 52b9c241-cd58-4782-9f11-6446c81ad445
+[04:43:45] == fase: baseline
+[04:43:45] paso: restic_check
+[shim] 2026-11-24T04:43:45Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/15-corrupt-pack/restore.override.yml
+[shim] 2026-11-24T04:43:45Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/15-corrupt-pack/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --no-lock --no-cache check --read-data
+ Volume recexp-restore_pg-dump Creating 
+ Volume recexp-restore_gitea-data Creating 
+ Volume recexp-restore_pg-dump Created 
+ Volume recexp-restore_gitea-data Created 
+ Container recexp-restore-restic-run-76a60ac8966c Creating 
+ Container recexp-restore-restic-run-76a60ac8966c Created 
+load indexes
+check all packs
+check snapshots, trees and blobs
+[0:00] 100.00%  1 / 1 snapshots
+read all data
+pack c2b169ae1ff377874b14d24a076f87a25ff34a72c6ca788e7cd08b65c83e63db contains 2 errors: [blob e6a5ca3d0ded2c916f9fc07064cf2c44f3ebb5bb52a4b1260e68e1c61538d490: decrypting blob <data/e6a5ca3d> from pack c2b169ae1ff377874b14d24a076f87a25ff34a72c6ca788e7cd08b65c83e63db failed: nonce is invalid unexpected pack id af140ace75b67269822233be4b9d425b38e5270b79b2eaaec7b66e45ac749de7]
+
+The repository contains damaged pack files. These damaged files must be removed to repair the repository. This can be done using the following commands. Please read the troubleshooting guide at https://restic.readthedocs.io/en/stable/077_troubleshooting.html first.
+
+restic repair packs c2b169ae1ff377874b14d24a076f87a25ff34a72c6ca788e7cd08b65c83e63db
+restic repair snapshots --forget
+
+Damaged pack files can be caused by backend problems, hardware problems or bugs in restic. Please open an issue at https://github.com/restic/restic/issues/new/choose for further troubleshooting!
+Fatal: repository contains errors
+[0:00] 100.00%  2 / 2 packs
+
+[04:43:46] falló: restic_check (código 1)
+[04:43:46] B0: fail (/Users/patohe/Desktop/recovery-exp/runs/20261124T043801Z/b0.json)
+[04:43:46] == fase: confirm
+[ok] el índice muestra que el rango solo toca el blob del commit testigo
+[ok] el rango no toca blobs del dump ni de app.ini
+[ok] los bytes del rango quedaron en cero
+[ok] el pack cambió (sha256 antes/después distintos)
+[ok] la restauración usó la copia dañada
+[ok] el repositorio original sigue íntegro (restic check)
+results/faults/15-corrupt-pack/20261124T043800Z-r01: status=fail triggered=- max_gap_s=60.0 sleeps=0
+[04:43:51] resultado: fail  -> /Users/patohe/Desktop/recovery-exp/results/faults/15-corrupt-pack/20261124T043800Z-r01/result.json

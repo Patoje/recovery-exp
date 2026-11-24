@@ -41,7 +41,7 @@ Cada paso es un objetivo de `make` y un script en `scripts/`. Los pasos trabajan
 
 | Comando | Script | Qué hace | Salida |
 |---|---|---|---|
-| `make reset` | `reset.sh` | Borra contenedores, redes y volúmenes de los dos proyectos, incluido el repositorio de Restic, y `runs/CURRENT`. No borra resultados anteriores. | — |
+| `make reset` | `reset.sh` | Borra contenedores, redes y volúmenes de los dos proyectos, incluido el repositorio de Restic, y `runs/CURRENT`. No borra resultados de corridas. | — |
 | `make up` | `up.sh` | Crea una corrida nueva, construye el runner, levanta PostgreSQL + Gitea, crea el administrador e inicializa el repositorio de Restic. | `run.json` |
 | `make seed` | `seed.sh` → `seed/seed.py` | Carga el dataset determinista (semilla `SEED`). | `dataset.json`, `secrets/totp.json` |
 | `make witness-pre` | `witness.sh pre` | Un commit, un issue, un adjunto y un objeto LFS testigo. | `witnesses_pre.json` |
@@ -51,7 +51,6 @@ Cada paso es un objetivo de `make` y un script en `scripts/`. Los pasos trabajan
 | `make restore [SNAPSHOT=<id>]` | `restore.sh` | Restauración de referencia en el proyecto aislado. Por defecto, `latest`. | `restore.json` |
 | `make b0 [SNAPSHOT=<id>]` | `b0.sh` | Línea base B0 (incluye `restic check` y la restauración). | `b0.json` (+ `restore.json`) |
 | `make run` | `run.sh` | Todo lo anterior, en orden. | todo lo anterior |
-| `make clean-runs` | — | Borra los resultados de corridas anteriores. | — |
 
 Para usar la variante MinIO, anteponé `MINIO=1` a cada comando, por ejemplo `MINIO=1 make run`.
 
@@ -124,3 +123,53 @@ Cada corrida queda en `runs/<RUN_ID>/`: `run.json` (incluye `incident_minutes`, 
 ## Esfuerzo
 
 [docs/esfuerzo.md](docs/esfuerzo.md): tiempo dedicado a cada componente.
+
+## Etapa 2: escenarios de falla
+
+Cada escenario vive en `faults/NN-nombre/` y arranca siempre desde `make reset`:
+
+```bash
+make fault N=07
+```
+
+```bash
+make fault N=00-healthy
+```
+
+```bash
+make faults
+```
+
+```bash
+make summary
+```
+
+Pipeline de `faults/lib/runner.sh`: reset → `prepare` → up → seed → testigos previos → `before_backup` → backup → declare → `after_backup` → testigos posteriores → línea base (`BASELINE=b0` por defecto) → `confirm`.
+
+Archivos de cada escenario:
+
+- `scenario.env`: nombre, repeticiones (`REPEAT`), `SHIM`, `MINIO` y las variables `FAULT_*` que lee el shim.
+- `inject`: biblioteca bash con los ganchos `prepare`, `before_backup`, `backup` (si el escenario reemplaza el backup), `after_backup`, `witness_post` y `on_event` (eventos del shim).
+- `confirm`: verificación objetiva de que la falla ocurrió. Sale con 0 si ocurrió. Si no, la corrida queda `invalid` y no cuenta.
+- Archivos propios (overrides de Compose, Dockerfile, scripts en Python).
+
+### Shim de docker
+
+`faults/lib/shim/docker` se antepone al `PATH` durante todo el escenario, de modo que B0, B1 y el futuro contrato corren con el mismo shim. Reenvía cada llamada al docker real y aplica solo las desviaciones que declara el escenario:
+
+- `-f` extra para cada proyecto.
+- Otro `--env-file` y variables quitadas del entorno.
+- Argumentos extra para `restic backup` y `restic` de restauración.
+- Quitar `--exit-on-error` de `pg_restore`.
+- Omitir `stop gitea`.
+- Eventos `after_pg_dump`, `after_restic_restore` y `before_gitea_start`.
+
+Cada modificación se registra con el prefijo `[shim]` en el log de la corrida y en `evidence/shim.log`. Los scripts de referencia y B0 no se modifican. En `00-healthy` y `00-healthy-large` el shim está inactivo, y su `confirm` lo verifica.
+
+### Resultados
+
+`results/faults/<escenario>/<lote>-rNN/` guarda `run.log`, `result.json` (estado `pass`, `fail` o `invalid`, fases, resultado de la línea base y checks de `confirm`) y `evidence/`. Los artefactos de la corrida siguen en `runs/<RUN_ID>/`, que ahora incluye `declared.json`. Nada se borra. `make summary` genera `results/summary.md` con el último lote de cada escenario.
+
+`scripts/declare.sh` registra en `declared.json` los valores declarados al hacer el backup: imagen y versión de Gitea, sha256 de `SECRET_KEY`, codificación de la base y dependencias externas. No forma parte de los procedimientos de referencia.
+
+Los objetivos declarados están en `objectives.env`.

@@ -1,0 +1,35 @@
+. "$FAULT_DIR/../lib/common.sh"
+export FAULT_RESTORE_OVERRIDE="$FAULT_DIR/restore.override.yml"
+
+prepare() {
+  docker volume rm -f "$FAULT_CORRUPT_VOLUME" >/dev/null
+  docker volume rm -f recexp-tools >/dev/null
+}
+
+after_backup() {
+  local sha plan
+  # Copia del repositorio de Restic; el original no se toca.
+  docker volume create "$FAULT_CORRUPT_VOLUME" >/dev/null || return
+  docker run --rm -v recexp_restic-repo:/src:ro -v "$FAULT_CORRUPT_VOLUME:/dst" --entrypoint sh "$RESTIC_IMG" \
+    -c 'cp -a /src/. /dst/' || return
+  # Binario de restic (de la imagen fijada) para el localizador en Python.
+  docker run --rm -v recexp-tools:/out --entrypoint cp "$RESTIC_IMG" /usr/bin/restic /out/restic || return
+  sha="$(grep -o '"commit_sha": "[0-9a-f]*"' "$RUN_DIR/witnesses_pre.json" | head -1 | cut -d'"' -f4)"
+  plan="$FAULT_EVIDENCE/corruption_plan.json"
+  docker run --rm -e RESTIC_PASSWORD -v "$FAULT_CORRUPT_VOLUME:/repo:ro" -v recexp-tools:/opt/restic:ro \
+    -v "$ROOT:/work:ro" "$RUNNER_IMG" python3 /work/faults/15-corrupt-pack/locate.py "$sha" > "$plan" || return
+  grep -q '"only_witness_blob_in_range": true' "$plan" || { echo "el rango no toca solo el blob testigo" >&2; return 1; }
+  grep -q '"protected_untouched": true' "$plan" || { echo "el rango toca el dump o app.ini" >&2; return 1; }
+  local pack off len
+  pack="$(grep -o '"pack_path": "[^"]*"' "$plan" | cut -d'"' -f4)"
+  off="$(grep -o '"offset": [0-9]*' "$plan" | grep -o '[0-9]*$')"
+  len="$(grep -o '"length": [0-9]*' "$plan" | grep -o '[0-9]*$')"
+  docker run --rm -v "$FAULT_CORRUPT_VOLUME:/repo" --entrypoint sh "$RESTIC_IMG" -c "
+    set -e
+    sha256sum /repo/$pack > /dev/stderr
+    chmod u+w /repo/$pack
+    dd if=/dev/zero of=/repo/$pack bs=1 seek=$off count=$len conv=notrunc 2>/dev/null
+    sha256sum /repo/$pack > /dev/stderr
+    echo nonzero_bytes_in_range=\$(dd if=/repo/$pack bs=1 skip=$off count=$len 2>/dev/null | tr -d '\000' | wc -c)
+  " > "$FAULT_EVIDENCE/corruption_result.txt" 2> "$FAULT_EVIDENCE/pack_sha256_before_after.txt"
+}

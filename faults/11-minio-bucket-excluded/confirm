@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+ini="$(orig_restic dump latest /data/gitea/conf/app.ini)"
+check "app.ini del snapshot: [attachment] STORAGE_TYPE = minio" test "$(printf '%s' "$ini" | ini_get attachment STORAGE_TYPE)" = minio
+check "app.ini del snapshot: [lfs] STORAGE_TYPE = minio" test "$(printf '%s' "$ini" | ini_get lfs STORAGE_TYPE)" = minio
+n="$(snap_ls | grep -c -i -E 'minio|/bitnami/')"
+check "el snapshot no contiene datos del bucket ($n rutas)" test "$n" -eq 0
+att="$(json_field "$RUN_DIR/witnesses_pre.json" attachment_uuid)"
+m="$(snap_ls | grep -c "$att")"
+check "el adjunto testigo no está en el snapshot ($m)" test -n "$att" -a "$m" -eq 0
+check "minio no resuelve desde la red de restauración" fails "${REST[@]}" --profile tools run --rm --no-deps -T runner getent hosts minio
+confirm_done

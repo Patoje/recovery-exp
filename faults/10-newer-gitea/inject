@@ -1,0 +1,8 @@
+. "$FAULT_DIR/../lib/common.sh"
+export FAULT_ORIG_OVERRIDE="$FAULT_DIR/original.override.yml"
+on_event() {
+  # Copia de la base restaurada antes del primer arranque de Gitea.
+  [ "$1" = before_gitea_start ] || return 0
+  "${REST[@]}" exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc "$POSTGRES_DB"' > "$FAULT_EVIDENCE/db_before_first_start.dump" || return
+  rest_sql 'select version from version' > "$FAULT_EVIDENCE/version_before_first_start.txt"
+}

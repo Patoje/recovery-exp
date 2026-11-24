@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+n="$(snap_ls /data/git/lfs | grep -c '^/data/git/lfs')"
+check "el snapshot no contiene /data/git/lfs ($n entradas)" test "$n" -eq 0
+ctl="$(snap_ls /data/git/repositories | grep -c '^/data/git/repositories/alice')"
+check "el snapshot sí contiene /data/git/repositories (control del listado: $ctl)" test "$ctl" -gt 0
+rows="$(orig_sql 'select count(*) from lfs_meta_object')"
+check "la base de la corrida tiene filas en lfs_meta_object ($rows)" test "${rows:-0}" -gt 0
+observe "objetos LFS en disco restaurado" "$(vol_sh recexp-restore_gitea-data 'find /data/git/lfs -type f 2>/dev/null | wc -l')"
+confirm_done

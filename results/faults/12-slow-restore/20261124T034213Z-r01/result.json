@@ -1,0 +1,126 @@
+{
+  "scenario": "12-slow-restore",
+  "batch": "20261124T034213Z",
+  "repetition": 1,
+  "run_id": "20261124T034214Z",
+  "baseline": "b0",
+  "status": "pass",
+  "reason": "",
+  "started_at": "2026-11-24T03:42:13.665Z",
+  "finished_at": "2026-11-24T03:56:53.227Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 6
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:42:13.673Z",
+      "duration_ms": 992
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:42:14.677Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:42:14.692Z",
+      "duration_ms": 13146
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:42:27.853Z",
+      "duration_ms": 9880
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:42:37.751Z",
+      "duration_ms": 1416
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:42:39.181Z",
+      "duration_ms": 9931
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:42:49.125Z",
+      "duration_ms": 10890
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:43:00.034Z",
+      "duration_ms": 1029
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:43:01.076Z",
+      "duration_ms": 5
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:43:01.095Z",
+      "duration_ms": 301142
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:48:02.250Z",
+      "duration_ms": 530101
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:56:52.371Z",
+      "duration_ms": 586
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 271.7,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] dataset grande de 536870912 bytes registrado",
+      "[ok] el shim agregó --limit-download 2048 a restic restore",
+      "[ok] restic restore tardó al menos 230 s (258306 ms)",
+      "[obs] tasa efectiva de restic restore (MiB/s, sobre 512 MiB): 1.98"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-24T06:27:12+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261124T034214Z/witnesses_post.json",
+      "max_gap_s": 60.0,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "pass",
+      "reason": ""
+    }
+  }
+}

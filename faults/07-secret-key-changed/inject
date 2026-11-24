@@ -1,0 +1,2 @@
+. "$FAULT_DIR/../lib/common.sh"
+export FAULT_RESTORE_OVERRIDE="$FAULT_DIR/restore.override.yml"

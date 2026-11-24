@@ -1,0 +1,91 @@
+{
+  "scenario": "13-readonly-repo-cron",
+  "batch": "20261124T035656Z",
+  "repetition": 1,
+  "run_id": "20261124T035657Z",
+  "baseline": "b0",
+  "status": "invalid",
+  "reason": "harness: falló la fase backup",
+  "started_at": "2026-11-24T03:56:56.091Z",
+  "finished_at": "2026-11-24T04:32:02.758Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 16
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:56:56.100Z",
+      "duration_ms": 1099
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:56:57.213Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:56:57.229Z",
+      "duration_ms": 13968
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:57:11.210Z",
+      "duration_ms": 9320
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:57:20.543Z",
+      "duration_ms": 1458
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:57:22.013Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "backup",
+      "exit_code": 1,
+      "started_at": "2026-11-24T03:57:22.028Z",
+      "duration_ms": 2080712
+    }
+  ],
+  "baseline_result": {
+    "exit_code": -1,
+    "result": "not-run",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": null,
+  "confirm": {
+    "status": "invalid",
+    "exit_code": -1,
+    "checks": []
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-24T06:27:15+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261124T035657Z/witnesses_post.json",
+      "max_gap_s": 60.0,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "invalid",
+      "reason": "harness: falló la fase backup"
+    }
+  }
+}

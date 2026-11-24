@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Shim inactivo y dataset de tamaño fijo registrado.
+. "$FAULT_DIR/../lib/common.sh"
+check "docker resuelve al binario real" test "$(type -P docker)" = "$FAULT_REAL_DOCKER"
+check "no hay registro de modificaciones del shim" test ! -e "$FAULT_SHIM_LOG"
+check "el log de la corrida no tiene líneas [shim]" sh -c '! grep -q "^\[shim\]" "$FAULT_RUN_LOG"'
+check "dataset grande de 536870912 bytes registrado" grep -q '"total_bytes": 536870912' "$FAULT_EVIDENCE/large_dataset.json"
+observe "duración de restic restore (ms)" "$(grep -o '"name":"restic_restore","status":"[a-z]*","started_at":"[^"]*","finished_at":"[^"]*","duration_ms":[0-9]*' "$RUN_DIR/restore.json" | grep -o '[0-9]*$')"
+confirm_done

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+declared="$(json_field "$RUN_DIR/declared.json" gitea_image)"
+running="$(docker inspect --format '{{.Config.Image}}' "$("${REST[@]}" ps -aq gitea)")"
+check "el backup se hizo con 1.27.3 ($declared)" test "$declared" = "$FAULT_BACKUP_IMAGE"
+check "la restauración usa otra imagen ($running)" test -n "$running" -a "$running" != "$declared"
+observe "versión declarada" "$(json_field "$RUN_DIR/declared.json" gitea_version)"
+check "se guardó la base antes del primer arranque" test -s "$FAULT_EVIDENCE/db_before_first_start.dump"
+before="$(cat "$FAULT_EVIDENCE/version_before_first_start.txt" 2>/dev/null)"
+after="$(rest_sql 'select version from version')"
+check "las migraciones cambiaron la versión de la base ($before -> $after)" test -n "$before" -a -n "$after" -a "$before" != "$after"
+confirm_done

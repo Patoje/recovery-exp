@@ -1,0 +1,3 @@
+2026-11-24T05:49:54Z ciclo 1: backup.sh salió con 0
+2026-11-24T06:09:18Z ciclo 2: backup.sh salió con 1; cron lo ignora
+2026-11-24T06:23:40Z ciclo 3: backup.sh salió con 1; cron lo ignora

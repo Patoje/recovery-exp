@@ -1,0 +1,34 @@
+. "$FAULT_DIR/../lib/common.sh"
+export FAULT_RESTORE_OVERRIDE="$FAULT_DIR/restore.override.yml"
+
+# Comando en el espacio de montaje de la VM de Docker (contenedor privilegiado + nsenter).
+vm_sh() { docker run --rm --privileged --pid=host "$RUNNER_IMG" nsenter -t 1 -m -- sh -c "$1"; }
+
+prepare() {
+  # Soporte de casefold en el kernel de la VM; si no hay, el escenario no puede correr.
+  vm_sh 'uname -r; cat /sys/fs/ext4/features/casefold' > "$FAULT_EVIDENCE/kernel_casefold.txt" 2>&1 \
+    || { echo "el kernel de la VM no soporta ext4 casefold" >&2; return 1; }
+  grep -q supported "$FAULT_EVIDENCE/kernel_casefold.txt" || return 1
+}
+
+before_backup() {
+  "${ORIG[@]}" --profile tools run --rm --no-deps -T runner python3 faults/16-casefold-refs/case_branches.py \
+    > "$FAULT_EVIDENCE/case_branches.json"
+}
+
+after_backup() {
+  # Sistema de archivos nuevo para cada corrida del escenario.
+  vm_sh "
+    set -e
+    mountpoint -q $FAULT_CASEFOLD_MNT && umount $FAULT_CASEFOLD_MNT
+    rm -f /var/lib/recexp-casefold.img
+    truncate -s 4G /var/lib/recexp-casefold.img
+    mkfs.ext4 -q -F -O casefold -E encoding=utf8 /var/lib/recexp-casefold.img
+    mkdir -p $FAULT_CASEFOLD_MNT
+    mount -o loop /var/lib/recexp-casefold.img $FAULT_CASEFOLD_MNT
+    mkdir $FAULT_CASEFOLD_MNT/data
+    chattr +F $FAULT_CASEFOLD_MNT/data
+    lsattr -d $FAULT_CASEFOLD_MNT/data
+    dumpe2fs -h /var/lib/recexp-casefold.img 2>/dev/null | grep -i -E 'features|encoding'
+  " > "$FAULT_EVIDENCE/casefold_fs.txt"
+}

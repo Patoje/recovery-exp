@@ -1,0 +1,105 @@
+[05:55:24] paso: stop_gitea
+[shim] 2026-11-24T05:55:24Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-24T05:55:24Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env stop gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[05:55:24] paso: pg_dump
+[shim] 2026-11-24T05:55:24Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-24T05:55:24Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -ec rm -f /dump/gitea.dump; pg_dump -U "$POSTGRES_USER" -Fc -f /dump/gitea.dump "$POSTGRES_DB"; ls -l /dump/gitea.dump
+-rw-r--r--    1 root     root        382719 Nov 24 05:55 /dump/gitea.dump
+[05:55:24] paso: restic_backup
+[shim] 2026-11-24T05:55:24Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-24T05:55:24Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic backup --json --host gitea-original --tag run=cycle-2 --exclude /data/gitea/log --exclude /data/gitea/indexers /dump /data
+ Container recexp-restic-run-fce9b1a340e4 Creating 
+ Container recexp-restic-run-fce9b1a340e4 Created 
+Save(<lock/b63b5088c2>) returned error, retrying after 907.042748ms: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-1667672052: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 1.846769316s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-3568874700: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 4.38665836s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-3205753073: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 4.397281505s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-2412550439: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 12.812197344s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-2421319723: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 22.387038157s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-1209473798: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 32.323743772s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-1989715004: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 51.769873055s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-503311684: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 53.10461702s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-499033086: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 1m22.687078023s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-4087692666: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 1m24.438873696s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-687365703: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 1m4.836741828s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-1215036677: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 42.796682943s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-927304304: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 55.352459786s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-4286111130: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 31.708260486s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-3684303214: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 32.462147858s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-302188930: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 30.192500067s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-2931221711: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 37.425995908s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-2771406660: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 1m19.571737752s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-1892417284: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 49.943807122s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-1948471271: read-only file system
+Save(<lock/b63b5088c2>) returned error, retrying after 51.338805913s: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-2358440249: read-only file system
+Save(<lock/b63b5088c2>) failed: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-3398733200: read-only file system
+{"message_type":"exit_error","code":1,"message":"unable to create lock in backend: open /repo/locks/b63b5088c20b1e16942062be871b826598e72e26dbc358000df2cdbd23a080bf-tmp-3398733200: read-only file system"}
+
+[06:09:12] falló: restic_backup (código 1)
+[06:09:12] el backup falló con Gitea detenido: volviendo a arrancarlo
+[06:09:12] paso: start_gitea_after_failure
+[shim] 2026-11-24T06:09:12Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-24T06:09:12Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[06:09:18] backup.json: failed
+[06:09:18] paso: stop_gitea
+[shim] 2026-11-24T06:09:18Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-24T06:09:18Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env stop gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[06:09:19] paso: pg_dump
+[shim] 2026-11-24T06:09:19Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-24T06:09:19Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -ec rm -f /dump/gitea.dump; pg_dump -U "$POSTGRES_USER" -Fc -f /dump/gitea.dump "$POSTGRES_DB"; ls -l /dump/gitea.dump
+-rw-r--r--    1 root     root        382719 Nov 24 06:09 /dump/gitea.dump
+[06:09:19] paso: restic_backup
+[shim] 2026-11-24T06:09:19Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-24T06:09:19Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic backup --json --host gitea-original --tag run=cycle-3 --exclude /data/gitea/log --exclude /data/gitea/indexers /dump /data
+ Container recexp-restic-run-cfbc1471a4eb Creating 
+ Container recexp-restic-run-cfbc1471a4eb Created 
+Save(<lock/b732414560>) returned error, retrying after 583.489588ms: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-4118342960: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 1.754933613s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-1815043577: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 4.595730529s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-3067215617: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 7.53498021s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-842522750: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 19.103435013s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-3030585512: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 19.487331721s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-942263953: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 30.82519413s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-1590047239: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 1m1.859682744s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-3317571811: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 1m20.685895514s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-1438347106: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 37.207742532s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-571893964: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 1m12.076060631s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-2316630933: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 1m14.621652295s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-2285121236: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 1m7.262287437s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-381948758: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 1m25.196233443s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-2232167210: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 44.034530172s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-1259363357: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 1m20.015022608s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-1069379892: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 46.543593249s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-1352181574: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 38.461457173s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-3451270000: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 38.064864103s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-3602083069: read-only file system
+Save(<lock/b732414560>) returned error, retrying after 44.082169427s: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-3240578115: read-only file system
+Save(<lock/b732414560>) failed: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-2839683674: read-only file system
+{"message_type":"exit_error","code":1,"message":"unable to create lock in backend: open /repo/locks/b7324145600513dfdfa2bc6dc9d826b1648790c7502a1da3ada9b69ce11ffd79-tmp-2839683674: read-only file system"}
+
+[06:23:34] falló: restic_backup (código 1)
+[06:23:34] el backup falló con Gitea detenido: volviendo a arrancarlo
+[06:23:34] paso: start_gitea_after_failure
+[shim] 2026-11-24T06:23:34Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-24T06:23:34Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[06:23:40] backup.json: failed

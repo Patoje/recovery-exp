@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+plan="$FAULT_EVIDENCE/corruption_plan.json"
+check "el índice muestra que el rango solo toca el blob del commit testigo" grep -q '"only_witness_blob_in_range": true' "$plan"
+check "el rango no toca blobs del dump ni de app.ini" grep -q '"protected_untouched": true' "$plan"
+check "los bytes del rango quedaron en cero" grep -qx 'nonzero_bytes_in_range=0' "$FAULT_EVIDENCE/corruption_result.txt"
+check "el pack cambió (sha256 antes/después distintos)" test "$(cut -d' ' -f1 "$FAULT_EVIDENCE/pack_sha256_before_after.txt" | sort -u | wc -l | tr -d ' ')" -eq 2
+check "la restauración usó la copia dañada" grep -q "restore: + -f $FAULT_DIR/restore.override.yml" "$FAULT_SHIM_LOG"
+check "el repositorio original sigue íntegro (restic check)" orig_restic check
+confirm_done

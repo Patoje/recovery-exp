@@ -1,0 +1,127 @@
+{
+  "scenario": "06-repo-after-dump",
+  "batch": "20261124T030626Z",
+  "repetition": 1,
+  "run_id": "20261124T030627Z",
+  "baseline": "b0",
+  "status": "pass",
+  "reason": "",
+  "started_at": "2026-11-24T03:06:26.389Z",
+  "finished_at": "2026-11-24T03:12:28.118Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 1
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:06:26.399Z",
+      "duration_ms": 1009
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:06:27.421Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:06:27.438Z",
+      "duration_ms": 13844
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:06:41.297Z",
+      "duration_ms": 9766
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:06:51.078Z",
+      "duration_ms": 1514
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:06:52.607Z",
+      "duration_ms": 5
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:06:52.626Z",
+      "duration_ms": 16072
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:07:08.711Z",
+      "duration_ms": 881
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:07:09.608Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:07:09.631Z",
+      "duration_ms": 301093
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:12:10.739Z",
+      "duration_ms": 15263
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-24T03:12:26.023Z",
+      "duration_ms": 1751
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 14.4,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] se creó alice/late con un commit después de pg_dump",
+      "[ok] el snapshot contiene alice/late.git en disco (1)",
+      "[ok] el dump se pudo leer (fila de alice/notes presente: 1)",
+      "[ok] el dump no tiene la fila de alice/late en repository (0)",
+      "[obs] filas 'late' en la base restaurada: 0"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-24T06:26:51+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261124T030627Z/witnesses_post.json",
+      "max_gap_s": 60.0,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "pass",
+      "reason": ""
+    }
+  }
+}

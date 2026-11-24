@@ -1,0 +1,131 @@
+{
+  "scenario": "08-binary-path-changed",
+  "batch": "20261124T053713Z",
+  "repetition": 1,
+  "run_id": "20261124T053717Z",
+  "baseline": "b0",
+  "status": "invalid",
+  "reason": "confirm no se cumplió",
+  "started_at": "2026-11-24T05:37:13.679Z",
+  "finished_at": "2026-11-24T05:43:09.362Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 39
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:37:13.707Z",
+      "duration_ms": 1875
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:37:15.596Z",
+      "duration_ms": 1688
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:37:17.298Z",
+      "duration_ms": 12914
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:37:30.225Z",
+      "duration_ms": 9718
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:37:39.965Z",
+      "duration_ms": 1704
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:37:41.688Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:37:41.708Z",
+      "duration_ms": 9510
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:37:51.230Z",
+      "duration_ms": 870
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:37:52.112Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:37:52.128Z",
+      "duration_ms": 301213
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-24T05:42:53.353Z",
+      "duration_ms": 15216
+    },
+    {
+      "name": "confirm",
+      "exit_code": 1,
+      "started_at": "2026-11-24T05:43:08.591Z",
+      "duration_ms": 498
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 14.3,
+  "confirm": {
+    "status": "invalid",
+    "exit_code": 1,
+    "checks": [
+      "[ok] se inspeccionaron los hooks antes del primer arranque",
+      "[ok] antes del primer arranque los hooks apuntaban a /usr/local/bin/gitea",
+      "[obs] hooks después de la línea base:      27 /opt/gitea/bin/gitea hook ",
+      "[fail] los hooks siguen apuntando a /usr/local/bin/gitea (sin regenerar)",
+      "[ok] /usr/local/bin/gitea no existe en el contenedor restaurado",
+      "[fail] el Gitea en marcha es /opt/gitea/bin/gitea (/bin/busybox)",
+      "[shim] 2026-11-24T05:43:08Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/08-binary-path-changed/restore.override.yml",
+      "[shim] 2026-11-24T05:43:08Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/08-binary-path-changed/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env ps -aq gitea",
+      "[obs] log de Gitea sobre hooks: 2026/11/24 05:43:01 routers/init.go:97:syncAppConfForGit() [I] re-sync repository hooks ... "
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-24T06:27:00+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261124T053717Z/witnesses_post.json",
+      "max_gap_s": 60.0,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "invalid",
+      "reason": "confirm no se cumplió"
+    }
+  }
+}

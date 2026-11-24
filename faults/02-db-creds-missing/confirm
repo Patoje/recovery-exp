@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+check "el env-file de restauración no tiene POSTGRES_*" sh -c '! grep -q "^POSTGRES_" "$FAULT_RESTORE_ENV_FILE"'
+cid="$(docker ps -aq --filter label=com.docker.compose.project=recexp-restore --filter label=com.docker.compose.service=postgres | head -1)"
+check "existe el contenedor postgres de restauración" test -n "$cid"
+pw="$(docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' "$cid" 2>/dev/null | grep '^POSTGRES_PASSWORD=' | cut -d= -f2-)"
+check "el postgres restaurado no recibió POSTGRES_PASSWORD" test -z "$pw"
+observe "últimas líneas del postgres restaurado" "$(docker logs --tail 3 "$cid" 2>&1 | tr '\n' ' ')"
+confirm_done

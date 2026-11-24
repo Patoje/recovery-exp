@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+check "se creó alice/late con un commit después de pg_dump" test -s "$FAULT_EVIDENCE/late_commit.txt"
+late="$(snap_ls /data/git/repositories/alice | grep -c '/alice/late.git$')"
+check "el snapshot contiene alice/late.git en disco ($late)" test "$late" -gt 0
+vol_sh recexp_pg-dump 'cat /data/gitea.dump' | docker run --rm -i --entrypoint sh postgres@sha256:f2f98726820d0342055351c6e9d36e705f5bfffb3dd53ff556325114b08afb6d \
+  -c 'cat > /tmp/d; pg_restore -a -t repository -f - /tmp/d' > "$FAULT_EVIDENCE/dump_repository_rows.txt"
+ctl="$(grep -c $'\tnotes\t' "$FAULT_EVIDENCE/dump_repository_rows.txt")"
+check "el dump se pudo leer (fila de alice/notes presente: $ctl)" test "$ctl" -gt 0
+dump_has="$(grep -c $'\tlate\t' "$FAULT_EVIDENCE/dump_repository_rows.txt")"
+check "el dump no tiene la fila de alice/late en repository ($dump_has)" test "$dump_has" -eq 0
+observe "filas 'late' en la base restaurada" "$(rest_sql "select count(*) from repository where lower_name='late'")"
+confirm_done

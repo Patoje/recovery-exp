@@ -1,0 +1,147 @@
+{
+  "scenario": "03-concurrent-push",
+  "batch": "20261123T235629Z",
+  "repetition": 4,
+  "run_id": "20261124T004448Z",
+  "baseline": "b0",
+  "status": "invalid",
+  "reason": "harness: suspensión del host",
+  "started_at": "2026-11-24T00:44:45.901Z",
+  "finished_at": "2026-11-24T01:12:17.075Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 1
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-24T00:44:45.923Z",
+      "duration_ms": 2019
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T00:44:47.958Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-24T00:44:47.978Z",
+      "duration_ms": 24406
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-24T00:45:12.414Z",
+      "duration_ms": 23615
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-24T00:45:36.062Z",
+      "duration_ms": 3797
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T00:45:39.881Z",
+      "duration_ms": 5159
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T00:45:45.052Z",
+      "duration_ms": 3519
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-24T00:45:48.615Z",
+      "duration_ms": 3503
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-24T00:45:52.158Z",
+      "duration_ms": 277
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-24T00:45:52.472Z",
+      "duration_ms": 1552885
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-24T01:11:45.369Z",
+      "duration_ms": 31002
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-24T01:12:16.394Z",
+      "duration_ms": 410
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 30.5,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] Gitea guarda ramas en la base (tabla branch con filas antes del backup: 22)",
+      "[ok] hubo pushes entre el inicio de pg_dump y el fin de restic (3)",
+      "[ok] Gitea siguió en marcha durante el backup (stop omitido por el shim)",
+      "[ok] se leyeron ramas de la base restaurada",
+      "[ok] se leyeron refs del disco restaurado",
+      "[obs] restic_backup inició: 2026-11-24T00:45:46.264Z",
+      "[ok] inconsistencia base/disco en el sistema restaurado (3 diferencias)"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-24T06:26:00+00:00",
+    "invalid": true,
+    "triggered_by": [
+      "pmset_sleep",
+      "witness_gap"
+    ],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": [
+        "2026-11-23 21:44:47 -0300 Sleep               \tEntering Sleep state due to 'Maintenance Sleep':TCPKeepAlive=active Using Batt (Charge:77%) 10 secs",
+        "2026-11-23 21:45:42 -0300 Sleep               \tEntering Sleep state due to 'Maintenance Sleep':TCPKeepAlive=active Using Batt (Charge:77%) 1 secs",
+        "2026-11-23 21:46:28 -0300 Sleep               \tEntering Sleep state due to 'Maintenance Sleep':TCPKeepAlive=active Using Batt (Charge:77%) 2 secs",
+        "2026-11-23 21:47:15 -0300 Sleep               \tEntering Sleep state due to 'Maintenance Sleep':TCPKeepAlive=active Using Batt (Charge:77%) 1060 secs",
+        "2026-11-23 22:04:57 -0300 Sleep               \tEntering Sleep state due to 'Sleep Service Back to Sleep':TCPKeepAlive=active Using Batt (Charge:77%) 375 secs",
+        "2026-11-23 22:11:57 -0300 Sleep               \tEntering Sleep state due to 'Maintenance Sleep':TCPKeepAlive=active Using Batt (Charge:77%) 18 secs"
+      ]
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261124T004448Z/witnesses_post.json",
+      "max_gap_s": 1490.4,
+      "gaps_over_limit": [
+        {
+          "from_minute": 1,
+          "to_minute": 2,
+          "from": "2026-11-24T00:46:53.973Z",
+          "to": "2026-11-24T01:11:44.379Z",
+          "gap_s": 1490.4
+        }
+      ]
+    },
+    "status_before_check": {
+      "status": "pass",
+      "reason": ""
+    }
+  }
+}
