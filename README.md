@@ -173,3 +173,23 @@ Cada modificación se registra con el prefijo `[shim]` en el log de la corrida y
 `scripts/declare.sh` registra en `declared.json` los valores declarados al hacer el backup: imagen y versión de Gitea, sha256 de `SECRET_KEY`, codificación de la base y dependencias externas. No forma parte de los procedimientos de referencia.
 
 Los objetivos declarados están en `objectives.env`.
+
+## Línea base B1
+
+`baselines/b1/b1.sh [SNAPSHOT] RUN_DIR` ejecuta B0 completa y además verificaciones convencionales. Es independiente de B0, del shim y de los escenarios: solo usa los artefactos de la corrida (`runs/<RUN_ID>/*.json`, `secrets/`), los valores declarados (`declared.json`, `objectives.env`) y el entorno (`.env`, `compose/restore.yml`). Con `BASELINE=b1`, el runner de escenarios la usa como línea base:
+
+```bash
+BASELINE=b1 make fault N=00-healthy
+```
+
+Verificaciones, en orden:
+
+1. Antes de B0, es decir, antes de cualquier migración: imagen de Gitea configurada para la restauración y su versión (`gitea --version`), comparadas con las declaradas.
+2. B0 completa (`b0.sh`), con su log en `runs/<id>/b1/b0.log`.
+3. Autoprueba de los patrones de error y búsqueda en el log de B0 con patrones exactos: `pg_restore: error:`, `pg_restore: warning: errors ignored on restore:`, `Fatal: `, `ignoring error for `, `error: ` y `error for tree ` (restic). Nunca usa la palabra "error" suelta, y `no errors were found` no cuenta. Un error en el log es fallo aunque el código de salida sea 0.
+4. Imagen y versión de Gitea en marcha, huella de `SECRET_KEY`, codificación de la base y dependencias externas declaradas.
+5. Conteo de filas por tabla, repositorios de la base frente a los del disco y refs (nombre → SHA) frente a `inventory.json`.
+6. Hash del adjunto testigo, contenido del objeto LFS testigo, existencia del issue testigo, login de la cuenta con TOTP y `git push` al repositorio testigo.
+7. RTO: desde `restore_started_at` hasta el fin de las pruebas funcionales. RPO: T menos la hora del testigo más reciente recuperado. Los dos se comparan con `objectives.env`.
+
+Salida: `runs/<id>/b1.json`, con el resultado de cada paso, y `runs/<id>/b1/raw/`, con los datos crudos leídos del sistema restaurado. Sale con 0 solo si todo pasa.

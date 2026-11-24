@@ -90,11 +90,14 @@ pipeline() {
 
   local b_rc=-1 b_result="not-run" b_failed="" b_report="" confirm_rc=-1 confirm_lines=""
   if [ "$harness_ok" = 1 ]; then
-    phase baseline "$ROOT/scripts/$BASELINE.sh" latest "$RUN_DIR"; b_rc=$?
+    local bscript="$ROOT/scripts/$BASELINE.sh"
+    [ "$BASELINE" = b1 ] && bscript="$ROOT/baselines/b1/b1.sh"
+    phase baseline "$bscript" latest "$RUN_DIR"; b_rc=$?
     b_report="$RUN_DIR/$BASELINE.json"
     if [ -f "$b_report" ]; then
       b_result="$(grep -o '"result": "[a-z]*"' "$b_report" | cut -d'"' -f4)"
-      b_failed="$(grep -o '"name":"[a-z_]*","status":"failed"' "$b_report" | head -1 | cut -d'"' -f4)"
+      b_failed="$(grep -o '"first_failed_step": "[a-z_0-9]*"' "$b_report" | head -1 | cut -d'"' -f4)"
+      [ -n "$b_failed" ] || b_failed="$(grep -o '"name":"[a-z_]*","status":"failed"' "$b_report" | head -1 | cut -d'"' -f4)"
     else
       b_result="no-report"
     fi

@@ -6,7 +6,7 @@ Generado por `make summary` a partir de `results/faults/*/*/result.json`. Para c
 
 | Falla | confirm | B0 | B1 | Suspensión (invalid / total) | t restauración→fin B0 (s) | Resultados |
 |---|---|---|---|---|---|---|
-| 00-healthy | valid | pass | — | 0 / 2 | 14.4 | `results/faults/00-healthy/20261124T054323Z-r01` |
+| 00-healthy | valid | pass | pass | 0 / 3 | 14.4 | `results/faults/00-healthy/20261124T054323Z-r01`<br>`results/faults/00-healthy/20261124T063110Z-r01` |
 | 00-healthy-large | valid | pass | — | 0 / 1 | 14.8 | `results/faults/00-healthy-large/20261123T233848Z-r01` |
 | 01-appini-excluded | valid | pass | — | 0 / 1 | 14.3 | `results/faults/01-appini-excluded/20261123T234452Z-r01` |
 | 02-db-creds-missing (control) | valid | fail en `restore` | — | 0 / 1 | 2.7 | `results/faults/02-db-creds-missing/20261123T235047Z-r01` |
