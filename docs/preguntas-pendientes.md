@@ -63,3 +63,14 @@ B1 no se modificó durante la tanda. La corrección iría en una versión nueva 
 
 - **A.** Corregirlo en B1 v2: si `disk_refs.err` no está vacío o Gitea no está en marcha, informar "no se pudo leer el disco restaurado" (falla igual), y revisar el mismo caso en `refs_vs_inventory`.
 - **B.** Dejarlo documentado en B1 v1 sin versión nueva.
+
+## 5. Contrato: qué verificaciones definen el fin de la recuperación para el RTO
+
+**Qué pasó.** Para el RTO, B1 toma el fin de sus pruebas funcionales: B0 completa (incluye la página principal, la versión, el login por API, la lista de repositorios y un clon) más adjuntos, LFS, issues, TOTP y push. El contrato usa la misma definición (desde `restore_started_at` hasta el fin de las verificaciones requeridas, todas en `pass`), con `requires: [components_up, version_running, witness_attachment, witness_lfs, witness_issue, totp_login, git_push]`. El login por API y el clon quedan cubiertos (los testigos usan la API autenticada; `git_push` clona antes de empujar), pero la página principal y la lista de repositorios no están en el contrato. En 00-healthy: RTO del contrato 13,3 s; B1 en las 11 sanas v2, 15,4–16,8 s (media 16,3). Parte de la diferencia es que B1 cuenta también la duración de las pruebas de B0.
+
+No bloquea nada: el motor y el contrato están listos para congelar tal como están.
+
+**Opciones** (antes de congelar, porque después cualquier cambio es una versión nueva):
+
+- **A.** Congelar así.
+- **B.** Agregar al contrato dos `http_request` (página principal y lista de repositorios) y sumarlas a `requires`, sin cambiar el motor.
