@@ -11,7 +11,7 @@ from collections import defaultdict
 
 ROOT = "/work"
 CONTROLS = {"02-db-creds-missing", "15-corrupt-pack"}
-BASELINES = ["b0", "b1"]
+BASELINES = ["b0", "b1", "contract"]
 ENVS = ["v2", "v1"]  # current first
 
 # env -> scen -> baseline -> batch -> [r]
@@ -68,8 +68,8 @@ for env in ENVS:
     if not results.get(env):
         continue
     lines += ["", f"## Entorno {env}", "",
-              "| Falla | confirm | B0 | B1 | Suspensión (invalid / total) | t restauración→fin B0 (s) | Resultados |",
-              "|---|---|---|---|---|---|---|"]
+              "| Falla | confirm | B0 | B1 | Contrato | Suspensión (invalid / total) | t restauración→fin B0 (s) | Resultados |",
+              "|---|---|---|---|---|---|---|---|"]
     for scen in sorted(results[env]):
         row, dirs, rto, confirm_txt = {}, [], "—", "—"
         susp_total = susp_inv = 0
@@ -95,7 +95,7 @@ for env in ENVS:
         if "b0" in results[env][scen]:
             b0_by_env[env][scen] = (confirm_txt, row["b0"], rto)
         name = scen + (" (control)" if scen in CONTROLS else "")
-        lines.append(f"| {name} | {confirm_txt} | {row.get('b0', '—')} | {row.get('b1', '—')} | "
+        lines.append(f"| {name} | {confirm_txt} | {row.get('b0', '—')} | {row.get('b1', '—')} | {row.get('contract', '—')} | "
                      f"{susp_inv} / {susp_total} | {rto} | {'<br>'.join(dirs)} |")
 
 if b0_by_env.get("v1") and b0_by_env.get("v2"):

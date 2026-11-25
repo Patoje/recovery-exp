@@ -8,49 +8,49 @@ Entornos: **v1** (`b0-v1`, `SECRET_KEY` vacía en `app.ini`) y **v2** (`make up`
 
 ## Entorno v2
 
-| Falla | confirm | B0 | B1 | Suspensión (invalid / total) | t restauración→fin B0 (s) | Resultados |
-|---|---|---|---|---|---|---|
-| 00-healthy | valid 11/11 corridas | pass 11/11, fail 0/11 (válidas) | pass 11/11, fail 0/11 (válidas) | 0 / 22 | — | `results/faults/00-healthy/` (11 corridas v2)<br>`results/faults/00-healthy/` (11 corridas v2) |
-| 00-healthy-large | valid | pass | pass | 0 / 2 | 15.3 | `results/faults/00-healthy-large/20261124T154215Z-r01`<br>`results/faults/00-healthy-large/20261125T073833Z-r01` |
-| 01-appini-excluded | valid | pass | fail en `secret_key_fingerprint` | 0 / 3 | 14.5 | `results/faults/01-appini-excluded/20261125T073123Z-r01`<br>`results/faults/01-appini-excluded/20261125T074451Z-r01` |
-| 02-db-creds-missing (control) | valid | fail en `restore` | fail en `b0` | 0 / 2 | 2.6 | `results/faults/02-db-creds-missing/20261124T155431Z-r01`<br>`results/faults/02-db-creds-missing/20261125T075058Z-r01` |
-| 03-concurrent-push | valid 10/10 corridas | pass 10/10, fail 0/10 (válidas) | pass 0/10, fail 10/10 (válidas) | 0 / 20 | — | `results/faults/03-concurrent-push/` (10 corridas v2)<br>`results/faults/03-concurrent-push/` (10 corridas v2) |
-| 04-attachments-excluded | valid | pass | fail en `witness_attachment_hash` | 0 / 2 | 14.1 | `results/faults/04-attachments-excluded/20261124T170006Z-r01`<br>`results/faults/04-attachments-excluded/20261125T085713Z-r01` |
-| 05-lfs-excluded | valid | pass | fail en `witness_lfs_content` | 0 / 2 | 14.3 | `results/faults/05-lfs-excluded/20261124T170609Z-r01`<br>`results/faults/05-lfs-excluded/20261125T090319Z-r01` |
-| 06-repo-after-dump | valid | pass | fail en `repositories_db_vs_disk` | 0 / 2 | 14.2 | `results/faults/06-repo-after-dump/20261124T171213Z-r01`<br>`results/faults/06-repo-after-dump/20261125T090932Z-r01` |
-| 07-secret-key-changed | valid | pass | fail en `secret_key_fingerprint` | 0 / 2 | 14.4 | `results/faults/07-secret-key-changed/20261124T171821Z-r01`<br>`results/faults/07-secret-key-changed/20261125T091544Z-r01` |
-| 08-binary-path-changed | invalid (confirm no se cumplió) | pass | fail en `gitea_image_before_migrations` | 0 / 2 | 14.6 | `results/faults/08-binary-path-changed/20261124T172425Z-r01`<br>`results/faults/08-binary-path-changed/20261125T092148Z-r01` |
-| 09-chown-root | valid | pass | fail en `git_push_witness_repo` | 0 / 2 | 14.4 | `results/faults/09-chown-root/20261124T173027Z-r01`<br>`results/faults/09-chown-root/20261125T092800Z-r01` |
-| 10-newer-gitea | valid | pass | fail en `gitea_image_before_migrations` | 0 / 2 | 15.3 | `results/faults/10-newer-gitea/20261124T173629Z-r01`<br>`results/faults/10-newer-gitea/20261125T093405Z-r01` |
-| 11-minio-bucket-excluded | valid | fail en `restore` | fail en `b0` | 0 / 2 | 6.2 | `results/faults/11-minio-bucket-excluded/20261124T174232Z-r01`<br>`results/faults/11-minio-bucket-excluded/20261125T094017Z-r01` |
-| 12-slow-restore | valid | pass | fail en `rto` | 0 / 2 | 272.2 | `results/faults/12-slow-restore/20261124T174828Z-r01`<br>`results/faults/12-slow-restore/20261125T094616Z-r01` |
-| 13-readonly-repo-cron | valid | pass | fail en `rpo` | 0 / 2 | 14.4 | `results/faults/13-readonly-repo-cron/20261124T180318Z-r01`<br>`results/faults/13-readonly-repo-cron/20261125T100103Z-r01` |
-| 14-latin1-database | valid | fail en `restore` | fail en `b0` | 0 / 2 | 5.6 | `results/faults/14-latin1-database/20261124T183921Z-r01`<br>`results/faults/14-latin1-database/20261125T103716Z-r01` |
-| 15-corrupt-pack (control) | valid | fail en `restic_check` | fail en `b0` | 0 / 2 | — | `results/faults/15-corrupt-pack/20261124T184523Z-r01`<br>`results/faults/15-corrupt-pack/20261125T104324Z-r01` |
-| 16-casefold-refs | valid | pass | fail en `refs_vs_inventory` | 0 / 2 | 15.0 | `results/faults/16-casefold-refs/20261124T185120Z-r01`<br>`results/faults/16-casefold-refs/20261125T104923Z-r01` |
+| Falla | confirm | B0 | B1 | Contrato | Suspensión (invalid / total) | t restauración→fin B0 (s) | Resultados |
+|---|---|---|---|---|---|---|---|
+| 00-healthy | valid 11/11 corridas | pass 11/11, fail 0/11 (válidas) | pass 11/11, fail 0/11 (válidas) | pass | 0 / 25 | — | `results/faults/00-healthy/` (11 corridas v2)<br>`results/faults/00-healthy/` (11 corridas v2)<br>`results/faults/00-healthy/20261125T163844Z-r01` |
+| 00-healthy-large | valid | pass | pass | — | 0 / 2 | 15.3 | `results/faults/00-healthy-large/20261124T154215Z-r01`<br>`results/faults/00-healthy-large/20261125T073833Z-r01` |
+| 01-appini-excluded | valid | pass | fail en `secret_key_fingerprint` | — | 0 / 3 | 14.5 | `results/faults/01-appini-excluded/20261125T073123Z-r01`<br>`results/faults/01-appini-excluded/20261125T074451Z-r01` |
+| 02-db-creds-missing (control) | valid | fail en `restore` | fail en `b0` | — | 0 / 2 | 2.6 | `results/faults/02-db-creds-missing/20261124T155431Z-r01`<br>`results/faults/02-db-creds-missing/20261125T075058Z-r01` |
+| 03-concurrent-push | valid 10/10 corridas | pass 10/10, fail 0/10 (válidas) | pass 0/10, fail 10/10 (válidas) | — | 0 / 20 | — | `results/faults/03-concurrent-push/` (10 corridas v2)<br>`results/faults/03-concurrent-push/` (10 corridas v2) |
+| 04-attachments-excluded | valid | pass | fail en `witness_attachment_hash` | — | 0 / 2 | 14.1 | `results/faults/04-attachments-excluded/20261124T170006Z-r01`<br>`results/faults/04-attachments-excluded/20261125T085713Z-r01` |
+| 05-lfs-excluded | valid | pass | fail en `witness_lfs_content` | — | 0 / 2 | 14.3 | `results/faults/05-lfs-excluded/20261124T170609Z-r01`<br>`results/faults/05-lfs-excluded/20261125T090319Z-r01` |
+| 06-repo-after-dump | valid | pass | fail en `repositories_db_vs_disk` | — | 0 / 2 | 14.2 | `results/faults/06-repo-after-dump/20261124T171213Z-r01`<br>`results/faults/06-repo-after-dump/20261125T090932Z-r01` |
+| 07-secret-key-changed | valid | pass | fail en `secret_key_fingerprint` | — | 0 / 2 | 14.4 | `results/faults/07-secret-key-changed/20261124T171821Z-r01`<br>`results/faults/07-secret-key-changed/20261125T091544Z-r01` |
+| 08-binary-path-changed | invalid (confirm no se cumplió) | pass | fail en `gitea_image_before_migrations` | — | 0 / 2 | 14.6 | `results/faults/08-binary-path-changed/20261124T172425Z-r01`<br>`results/faults/08-binary-path-changed/20261125T092148Z-r01` |
+| 09-chown-root | valid | pass | fail en `git_push_witness_repo` | — | 0 / 2 | 14.4 | `results/faults/09-chown-root/20261124T173027Z-r01`<br>`results/faults/09-chown-root/20261125T092800Z-r01` |
+| 10-newer-gitea | valid | pass | fail en `gitea_image_before_migrations` | — | 0 / 2 | 15.3 | `results/faults/10-newer-gitea/20261124T173629Z-r01`<br>`results/faults/10-newer-gitea/20261125T093405Z-r01` |
+| 11-minio-bucket-excluded | valid | fail en `restore` | fail en `b0` | — | 0 / 2 | 6.2 | `results/faults/11-minio-bucket-excluded/20261124T174232Z-r01`<br>`results/faults/11-minio-bucket-excluded/20261125T094017Z-r01` |
+| 12-slow-restore | valid | pass | fail en `rto` | — | 0 / 2 | 272.2 | `results/faults/12-slow-restore/20261124T174828Z-r01`<br>`results/faults/12-slow-restore/20261125T094616Z-r01` |
+| 13-readonly-repo-cron | valid | pass | fail en `rpo` | — | 0 / 2 | 14.4 | `results/faults/13-readonly-repo-cron/20261124T180318Z-r01`<br>`results/faults/13-readonly-repo-cron/20261125T100103Z-r01` |
+| 14-latin1-database | valid | fail en `restore` | fail en `b0` | — | 0 / 2 | 5.6 | `results/faults/14-latin1-database/20261124T183921Z-r01`<br>`results/faults/14-latin1-database/20261125T103716Z-r01` |
+| 15-corrupt-pack (control) | valid | fail en `restic_check` | fail en `b0` | — | 0 / 2 | — | `results/faults/15-corrupt-pack/20261124T184523Z-r01`<br>`results/faults/15-corrupt-pack/20261125T104324Z-r01` |
+| 16-casefold-refs | valid | pass | fail en `refs_vs_inventory` | — | 0 / 2 | 15.0 | `results/faults/16-casefold-refs/20261124T185120Z-r01`<br>`results/faults/16-casefold-refs/20261125T104923Z-r01` |
 
 ## Entorno v1
 
-| Falla | confirm | B0 | B1 | Suspensión (invalid / total) | t restauración→fin B0 (s) | Resultados |
-|---|---|---|---|---|---|---|
-| 00-healthy | valid | pass | pass | 0 / 3 | 14.4 | `results/faults/00-healthy/20261124T054323Z-r01`<br>`results/faults/00-healthy/20261124T063110Z-r01` |
-| 00-healthy-large | valid | pass | — | 0 / 1 | 14.8 | `results/faults/00-healthy-large/20261123T233848Z-r01` |
-| 01-appini-excluded | valid | pass | — | 0 / 1 | 14.3 | `results/faults/01-appini-excluded/20261123T234452Z-r01` |
-| 02-db-creds-missing (control) | valid | fail en `restore` | — | 0 / 1 | 2.7 | `results/faults/02-db-creds-missing/20261123T235047Z-r01` |
-| 03-concurrent-push | valid 10/18 corridas | pass 10/10, fail 0/10 (válidas) | — | 8 / 18 | — | `results/faults/03-concurrent-push/` (18 corridas v1) |
-| 04-attachments-excluded | valid | pass | — | 0 / 1 | 13.9 | `results/faults/04-attachments-excluded/20261124T025430Z-r01` |
-| 05-lfs-excluded | valid | pass | — | 0 / 1 | 14.0 | `results/faults/05-lfs-excluded/20261124T030028Z-r01` |
-| 06-repo-after-dump | valid | pass | — | 0 / 1 | 14.4 | `results/faults/06-repo-after-dump/20261124T030626Z-r01` |
-| 07-secret-key-changed | valid | pass | — | 0 / 1 | 14.0 | `results/faults/07-secret-key-changed/20261124T031230Z-r01` |
-| 08-binary-path-changed | invalid (confirm no se cumplió) | pass | — | 0 / 2 | 14.3 | `results/faults/08-binary-path-changed/20261124T053713Z-r01` |
-| 09-chown-root | valid | pass | — | 0 / 1 | 13.9 | `results/faults/09-chown-root/20261124T032424Z-r01` |
-| 10-newer-gitea | valid | pass | — | 0 / 1 | 14.3 | `results/faults/10-newer-gitea/20261124T033020Z-r01` |
-| 11-minio-bucket-excluded | valid | fail en `restore` | — | 0 / 1 | 6.8 | `results/faults/11-minio-bucket-excluded/20261124T033622Z-r01` |
-| 12-slow-restore | valid | pass | — | 0 / 1 | 271.7 | `results/faults/12-slow-restore/20261124T034213Z-r01` |
-| 13-readonly-repo-cron | valid | pass | — | 0 / 2 | 13.9 | `results/faults/13-readonly-repo-cron/20261124T054919Z-r01` |
-| 14-latin1-database | valid | fail en `restore` | — | 0 / 1 | 5.7 | `results/faults/14-latin1-database/20261124T043205Z-r01` |
-| 15-corrupt-pack (control) | valid | fail en `restic_check` | — | 0 / 1 | — | `results/faults/15-corrupt-pack/20261124T043800Z-r01` |
-| 16-casefold-refs | valid | pass | — | 0 / 1 | 14.4 | `results/faults/16-casefold-refs/20261124T044351Z-r01` |
+| Falla | confirm | B0 | B1 | Contrato | Suspensión (invalid / total) | t restauración→fin B0 (s) | Resultados |
+|---|---|---|---|---|---|---|---|
+| 00-healthy | valid | pass | pass | — | 0 / 3 | 14.4 | `results/faults/00-healthy/20261124T054323Z-r01`<br>`results/faults/00-healthy/20261124T063110Z-r01` |
+| 00-healthy-large | valid | pass | — | — | 0 / 1 | 14.8 | `results/faults/00-healthy-large/20261123T233848Z-r01` |
+| 01-appini-excluded | valid | pass | — | — | 0 / 1 | 14.3 | `results/faults/01-appini-excluded/20261123T234452Z-r01` |
+| 02-db-creds-missing (control) | valid | fail en `restore` | — | — | 0 / 1 | 2.7 | `results/faults/02-db-creds-missing/20261123T235047Z-r01` |
+| 03-concurrent-push | valid 10/18 corridas | pass 10/10, fail 0/10 (válidas) | — | — | 8 / 18 | — | `results/faults/03-concurrent-push/` (18 corridas v1) |
+| 04-attachments-excluded | valid | pass | — | — | 0 / 1 | 13.9 | `results/faults/04-attachments-excluded/20261124T025430Z-r01` |
+| 05-lfs-excluded | valid | pass | — | — | 0 / 1 | 14.0 | `results/faults/05-lfs-excluded/20261124T030028Z-r01` |
+| 06-repo-after-dump | valid | pass | — | — | 0 / 1 | 14.4 | `results/faults/06-repo-after-dump/20261124T030626Z-r01` |
+| 07-secret-key-changed | valid | pass | — | — | 0 / 1 | 14.0 | `results/faults/07-secret-key-changed/20261124T031230Z-r01` |
+| 08-binary-path-changed | invalid (confirm no se cumplió) | pass | — | — | 0 / 2 | 14.3 | `results/faults/08-binary-path-changed/20261124T053713Z-r01` |
+| 09-chown-root | valid | pass | — | — | 0 / 1 | 13.9 | `results/faults/09-chown-root/20261124T032424Z-r01` |
+| 10-newer-gitea | valid | pass | — | — | 0 / 1 | 14.3 | `results/faults/10-newer-gitea/20261124T033020Z-r01` |
+| 11-minio-bucket-excluded | valid | fail en `restore` | — | — | 0 / 1 | 6.8 | `results/faults/11-minio-bucket-excluded/20261124T033622Z-r01` |
+| 12-slow-restore | valid | pass | — | — | 0 / 1 | 271.7 | `results/faults/12-slow-restore/20261124T034213Z-r01` |
+| 13-readonly-repo-cron | valid | pass | — | — | 0 / 2 | 13.9 | `results/faults/13-readonly-repo-cron/20261124T054919Z-r01` |
+| 14-latin1-database | valid | fail en `restore` | — | — | 0 / 1 | 5.7 | `results/faults/14-latin1-database/20261124T043205Z-r01` |
+| 15-corrupt-pack (control) | valid | fail en `restic_check` | — | — | 0 / 1 | — | `results/faults/15-corrupt-pack/20261124T043800Z-r01` |
+| 16-casefold-refs | valid | pass | — | — | 0 / 1 | 14.4 | `results/faults/16-casefold-refs/20261124T044351Z-r01` |
 
 ## Comparación de B0: entorno v1 contra v2
 

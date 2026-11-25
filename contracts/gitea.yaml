@@ -130,6 +130,18 @@ checks:
     with:
       request: {url: "http://gitea:3000/api/v1/version"} # S: endpoint de versión, sin autenticación
       expect: {status: 200, json: {version: "${run:declared.json#gitea_version}"}} # S: campo "version"
+  - id: home_page
+    verifier: http_request
+    with:
+      request: {url: "http://gitea:3000/"} # S: la página principal responde sin autenticación
+      expect: {status: 200}
+  - id: repo_list
+    verifier: http_request
+    with:
+      request:
+        url: "http://gitea:3000/api/v1/repos/search?limit=50" # S: API de búsqueda de repositorios
+        auth: {user: "${env:B0_USER}", password: "${env:B0_PASSWORD}"} # S: la API acepta autenticación básica
+      expect: {status: 200, json: {ok: "true"}} # S: la búsqueda responde "ok": true
   - id: external_dependencies
     verifier: dependencies_reachable
     with:
@@ -175,4 +187,4 @@ checks:
       restore_started: "${run:restore.json#restore_started_at}"
       restore_status: "${run:restore.json#status}"
       restore_status_ok: ok
-      requires: [components_up, version_running, witness_attachment, witness_lfs, witness_issue, totp_login, git_push]
+      requires: [components_up, home_page, version_running, repo_list, witness_attachment, witness_lfs, witness_issue, totp_login, git_push]

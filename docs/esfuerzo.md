@@ -46,10 +46,55 @@ Criterio de conteo, igual para todo (`docs/conteo/contar.py`): una línea cuenta
 - Iteraciones:
   1. Primera versión: válida para el motor en el primer intento y `pass` en la primera corrida (`results/faults/00-healthy/20261125T160253Z-r01`, conservada).
   2. Revisión de marcas: `# S:` en todas las líneas con un supuesto, incluidas las repetidas, y la consulta SQL en una sola línea para poder marcarla. Nueva corrida, también `pass` (`results/faults/00-healthy/20261125T161115Z-r01`).
-- Líneas sin comentarios: 161. Supuestos sobre Gitea (`# S:`): 32.
+- Líneas sin comentarios: 161. Supuestos sobre Gitea (`# S:`): 31. (Primero se informaron 32: `contar.py` contaba también la línea de comentario del encabezado que explica la marca. Corregido: solo cuentan las líneas de código con `# S:`; B1 no cambia, porque sus marcas están solo en líneas de código.)
 
 ### B1, medido con el mismo criterio
 
 - Tiempo: 11 min (03:27–03:38 -03 del 2026-11-24, ver arriba). Iteraciones: 1 corrección antes de la primera prueba y 1 prueba.
 - Líneas sin comentarios: 384 (`b1.sh` 59, `checks.py` 325). Supuestos sobre Gitea (`# S:`): 20 (`b1.sh` 6, `checks.py` 14).
 - Nota: contar por línea favorece al código compacto. El contrato repite supuestos en líneas separadas (por ejemplo, la autenticación básica en cada tipo de testigo) que B1 escribe una sola vez dentro de una función.
+
+### Segundo conteo: supuestos distintos (criterio escrito antes de contar)
+
+Criterio, fijado antes de hacer el conteo:
+
+1. Un supuesto distinto es un hecho sobre Gitea (su comportamiento, su interfaz o la disposición de sus datos) que, si fuera falso en otra versión o instalación, obligaría a cambiar el contrato o B1.
+2. El mismo hecho repetido en varias líneas cuenta una vez.
+3. Una línea con varios hechos cuenta cada uno por separado.
+4. Granularidad de "un hecho":
+   - cada endpoint (ruta) de la API o de la web;
+   - cada nombre de campo de una respuesta;
+   - cada encabezado;
+   - el método de autenticación de la API y el de Git por HTTP, por separado;
+   - la forma de la URL de Git;
+   - la ruta del archivo de configuración, su formato, la sección y el nombre de la clave, por separado;
+   - el esquema de la base;
+   - el modelo de datos que usa una consulta (tablas y columnas), uno por consulta;
+   - la raíz de los repositorios en disco, el diseño de directorios y la regla de nombres, por separado;
+   - el comando y el formato de salida de la versión, por separado;
+   - el orden de arranque.
+5. Solo se cuentan las líneas marcadas `# S:`, con la misma marca del primer conteo. En B1 se usa la copia de conteo `docs/conteo/b1/`.
+6. No se cuentan los hechos que B1 hereda de B0 al ejecutarlo, porque B0 no es parte de los scripts de B1. Tampoco se cuentan los hechos sobre otras herramientas (Restic, PostgreSQL, MinIO).
+7. La asignación de cada línea a sus hechos está en `docs/conteo/supuestos_distintos.py`, que falla si una línea `# S:` queda sin asignar.
+
+Resultado del segundo conteo (`python3 docs/conteo/supuestos_distintos.py`), con el contrato después de la pregunta 5:
+
+| | Líneas sin comentarios | Líneas `# S:` (medida principal) | Supuestos distintos |
+|---|---|---|---|
+| Contrato de Gitea | 173 | 35 | 29 |
+| B1 (`b1.sh` + `checks.py`) | 384 | 20 | 25 |
+
+Los 25 supuestos distintos de B1 también están en el contrato. Solo en el contrato hay 4:
+- el orden de arranque;
+- la página principal;
+- el endpoint de búsqueda de repositorios;
+- el campo `ok` de esa búsqueda.
+
+B1 no comprueba el orden de arranque. Los otros tres los hereda de B0, que no se cuenta.
+
+### Pregunta 5 (opción B): dos verificaciones más en el contrato
+
+- `home_page` (GET `/`, 200) y `repo_list` (GET `/api/v1/repos/search?limit=50` autenticado, 200 y `ok: true`), sumadas a `requires` del RTO. El motor no cambió.
+- Limitación: B0 exige además que la búsqueda devuelva al menos un repositorio. El vocabulario del motor no tiene una aserción de tamaño de lista, así que el contrato comprueba el estado y el campo `ok`, no la cantidad.
+- 00-healthy: `pass`, 23 de 23 (`results/faults/00-healthy/20261125T163844Z-r01`). RTO 13,5 s (antes 13,3 s); fase pre 1,1 s; fase post 2,2 s.
+- Esfuerzo: 1 iteración, unos 5 min. Contrato: 173 líneas sin comentarios, 35 líneas `# S:`.

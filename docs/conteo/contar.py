@@ -2,7 +2,8 @@
 
 Una línea cuenta como código si no está vacía y, sin espacios iniciales, no empieza con
 "#" (YAML, bash, Python) ni con "//" (Go). Las docstrings de Python cuentan como código.
-Un supuesto es una línea que contiene "# S:" (uno por línea, aunque la línea tenga varios).
+Un supuesto es una línea de código (no de comentario) que contiene "# S:" (uno por línea,
+aunque la línea tenga varios).
 Uso: python3 docs/conteo/contar.py ARCHIVO...
 """
 import sys
@@ -15,8 +16,8 @@ for path in sys.argv[1:]:
             t = line.strip()
             if t and not t.startswith("#") and not t.startswith("//"):
                 code += 1
-            if "# S:" in line:
-                s += 1
+                if "# S:" in line:
+                    s += 1
     total_code, total_s = total_code + code, total_s + s
     print(f"{code:6d} {s:4d}  {path}")
 print(f"{total_code:6d} {total_s:4d}  total (líneas sin comentarios, supuestos # S:)")
