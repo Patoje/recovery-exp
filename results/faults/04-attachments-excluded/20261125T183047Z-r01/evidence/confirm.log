@@ -1,0 +1,4 @@
+[ok] el snapshot no contiene /data/gitea/attachments (0 entradas)
+[ok] el snapshot sí contiene /data/gitea/conf (control del listado: 1)
+[ok] la base de la corrida tiene filas en attachment (15)
+[obs] adjuntos en disco restaurado: 0

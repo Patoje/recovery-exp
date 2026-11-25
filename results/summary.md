@@ -10,24 +10,27 @@ Entornos: **v1** (`b0-v1`, `SECRET_KEY` vacía en `app.ini`) y **v2** (`make up`
 
 | Falla | confirm | B0 | B1 | Contrato | Suspensión (invalid / total) | t restauración→fin B0 (s) | Resultados |
 |---|---|---|---|---|---|---|---|
-| 00-healthy | valid 11/11 corridas | pass 11/11, fail 0/11 (válidas) | pass 11/11, fail 0/11 (válidas) | pass | 0 / 25 | — | `results/faults/00-healthy/` (11 corridas v2)<br>`results/faults/00-healthy/` (11 corridas v2)<br>`results/faults/00-healthy/20261125T163844Z-r01` |
-| 00-healthy-large | valid | pass | pass | — | 0 / 2 | 15.3 | `results/faults/00-healthy-large/20261124T154215Z-r01`<br>`results/faults/00-healthy-large/20261125T073833Z-r01` |
-| 01-appini-excluded | valid | pass | fail en `secret_key_fingerprint` | — | 0 / 3 | 14.5 | `results/faults/01-appini-excluded/20261125T073123Z-r01`<br>`results/faults/01-appini-excluded/20261125T074451Z-r01` |
-| 02-db-creds-missing (control) | valid | fail en `restore` | fail en `b0` | — | 0 / 2 | 2.6 | `results/faults/02-db-creds-missing/20261124T155431Z-r01`<br>`results/faults/02-db-creds-missing/20261125T075058Z-r01` |
-| 03-concurrent-push | valid 10/10 corridas | pass 10/10, fail 0/10 (válidas) | pass 0/10, fail 10/10 (válidas) | — | 0 / 20 | — | `results/faults/03-concurrent-push/` (10 corridas v2)<br>`results/faults/03-concurrent-push/` (10 corridas v2) |
-| 04-attachments-excluded | valid | pass | fail en `witness_attachment_hash` | — | 0 / 2 | 14.1 | `results/faults/04-attachments-excluded/20261124T170006Z-r01`<br>`results/faults/04-attachments-excluded/20261125T085713Z-r01` |
-| 05-lfs-excluded | valid | pass | fail en `witness_lfs_content` | — | 0 / 2 | 14.3 | `results/faults/05-lfs-excluded/20261124T170609Z-r01`<br>`results/faults/05-lfs-excluded/20261125T090319Z-r01` |
-| 06-repo-after-dump | valid | pass | fail en `repositories_db_vs_disk` | — | 0 / 2 | 14.2 | `results/faults/06-repo-after-dump/20261124T171213Z-r01`<br>`results/faults/06-repo-after-dump/20261125T090932Z-r01` |
-| 07-secret-key-changed | valid | pass | fail en `secret_key_fingerprint` | — | 0 / 2 | 14.4 | `results/faults/07-secret-key-changed/20261124T171821Z-r01`<br>`results/faults/07-secret-key-changed/20261125T091544Z-r01` |
-| 08-binary-path-changed | invalid (confirm no se cumplió) | pass | fail en `gitea_image_before_migrations` | — | 0 / 2 | 14.6 | `results/faults/08-binary-path-changed/20261124T172425Z-r01`<br>`results/faults/08-binary-path-changed/20261125T092148Z-r01` |
-| 09-chown-root | valid | pass | fail en `git_push_witness_repo` | — | 0 / 2 | 14.4 | `results/faults/09-chown-root/20261124T173027Z-r01`<br>`results/faults/09-chown-root/20261125T092800Z-r01` |
-| 10-newer-gitea | valid | pass | fail en `gitea_image_before_migrations` | — | 0 / 2 | 15.3 | `results/faults/10-newer-gitea/20261124T173629Z-r01`<br>`results/faults/10-newer-gitea/20261125T093405Z-r01` |
-| 11-minio-bucket-excluded | valid | fail en `restore` | fail en `b0` | — | 0 / 2 | 6.2 | `results/faults/11-minio-bucket-excluded/20261124T174232Z-r01`<br>`results/faults/11-minio-bucket-excluded/20261125T094017Z-r01` |
-| 12-slow-restore | valid | pass | fail en `rto` | — | 0 / 2 | 272.2 | `results/faults/12-slow-restore/20261124T174828Z-r01`<br>`results/faults/12-slow-restore/20261125T094616Z-r01` |
-| 13-readonly-repo-cron | valid | pass | fail en `rpo` | — | 0 / 2 | 14.4 | `results/faults/13-readonly-repo-cron/20261124T180318Z-r01`<br>`results/faults/13-readonly-repo-cron/20261125T100103Z-r01` |
-| 14-latin1-database | valid | fail en `restore` | fail en `b0` | — | 0 / 2 | 5.6 | `results/faults/14-latin1-database/20261124T183921Z-r01`<br>`results/faults/14-latin1-database/20261125T103716Z-r01` |
-| 15-corrupt-pack (control) | valid | fail en `restic_check` | fail en `b0` | — | 0 / 2 | — | `results/faults/15-corrupt-pack/20261124T184523Z-r01`<br>`results/faults/15-corrupt-pack/20261125T104324Z-r01` |
-| 16-casefold-refs | valid | pass | fail en `refs_vs_inventory` | — | 0 / 2 | 15.0 | `results/faults/16-casefold-refs/20261124T185120Z-r01`<br>`results/faults/16-casefold-refs/20261125T104923Z-r01` |
+| 00-healthy | valid 11/11 corridas | pass 11/11, fail 0/11 (válidas) | pass 11/11, fail 0/11 (válidas) | pass 10/10, fail 0/10 (válidas) | 0 / 32 | — | `results/faults/00-healthy/` (11 corridas v2)<br>`results/faults/00-healthy/` (11 corridas v2)<br>`results/faults/00-healthy/` (10 corridas v2) |
+| 00-healthy-large | valid | pass | pass | pass | 0 / 3 | 15.3 | `results/faults/00-healthy-large/20261124T154215Z-r01`<br>`results/faults/00-healthy-large/20261125T073833Z-r01`<br>`results/faults/00-healthy-large/20261125T171159Z-r01` |
+| 01-appini-excluded | valid | pass | fail en `secret_key_fingerprint` | fail en `secret_key` | 0 / 4 | 14.5 | `results/faults/01-appini-excluded/20261125T073123Z-r01`<br>`results/faults/01-appini-excluded/20261125T074451Z-r01`<br>`results/faults/01-appini-excluded/20261125T171819Z-r01` |
+| 02-db-creds-missing (control) | valid | fail en `restore` | fail en `b0` | fail en `components_up` | 0 / 3 | 2.6 | `results/faults/02-db-creds-missing/20261124T155431Z-r01`<br>`results/faults/02-db-creds-missing/20261125T075058Z-r01`<br>`results/faults/02-db-creds-missing/20261125T172421Z-r01` |
+| 03-concurrent-push | valid 10/10 corridas | pass 10/10, fail 0/10 (válidas) | pass 0/10, fail 10/10 (válidas) | pass 0/10, fail 10/10 (válidas) | 0 / 30 | — | `results/faults/03-concurrent-push/` (10 corridas v2)<br>`results/faults/03-concurrent-push/` (10 corridas v2)<br>`results/faults/03-concurrent-push/` (10 corridas v2) |
+| 04-attachments-excluded | valid | pass | fail en `witness_attachment_hash` | fail en `witness_attachment` | 0 / 3 | 14.1 | `results/faults/04-attachments-excluded/20261124T170006Z-r01`<br>`results/faults/04-attachments-excluded/20261125T085713Z-r01`<br>`results/faults/04-attachments-excluded/20261125T183047Z-r01` |
+| 05-lfs-excluded | valid | pass | fail en `witness_lfs_content` | fail en `witness_lfs` | 0 / 3 | 14.3 | `results/faults/05-lfs-excluded/20261124T170609Z-r01`<br>`results/faults/05-lfs-excluded/20261125T090319Z-r01`<br>`results/faults/05-lfs-excluded/20261125T183652Z-r01` |
+| 06-repo-after-dump | valid | pass | fail en `repositories_db_vs_disk` | fail en `repositories_db_vs_disk` | 0 / 3 | 14.2 | `results/faults/06-repo-after-dump/20261124T171213Z-r01`<br>`results/faults/06-repo-after-dump/20261125T090932Z-r01`<br>`results/faults/06-repo-after-dump/20261125T184257Z-r01` |
+| 07-secret-key-changed | valid | pass | fail en `secret_key_fingerprint` | fail en `secret_key` | 0 / 3 | 14.4 | `results/faults/07-secret-key-changed/20261124T171821Z-r01`<br>`results/faults/07-secret-key-changed/20261125T091544Z-r01`<br>`results/faults/07-secret-key-changed/20261125T184916Z-r01` |
+| 08-binary-path-changed | invalid (confirm no se cumplió) | pass | fail en `gitea_image_before_migrations` (corrida invalid: confirm no se cumplió) | fail en `image_before_migrations` (corrida invalid: confirm no se cumplió) | 0 / 3 | 14.6 | `results/faults/08-binary-path-changed/20261124T172425Z-r01`<br>`results/faults/08-binary-path-changed/20261125T092148Z-r01`<br>`results/faults/08-binary-path-changed/20261125T185521Z-r01` |
+| 09-chown-root | valid | pass | fail en `git_push_witness_repo` | fail en `git_push` | 0 / 3 | 14.4 | `results/faults/09-chown-root/20261124T173027Z-r01`<br>`results/faults/09-chown-root/20261125T092800Z-r01`<br>`results/faults/09-chown-root/20261125T190132Z-r01` |
+| 10-newer-gitea | valid | pass | fail en `gitea_image_before_migrations` | fail en `image_before_migrations` | 0 / 3 | 15.3 | `results/faults/10-newer-gitea/20261124T173629Z-r01`<br>`results/faults/10-newer-gitea/20261125T093405Z-r01`<br>`results/faults/10-newer-gitea/20261125T190735Z-r01` |
+| 11-minio-bucket-excluded | valid | fail en `restore` | fail en `b0` | fail en `components_up` | 0 / 3 | 6.2 | `results/faults/11-minio-bucket-excluded/20261124T174232Z-r01`<br>`results/faults/11-minio-bucket-excluded/20261125T094017Z-r01`<br>`results/faults/11-minio-bucket-excluded/20261125T191338Z-r01` |
+| 12-slow-restore | valid | pass | fail en `rto` | fail en `rto` | 0 / 3 | 272.2 | `results/faults/12-slow-restore/20261124T174828Z-r01`<br>`results/faults/12-slow-restore/20261125T094616Z-r01`<br>`results/faults/12-slow-restore/20261125T191949Z-r01` |
+| 13-readonly-repo-cron | valid | pass | fail en `rpo` | fail en `rpo` | 0 / 3 | 14.4 | `results/faults/13-readonly-repo-cron/20261124T180318Z-r01`<br>`results/faults/13-readonly-repo-cron/20261125T100103Z-r01`<br>`results/faults/13-readonly-repo-cron/20261125T193436Z-r01` |
+| 14-latin1-database | valid | fail en `restore` | fail en `b0` | fail en `components_up` (corrida invalid: confirm no se cumplió) | 0 / 3 | 5.6 | `results/faults/14-latin1-database/20261124T183921Z-r01`<br>`results/faults/14-latin1-database/20261125T103716Z-r01`<br>`results/faults/14-latin1-database/20261125T201048Z-r01` |
+| 15-corrupt-pack (control) | valid | fail en `restic_check` | fail en `b0` | fail en `backup_integrity` | 0 / 3 | — | `results/faults/15-corrupt-pack/20261124T184523Z-r01`<br>`results/faults/15-corrupt-pack/20261125T104324Z-r01`<br>`results/faults/15-corrupt-pack/20261125T201702Z-r01` |
+| 16-casefold-refs | valid | pass | fail en `refs_vs_inventory` | fail en `refs` | 0 / 3 | 15.0 | `results/faults/16-casefold-refs/20261124T185120Z-r01`<br>`results/faults/16-casefold-refs/20261125T104923Z-r01`<br>`results/faults/16-casefold-refs/20261125T202306Z-r01` |
+
+`confirm` es el de la corrida de B0 (o de la primera línea base con corridas). Si la corrida de otra línea base fue invalid, su celda lo indica. Contrato: motor `133675b` y `contracts/gitea.yaml` sha256 `f393f6d65e2f…` (tags `engine-v1`, `contract-gitea-v1`).
+Corridas del contrato previas al congelamiento (no cuentan): `results/faults/00-healthy/20261125T160253Z-r01` (motor `cf84770`, contrato `5a6e8f6f`), `results/faults/00-healthy/20261125T161115Z-r01` (motor `c0fbabc`, contrato `0ef4e138`), `results/faults/00-healthy/20261125T163844Z-r01` (motor `c0fbabc`, contrato `f393f6d6`).
 
 ## Entorno v1
 
@@ -101,10 +104,22 @@ Cada corrida arranca desde `make reset`. Una falsa alarma es un `fail` de la lí
 | B1 | `20261125T115602Z-r08` | pass | pass | no |  |
 | B1 | `20261125T115602Z-r09` | pass | pass | no |  |
 | B1 | `20261125T115602Z-r10` | pass | pass | no |  |
+| CONTRACT | `20261125T202914Z-r01` | pass | pass | no |  |
+| CONTRACT | `20261125T202914Z-r02` | pass | pass | no |  |
+| CONTRACT | `20261125T202914Z-r03` | pass | pass | no |  |
+| CONTRACT | `20261125T202914Z-r04` | pass | pass | no |  |
+| CONTRACT | `20261125T202914Z-r05` | pass | pass | no |  |
+| CONTRACT | `20261125T202914Z-r06` | pass | pass | no |  |
+| CONTRACT | `20261125T202914Z-r07` | pass | pass | no |  |
+| CONTRACT | `20261125T202914Z-r08` | pass | pass | no |  |
+| CONTRACT | `20261125T202914Z-r09` | pass | pass | no |  |
+| CONTRACT | `20261125T202914Z-r10` | pass | pass | no |  |
 
 **B0:** 10 válidas de 10; falsas alarmas: 0 de 10.
 
 **B1:** 10 válidas de 10; falsas alarmas: 0 de 10.
+
+**CONTRACT:** 10 válidas de 10; falsas alarmas: 0 de 10.
 
 ## 03-concurrent-push: repeticiones (B0, entorno v2)
 
@@ -135,6 +150,21 @@ Cada corrida arranca desde `make reset`. Una falsa alarma es un `fail` de la lí
 | `20261125T075650Z-r08` | fail | valid | fail en `table_row_counts_vs_inventory` | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
 | `20261125T075650Z-r09` | fail | valid | fail en `table_row_counts_vs_inventory` | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
 | `20261125T075650Z-r10` | fail | valid | fail en `table_row_counts_vs_inventory` | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
+
+## 03-concurrent-push: repeticiones (CONTRACT, entorno v2)
+
+| Corrida | Estado | confirm | CONTRACT | Detalle |
+|---|---|---|---|---|
+| `20261125T173021Z-r01` | fail | valid | fail en `table_counts` | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
+| `20261125T173021Z-r02` | fail | valid | fail en `table_counts` | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
+| `20261125T173021Z-r03` | fail | valid | fail en `table_counts` | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
+| `20261125T173021Z-r04` | fail | valid | fail en `table_counts` | [ok] inconsistencia base/disco en el sistema restaurado (4 diferencias) |
+| `20261125T173021Z-r05` | fail | valid | fail en `table_counts` | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
+| `20261125T173021Z-r06` | fail | valid | fail en `table_counts` | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
+| `20261125T173021Z-r07` | fail | valid | fail en `table_counts` | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
+| `20261125T173021Z-r08` | fail | valid | fail en `table_counts` | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
+| `20261125T173021Z-r09` | fail | valid | fail en `table_counts` | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
+| `20261125T173021Z-r10` | fail | valid | fail en `table_counts` | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
 
 ## 03-concurrent-push: repeticiones (B0, entorno v1)
 

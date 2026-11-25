@@ -1,0 +1,4 @@
+[ok] dataset grande de 536870912 bytes registrado
+[ok] el shim agregó --limit-download 2048 a restic restore
+[ok] restic restore tardó al menos 230 s (258360 ms)
+[obs] tasa efectiva de restic restore (MiB/s, sobre 512 MiB): 1.98

@@ -1,0 +1,8 @@
+[ok] se creó el testigo con emoji
+[ok] el dump se cargó sin --exit-on-error (shim)
+[ok] el PostgreSQL restaurado usa LATIN1 (LATIN1)
+[fail] pg_restore informó caracteres sin equivalente en LATIN1
+[obs] resumen de pg_restore: 
+[obs] código de salida de pg_restore en restore.json: 1
+[obs] filas en issue de la base restaurada: 0
+[obs] arranque de Gitea sobre la base LATIN1: healthy; versión {"version":"28.4.0"}

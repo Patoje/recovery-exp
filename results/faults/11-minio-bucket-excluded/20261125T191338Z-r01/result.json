@@ -1,0 +1,128 @@
+{
+  "scenario": "11-minio-bucket-excluded",
+  "batch": "20261125T191338Z",
+  "repetition": 1,
+  "run_id": "20261125T191339Z",
+  "baseline": "contract",
+  "env_version": "v2",
+  "status": "fail",
+  "reason": "",
+  "started_at": "2026-11-25T19:13:38.902Z",
+  "finished_at": "2026-11-25T19:19:45.024Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 0
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-25T19:13:38.910Z",
+      "duration_ms": 1010
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-25T19:13:39.932Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-25T19:13:39.947Z",
+      "duration_ms": 28006
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-25T19:14:07.966Z",
+      "duration_ms": 9880
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-25T19:14:17.858Z",
+      "duration_ms": 1829
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T19:14:19.699Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T19:14:19.717Z",
+      "duration_ms": 9703
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-25T19:14:29.432Z",
+      "duration_ms": 1332
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T19:14:30.776Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-25T19:14:30.792Z",
+      "duration_ms": 301670
+    },
+    {
+      "name": "baseline",
+      "exit_code": 1,
+      "started_at": "2026-11-25T19:19:32.475Z",
+      "duration_ms": 8903
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-25T19:19:41.397Z",
+      "duration_ms": 3385
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 1,
+    "result": "fail",
+    "first_failed_step": "components_up"
+  },
+  "restore_to_baseline_end_s": 7.6,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] app.ini del snapshot: [attachment] STORAGE_TYPE = minio",
+      "[ok] app.ini del snapshot: [lfs] STORAGE_TYPE = minio",
+      "[ok] el snapshot no contiene datos del bucket (0 rutas)",
+      "[ok] el adjunto testigo no está en el snapshot (0)",
+      "[ok] minio no resuelve desde la red de restauración"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-25T19:19:49+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261125T191339Z/witnesses_post.json",
+      "max_gap_s": 60.0,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "fail",
+      "reason": ""
+    }
+  }
+}

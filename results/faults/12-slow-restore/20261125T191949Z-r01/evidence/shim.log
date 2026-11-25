@@ -1,0 +1,6 @@
+[shim] 2026-11-25T19:25:42Z restore: restic + --limit-download 2048
+[shim] 2026-11-25T19:25:42Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T restic --limit-download 2048 --no-lock --no-cache check --read-data
+[shim] 2026-11-25T19:30:01Z restore: restic + --limit-download 2048
+[shim] 2026-11-25T19:30:01Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --limit-download 2048 --no-lock --no-cache snapshots --json --latest 1
+[shim] 2026-11-25T19:30:01Z restore: restic + --limit-download 2048
+[shim] 2026-11-25T19:30:01Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --limit-download 2048 --no-lock --no-cache restore 910bf285cc6d70cacf3ecb0ecf6fad935f8a4c825ebc89841eb3808f8f312518 --target /

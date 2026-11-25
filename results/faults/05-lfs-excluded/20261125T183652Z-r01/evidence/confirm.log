@@ -1,0 +1,4 @@
+[ok] el snapshot no contiene /data/git/lfs (0 entradas)
+[ok] el snapshot sí contiene /data/git/repositories (control del listado: 1)
+[ok] la base de la corrida tiene filas en lfs_meta_object (12)
+[obs] objetos LFS en disco restaurado: 0

@@ -1,0 +1,7 @@
+[ok] kernel de la VM con ext4 casefold
+[ok] se crearon las dos ramas
+[ok] el snapshot tiene las dos refs sueltas (2)
+[ok] el directorio de datos restaurado tiene casefold (+F)
+[ok] la restauración usó el volumen casefold
+[ok] en el disco restaurado queda una sola ref (Case-Test)
+[obs] SHA de la ref que quedó: 59675490983adfed92fac7f5f326890247816ae4

@@ -1,0 +1,26 @@
+{
+  "snapshot": "c43dd98f89b27fff0739f6e15140f5d2267f937d802d25310b104c3e989e9fbd",
+  "object_path": "/data/git/repositories/alice/witness.git/objects/bb/5ee537cf809a606eb3340e467d4fe8eaa900e3",
+  "blob_id": "3c30f9d680079d743d3b2374d9eba0d9ab1438887ced3187f12db4d117d17d3c",
+  "pack": "031fe9f146f2ee472aca53a89cb1de92ba5cd9faf03d12d543091164bfc22afd",
+  "pack_path": "data/03/031fe9f146f2ee472aca53a89cb1de92ba5cd9faf03d12d543091164bfc22afd",
+  "offset": 758325,
+  "length": 183,
+  "blobs_overlapping_range": [
+    "3c30f9d680079d743d3b2374d9eba0d9ab1438887ced3187f12db4d117d17d3c"
+  ],
+  "protected_blobs": {
+    "/dump/gitea.dump": [
+      "a5075818e3edaa59dd12efe2120602b80ea787dbd41a42c4e45ecf1b31d82e92"
+    ],
+    "/data/gitea/conf/app.ini": [
+      "4f61b3748b1343741c767d9de378a815b62fe89da4e402997f62b2892c80ceb6"
+    ]
+  },
+  "protected_blobs_in_range": {
+    "/dump/gitea.dump": [],
+    "/data/gitea/conf/app.ini": []
+  },
+  "only_witness_blob_in_range": true,
+  "protected_untouched": true
+}

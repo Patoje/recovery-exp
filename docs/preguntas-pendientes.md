@@ -66,6 +66,8 @@ B1 no se modificó durante la tanda. La corrección iría en una versión nueva 
 
 ## 5. Contrato: qué verificaciones definen el fin de la recuperación para el RTO
 
+**Decidido: opción B.** Se agregaron `home_page` y `repo_list` al contrato y a `requires` antes de congelar (`contract-gitea-v1`).
+
 **Qué pasó.** Para el RTO, B1 toma el fin de sus pruebas funcionales: B0 completa (incluye la página principal, la versión, el login por API, la lista de repositorios y un clon) más adjuntos, LFS, issues, TOTP y push. El contrato usa la misma definición (desde `restore_started_at` hasta el fin de las verificaciones requeridas, todas en `pass`), con `requires: [components_up, version_running, witness_attachment, witness_lfs, witness_issue, totp_login, git_push]`. El login por API y el clon quedan cubiertos (los testigos usan la API autenticada; `git_push` clona antes de empujar), pero la página principal y la lista de repositorios no están en el contrato. En 00-healthy: RTO del contrato 13,3 s; B1 en las 11 sanas v2, 15,4–16,8 s (media 16,3). Parte de la diferencia es que B1 cuenta también la duración de las pruebas de B0.
 
 No bloquea nada: el motor y el contrato están listos para congelar tal como están.
@@ -74,3 +76,17 @@ No bloquea nada: el motor y el contrato están listos para congelar tal como est
 
 - **A.** Congelar así.
 - **B.** Agregar al contrato dos `http_request` (página principal y lista de repositorios) y sumarlas a `requires`, sin cambiar el motor.
+
+## 6. Falla 14 con el contrato: `invalid` porque el log de `restore.sh` no llega a `run.log`
+
+**Qué pasó.** En la tanda del contrato (`engine-v1`, `contract-gitea-v1`), la corrida `results/faults/14-latin1-database/20261125T201048Z-r01` quedó `invalid` ("confirm no se cumplió"). El `confirm` del 14 busca `has no equivalent in encoding "LATIN1"` en `$FAULT_RUN_LOG` (`run.log` del resultado). Con B0 y B1 la salida de `pg_restore` va a ese log. El envoltorio del contrato (`baselines/contract/contract.sh`) redirige la salida de `scripts/restore.sh` a `runs/<id>/contract/restore.log`, que no se copia a `run.log`. La falla sí ocurrió: ese archivo tiene el mensaje dos veces y `pg_restore: warning: errors ignored on restore: 2`; las otras verificaciones del `confirm` (LATIN1, carga sin `--exit-on-error`) pasaron. El contrato dio `fail` (primer paso `components_up`; también fallaron `restore_tool_errors` y `database_encoding`).
+
+El error está en el envoltorio, no en el motor ni en el contrato. No se modificó nada durante la tanda; la corrida se conserva y cuenta como `invalid`. Ninguna otra falla del contrato depende del log de la restauración en `run.log` (las demás quedaron válidas, el 08 es `invalid` por la causa ya conocida).
+
+**Observación menor (motor).** Cuando un servicio no tiene contenedor, el motor informa `sin contenedor para gitea:` seguido de la última línea de stderr de `docker compose ps`. Con el shim activo esa línea es la traza `[shim] … ps -a -q gitea`, no un mensaje de Docker (14 y 15). El estado (`error`) y el veredicto no cambian; solo el detalle es poco útil.
+
+**Opciones:**
+
+- **A.** Corregir el envoltorio (versión nueva, sin tocar motor ni contrato): copiar la salida de `restore.sh` también a stderr (`tee`), para que llegue a `run.log`, y repetir solo el 14 con el contrato desde `make reset`.
+- **B.** Dejar el 14 del contrato como `invalid` y documentarlo.
+

@@ -1,0 +1,5 @@
+[ok] se creó alice/late con un commit después de pg_dump
+[ok] el snapshot contiene alice/late.git en disco (1)
+[ok] el dump se pudo leer (fila de alice/notes presente: 1)
+[ok] el dump no tiene la fila de alice/late en repository (0)
+[obs] filas 'late' en la base restaurada: 0

@@ -14,12 +14,31 @@ CONTROLS = {"02-db-creds-missing", "15-corrupt-pack"}
 BASELINES = ["b0", "b1", "contract"]
 ENVS = ["v2", "v1"]  # current first
 
+# Frozen contract baseline (tags engine-v1 and contract-gitea-v1). Contract runs made with another
+# engine commit or contract file are earlier development runs: listed apart, not counted.
+FROZEN_ENGINE = "133675b"
+FROZEN_CONTRACT_SHA256 = "f393f6d65e2f9f1136cdb7b9e14628ad77d9b4903562af242c2aca83d9582240"
+
+
+def contract_version(r):
+    try:
+        with open(f"{ROOT}/runs/{r['run_id']}/contract.json") as f:
+            c = json.load(f)
+        return c["engine"]["commit"], c["contract"]["sha256"]
+    except (OSError, KeyError, ValueError):
+        return None, None
+
+
 # env -> scen -> baseline -> batch -> [r]
 results = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(list))))
+pre_freeze = []  # contract runs before the freeze
 for path in sorted(glob.glob(f"{ROOT}/results/faults/*/*/result.json")):
     with open(path) as f:
         r = json.load(f)
     r["_dir"] = os.path.relpath(os.path.dirname(path), ROOT)
+    if r["baseline"] == "contract" and contract_version(r) != (FROZEN_ENGINE, FROZEN_CONTRACT_SHA256):
+        pre_freeze.append(r)
+        continue
     results[r.get("env_version", "v1")][r["scenario"]][r["baseline"]][r["batch"]].append(r)
 
 
@@ -82,6 +101,8 @@ for env in ENVS:
             susp_total += len(allruns)
             susp_inv += sum(1 for r in allruns if is_susp(r))
             c, res, single, runs = summarize(batches)
+            if single and single["status"] == "invalid" and b != "b0":
+                res += f" (corrida invalid: {single['reason'] or 'confirm'})"
             row[b] = res
             if b == "b0" or confirm_txt == "—":
                 confirm_txt = c
@@ -97,6 +118,15 @@ for env in ENVS:
         name = scen + (" (control)" if scen in CONTROLS else "")
         lines.append(f"| {name} | {confirm_txt} | {row.get('b0', '—')} | {row.get('b1', '—')} | {row.get('contract', '—')} | "
                      f"{susp_inv} / {susp_total} | {rto} | {'<br>'.join(dirs)} |")
+    if env == "v2":
+        lines += ["", "`confirm` es el de la corrida de B0 (o de la primera línea base con corridas). Si la corrida de "
+                  "otra línea base fue invalid, su celda lo indica. Contrato: motor `" + FROZEN_ENGINE + "` y "
+                  "`contracts/gitea.yaml` sha256 `" + FROZEN_CONTRACT_SHA256[:12] + "…` (tags `engine-v1`, "
+                  "`contract-gitea-v1`)."]
+        if pre_freeze:
+            lines.append("Corridas del contrato previas al congelamiento (no cuentan): " + ", ".join(
+                f"`{r['_dir']}` (motor `{contract_version(r)[0]}`, contrato `{(contract_version(r)[1] or '?')[:8]}`)"
+                for r in pre_freeze) + ".")
 
 if b0_by_env.get("v1") and b0_by_env.get("v2"):
     lines += ["", "## Comparación de B0: entorno v1 contra v2", "",

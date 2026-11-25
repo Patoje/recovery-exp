@@ -1,0 +1,4 @@
+--------------e--F---- /mnt/recexp-casefold/data
+Filesystem features:      has_journal ext_attr resize_inode dir_index filetype needs_recovery extent 64bit flex_bg casefold sparse_super large_file huge_file dir_nlink extra_isize metadata_csum
+Character encoding:       utf8-12.1
+Journal features:         (none)
