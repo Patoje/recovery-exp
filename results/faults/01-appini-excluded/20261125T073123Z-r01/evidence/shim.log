@@ -1,0 +1,3 @@
+[shim] 2026-11-25T07:32:04Z original: restic backup + --exclude /data/gitea/conf/app.ini
+[shim] 2026-11-25T07:32:04Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic backup --exclude /data/gitea/conf/app.ini --json --host gitea-original --tag run=20261125T073125Z --exclude /data/gitea/log --exclude /data/gitea/indexers /dump /data
+[shim] 2026-11-25T07:37:17Z evento after_restic_restore

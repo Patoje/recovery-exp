@@ -1,0 +1,128 @@
+{
+  "scenario": "01-appini-excluded",
+  "batch": "20261125T073123Z",
+  "repetition": 1,
+  "run_id": "20261125T073125Z",
+  "baseline": "b0",
+  "env_version": "v2",
+  "status": "pass",
+  "reason": "",
+  "started_at": "2026-11-25T07:31:23.965Z",
+  "finished_at": "2026-11-25T07:37:32.069Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 3
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:31:23.974Z",
+      "duration_ms": 1767
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:31:25.761Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:31:25.779Z",
+      "duration_ms": 25964
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:31:51.756Z",
+      "duration_ms": 10129
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:32:01.900Z",
+      "duration_ms": 1612
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:32:03.525Z",
+      "duration_ms": 5
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:32:03.545Z",
+      "duration_ms": 8812
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:32:12.371Z",
+      "duration_ms": 1046
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:32:13.431Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:32:13.448Z",
+      "duration_ms": 300963
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:37:14.426Z",
+      "duration_ms": 15432
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:37:29.883Z",
+      "duration_ms": 1918
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 14.5,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] restic find 'app.ini*' no encuentra nada en el snapshot (encontrados: 0)",
+      "[ok] se inspeccionó el volumen restaurado antes del primer arranque",
+      "[ok] el volumen restaurado no tenía ningún .ini antes del primer arranque",
+      "[obs] variables GITEA__ del entorno de restauración: \"GITEA__database__DB_TYPE\" \"GITEA__database__HOST\" \"GITEA__database__NAME\" \"GITEA__database__PASSWD\" \"GITEA__database__USER\" \"GITEA__security__INSTALL_LOCK\" \"GITEA__server__DOMAIN\" \"GITEA__server__HTTP_PORT\" \"GITEA__server__LFS_START_SERVER\" \"GITEA__server__OFFLINE_MODE\" \"GITEA__server__ROOT_URL\" \"GITEA__service__DISABLE_REGISTRATION\" ",
+      "[obs] huella de la SECRET_KEY en uso en el contenedor restaurado (declarada: a46d3ff6988a33bb8648bd57ab38d37c8e397b1d49c8457ae50eaab6d662bedf): 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-25T07:37:35+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261125T073125Z/witnesses_post.json",
+      "max_gap_s": 60.1,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "pass",
+      "reason": ""
+    }
+  }
+}

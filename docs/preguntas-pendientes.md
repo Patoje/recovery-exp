@@ -33,3 +33,22 @@ Mientras no decidas, el 08 queda `invalid` en `results/summary.md`.
 - **A.** Dejarlo así y documentar que la clave declarada está vacía y Gitea usa la clave interna por defecto.
 - **B.** Fijar una `SECRET_KEY` de prueba en `.env.example` y en `compose/original.yml` y `compose/restore.yml`. Cambia el entorno congelado con B0 (`b0-v1`) y obliga a repetir la parte C.
 - **C.** Que B1 además falle si la clave declarada está vacía. Cambia el criterio de B1 y daría fail en todas las corridas actuales.
+
+## 3. Falla 01 en v2: no hay evidencia directa de la SECRET_KEY restaurada
+
+**Resuelto (opción B).** Se repitió el 01 con B0 en v2 con un `[obs]` de la huella en uso (`results/faults/01-appini-excluded/20261125T073123Z-r01`). La clave en uso está vacía y la huella difiere de la declarada. Ver "Hallazgos" en `results/summary.md`.
+
+**Qué pasó.** Antes de correr B1 en v2 había que confirmar, con la evidencia del 01 en v2 (`results/faults/01-appini-excluded/20261124T154829Z-r01`), que la `SECRET_KEY` restaurada es distinta de la declarada. Esa corrida no registró la clave en uso: `confirm` solo verifica que el snapshot no tiene `app.ini` y que el volumen restaurado no tenía ningún `.ini` antes del primer arranque. El volumen de restauración de esa corrida ya no existe; el actual es de la corrida de B1 en 00-healthy.
+
+Evidencia disponible, indirecta:
+- Huella declarada al hacer el backup: `5d4ba5960562…` (`runs/20261124T154831Z/declared.json`), no vacía.
+- El volumen restaurado no tenía ningún `.ini` antes del primer arranque (`evidence/ini_files_after_restore.txt`).
+- El entorno de restauración no define `GITEA__security__SECRET_KEY` (`[obs]` en `evidence/confirm.log`). Por lo tanto, la imagen crea `app.ini` desde su plantilla con `SECRET_KEY` vacía (`e3b0c442…`).
+
+No se corrió nada de B1. La tanda espera esta decisión.
+
+**Opciones:**
+
+- **A.** Aceptar la evidencia indirecta y empezar la tanda de B1.
+- **B.** Repetir el 01 con B0 en v2, agregando al `confirm` del 01 una observación (`[obs]`, no un criterio) con la huella de la `SECRET_KEY` en uso. La corrida actual se conserva. Si las huellas difieren, empezar la tanda.
+- **C.** Otra forma que definas vos.

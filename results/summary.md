@@ -12,7 +12,7 @@ Entornos: **v1** (`b0-v1`, `SECRET_KEY` vacía en `app.ini`) y **v2** (`make up`
 |---|---|---|---|---|---|---|
 | 00-healthy | valid | pass | pass | 0 / 2 | 14.2 | `results/faults/00-healthy/20261124T153613Z-r01`<br>`results/faults/00-healthy/20261124T185739Z-r01` |
 | 00-healthy-large | valid | pass | — | 0 / 1 | 15.3 | `results/faults/00-healthy-large/20261124T154215Z-r01` |
-| 01-appini-excluded | valid | pass | — | 0 / 1 | 14.2 | `results/faults/01-appini-excluded/20261124T154829Z-r01` |
+| 01-appini-excluded | valid | pass | — | 0 / 2 | 14.5 | `results/faults/01-appini-excluded/20261125T073123Z-r01` |
 | 02-db-creds-missing (control) | valid | fail en `restore` | — | 0 / 1 | 2.6 | `results/faults/02-db-creds-missing/20261124T155431Z-r01` |
 | 03-concurrent-push | valid 10/10 corridas | pass 10/10, fail 0/10 (válidas) | — | 0 / 10 | — | `results/faults/03-concurrent-push/` (10 corridas v2) |
 | 04-attachments-excluded | valid | pass | — | 0 / 1 | 14.1 | `results/faults/04-attachments-excluded/20261124T170006Z-r01` |
@@ -58,7 +58,7 @@ Entornos: **v1** (`b0-v1`, `SECRET_KEY` vacía en `app.ini`) y **v2** (`make up`
 |---|---|---|---|---|---|---|---|
 | 00-healthy | valid | pass | valid | pass | 14.4 | 14.2 | no |
 | 00-healthy-large | valid | pass | valid | pass | 14.8 | 15.3 | no |
-| 01-appini-excluded | valid | pass | valid | pass | 14.3 | 14.2 | no |
+| 01-appini-excluded | valid | pass | valid | pass | 14.3 | 14.5 | no |
 | 02-db-creds-missing | valid | fail en `restore` | valid | fail en `restore` | 2.7 | 2.6 | no |
 | 03-concurrent-push | valid 10/18 corridas | pass 10/10, fail 0/10 (válidas) | valid 10/10 corridas | pass 10/10, fail 0/10 (válidas) | — | — | no |
 | 04-attachments-excluded | valid | pass | valid | pass | 13.9 | 14.1 | no |
@@ -119,3 +119,4 @@ Entornos: **v1** (`b0-v1`, `SECRET_KEY` vacía en `app.ini`) y **v2** (`make up`
 
 - **08 — ruta del ejecutable distinta en la restauración.** Gitea 28.4.0 regenera los hooks al arrancar (`routers/init.go:97:syncAppConfForGit() [I] re-sync repository hooks ...`). La advertencia de la documentación sobre regenerar los hooks después de cambiar la ruta del ejecutable no aplica a esta versión. La falla no se produce y el 08 queda `invalid`; no se agregaron desviaciones. Evidencia: `results/faults/08-binary-path-changed/*/evidence/hooks_before_first_start.txt` y el log de Gitea en `run.log`.
 - **SECRET_KEY vacía con `INSTALL_LOCK=true`.** La instalación de Gitea 28.4.0 con `GITEA__security__INSTALL_LOCK=true` y sin `SECRET_KEY` deja `[security] SECRET_KEY =` vacía en `app.ini`, y Gitea usa su clave interna por defecto, la misma en todas las instalaciones. Sí genera en el primer arranque `INTERNAL_TOKEN`, `[server] LFS_JWT_SECRET`, `[oauth2] JWT_SECRET` y `jwt/private.pem`. Afecta a todos los resultados del entorno v1. En el entorno v2, `make up` genera la clave una vez y la escribe solo en `app.ini`. Evidencia: `results/faults/00-healthy/20261124T063110Z-r01` (huella `e3b0c442…`, sha256 de un texto vacío).
+- **01 en v2 — qué `SECRET_KEY` queda en uso cuando falta `app.ini`.** Queda **vacía**, no se genera: la imagen crea `app.ini` desde su plantilla con `SECRET_KEY =` (huella `e3b0c442…`), distinta de la declarada al hacer el backup (`a46d3ff6…`). Gitea sí genera de nuevo `INTERNAL_TOKEN`, `LFS_JWT_SECRET` y `[oauth2] JWT_SECRET`. B0 da `pass` igual. Evidencia: `results/faults/01-appini-excluded/20261125T073123Z-r01/evidence/` (`confirm.log` y `secret_key_manual_check.txt`). El `[obs]` de esa corrida muestra `01ba4719…` porque hasheó el valor vacío con un salto de línea; el `[obs]` se corrigió después de esa corrida.

@@ -5,4 +5,6 @@ check "restic find 'app.ini*' no encuentra nada en el snapshot (encontrados: $fo
 check "se inspeccionó el volumen restaurado antes del primer arranque" grep -qx "# scan ok" "$FAULT_EVIDENCE/ini_files_after_restore.txt"
 check "el volumen restaurado no tenía ningún .ini antes del primer arranque" sh -c "! grep -v \"^#\" \"$FAULT_EVIDENCE/ini_files_after_restore.txt\" | grep -q ."
 observe "variables GITEA__ del entorno de restauración" "$("${REST[@]}" config --format json | grep -o '"GITEA__[A-Za-z_]*"' | sort -u | tr '\n' ' ')"
+in_use_fp="$(printf '%s' "$(rest_gitea cat /data/gitea/conf/app.ini | ini_get security SECRET_KEY)" | sha256_stdin)"
+observe "huella de la SECRET_KEY en uso en el contenedor restaurado (declarada: $(json_field "$RUN_DIR/declared.json" secret_key_sha256))" "$in_use_fp"
 confirm_done
