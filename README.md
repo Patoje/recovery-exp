@@ -194,3 +194,14 @@ Verificaciones, en orden:
 7. RTO: desde `restore_started_at` hasta el fin de las pruebas funcionales. RPO: T menos la hora del testigo más reciente recuperado. Los dos se comparan con `objectives.env`.
 
 Salida: `runs/<id>/b1.json`, con el resultado de cada paso, y `runs/<id>/b1/raw/`, con los datos crudos leídos del sistema restaurado. Sale con 0 solo si todo pasa.
+
+## Etapa 3: motor de contratos (`BASELINE=contract`)
+
+- `engine/`: motor en Go, general. No contiene nada específico de Gitea ni lee `baselines/`, `faults/` o el código de B0; dos pruebas unitarias lo verifican. `make engine` (`engine/build.sh`) corre `gofmt`, `go vet` y las pruebas unitarias en la imagen `golang` fijada por digest, y compila `engine/bin/engine-darwin-arm64` (host) y `engine/bin/engine-linux-arm64` (sonda). La única dependencia, `gopkg.in/yaml.v3` v3.0.1, está vendorizada en `engine/vendor/`.
+- `contracts/gitea.yaml`: el contrato de Gitea. Solo usa el vocabulario cerrado de verificadores del motor; cada línea con un supuesto sobre Gitea lleva `# S:`. `engine/bin/engine-darwin-arm64 check-contract contracts/gitea.yaml` lo valida.
+- `baselines/contract/contract.sh [SNAPSHOT] RUN_DIR`: `engine verify --phase pre` (imagen y versión configuradas antes de las migraciones, `restic check`), el procedimiento de restauración de referencia (`scripts/restore.sh`, log en `contract/restore.log`) y `engine verify --phase post`. Todas las llamadas a `docker` pasan por el `PATH`, así que el shim de fallas actúa igual que con B0 y B1. Las operaciones de red (HTTP, TOTP, git push, testigos) las corre la sonda: el mismo binario del motor montado en el servicio que declara el contrato, en la red de restauración.
+- Reporte por corrida: `runs/<RUN_ID>/contract.json` (veredicto, `first_failed_step`, cada verificación con esperado, observado, detalle y evidencia, `custom_checks`, tiempos de cada fase, sha256 del contrato y commit del motor) y `contract.md`. Evidencia en `runs/<RUN_ID>/contract/evidence/`. Los valores de los secretos nunca se escriben: solo huellas o referencias.
+- Estados de una verificación: `pass` (se midió y coincide), `fail` (se midió y difiere), `error` (no se pudo medir). El veredicto es `pass` solo si todas dan `pass`.
+- `make fault N=00-healthy BASELINE=contract` corre un escenario con el contrato.
+- `docs/conteo/contar.py` cuenta líneas sin comentarios y supuestos `# S:`; `docs/conteo/b1/` es una copia de conteo de los scripts de B1 con las mismas marcas (B1 no se modifica).
+

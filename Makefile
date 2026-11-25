@@ -3,7 +3,7 @@
 SHELL := /bin/bash
 SNAPSHOT ?= latest
 
-.PHONY: reset up seed witness-pre backup inventory witness-post restore b0 run fault faults summary
+.PHONY: reset up seed witness-pre backup inventory witness-post restore b0 run fault faults summary engine
 
 reset:        ## borra contenedores, redes y volúmenes (incluye repo Restic)
 	scripts/reset.sh
@@ -45,3 +45,6 @@ faults:       ## todos los escenarios, en orden (00-healthy, 00-healthy-large, 0
 
 summary:      ## genera results/summary.md
 	docker run --rm -v $(CURDIR):/work:ro recexp-runner:local python3 /work/faults/lib/summary.py > results/summary.md
+
+engine:       ## compila y prueba el motor de contratos (engine/bin/)
+	engine/build.sh

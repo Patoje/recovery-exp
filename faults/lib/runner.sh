@@ -92,6 +92,7 @@ pipeline() {
   if [ "$harness_ok" = 1 ]; then
     local bscript="$ROOT/scripts/$BASELINE.sh"
     [ "$BASELINE" = b1 ] && bscript="$ROOT/baselines/b1/b1.sh"
+    [ "$BASELINE" = contract ] && bscript="$ROOT/baselines/contract/contract.sh"
     phase baseline "$bscript" latest "$RUN_DIR"; b_rc=$?
     b_report="$RUN_DIR/$BASELINE.json"
     if [ -f "$b_report" ]; then

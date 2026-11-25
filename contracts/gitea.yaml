@@ -1,0 +1,178 @@
+# Contrato de restauración de Gitea para el motor (engine/). Todo lo específico de Gitea
+# está acá. Cada línea marcada con "# S:" contiene un supuesto sobre Gitea.
+# Referencias: ${run:ARCHIVO#campo} (artefactos de la corrida), ${env:VAR} (.env),
+# ${objective:VAR} (objectives.env). {campo}: campo del testigo o dependencia actual.
+version: 1
+name: gitea
+
+environment:
+  compose_file: compose/restore.yml
+  env_file: .env
+  probe: {service: runner, profiles: [tools]}
+
+objectives_file: objectives.env
+
+components:
+  - {name: db, service: postgres}
+  - {name: app, service: gitea} # S: Gitea arranca después de su base de datos
+
+# Cómo se reconoce que un testigo fue recuperado (campos de witnesses_*.json).
+witness_types:
+  commit:
+    request:
+      url: "http://gitea:3000/api/v1/repos/{repo}/git/commits/{commit_sha}" # S: API de commits
+      auth: {user: "${env:B0_USER}", password: "${env:B0_PASSWORD}"} # S: la API acepta autenticación básica
+    expect: {status: 200}
+  issue:
+    request:
+      url: "http://gitea:3000/api/v1/repos/{repo}/issues/{issue_number}" # S: API de issues
+      auth: {user: "${env:B0_USER}", password: "${env:B0_PASSWORD}"} # S: la API acepta autenticación básica
+    expect: {status: 200, json: {title: "{title}"}} # S: el issue expone su título en "title"
+  attachment:
+    request:
+      url: "http://gitea:3000/api/v1/repos/{repo}/issues/{issue_number}/assets/{attachment_id}" # S: API de adjuntos de issues
+      auth: {user: "${env:B0_USER}", password: "${env:B0_PASSWORD}"} # S: la API acepta autenticación básica
+      follow_json_field: browser_download_url # S: el adjunto se descarga desde "browser_download_url"
+    expect: {status: 200, sha256_of_body: "{sha256}"}
+  lfs:
+    request:
+      url: "http://gitea:3000/{repo}/media/commit/{commit_sha}/{path}" # S: /media/ sirve el contenido LFS, no el puntero
+      auth: {user: "${env:B0_USER}", password: "${env:B0_PASSWORD}"} # S: la API acepta autenticación básica
+    expect: {status: 200, sha256_of_body: "{lfs_oid}"}
+
+checks:
+  # --- antes de la restauración (antes de cualquier migración)
+  - id: image_before_migrations
+    verifier: component_image
+    with: {component: app, source: configured, expected: "${run:declared.json#gitea_image}"}
+  - id: version_before_migrations
+    verifier: component_version
+    with:
+      component: app
+      command: [gitea, --version] # S: el binario "gitea" está en el PATH de la imagen e informa su versión
+      regex: 'version (\S+)' # S: formato de la salida de "gitea --version"
+      expected: "${run:declared.json#gitea_version}"
+  - id: backup_integrity
+    verifier: restic_check
+    with: {service: restic, profiles: [tools], global_args: [--no-lock, --no-cache], check_args: [--read-data]}
+
+  # --- después de la restauración: estado y valores declarados
+  - id: components_up
+    verifier: components_running
+    with: {require_healthy: true}
+  - id: start_order
+    verifier: start_order
+  - id: image_running
+    verifier: component_image
+    with: {component: app, source: running, expected: "${run:declared.json#gitea_image}"}
+  - id: restore_tool_errors
+    verifier: log_patterns
+    with:
+      files: [contract/restore.log, contract/evidence/backup_integrity.log]
+      patterns:
+        - 'pg_restore: error:'
+        - 'pg_restore: warning: errors ignored on restore:'
+        - '^Fatal: '
+        - '^ignoring error for '
+        - '^error: '
+        - '^\s*error for tree '
+      must_match:
+        - 'pg_restore: error: COPY failed for table "issue": ERROR:  character with byte sequence'
+        - 'pg_restore: warning: errors ignored on restore: 2'
+        - 'Fatal: repository contains errors'
+        - 'ignoring error for /data/git/repositories/alice/witness.git/objects/ab/cd: ciphertext verification failed'
+      must_not_match:
+        - 'no errors were found'
+        - 'using temporary cache in /tmp/restic-check-cache-123'
+        - 'check snapshots, trees and blobs'
+  - id: secret_key
+    verifier: secret_fingerprint
+    with:
+      component: app
+      file: /data/gitea/conf/app.ini # S: ubicación del archivo de configuración en la imagen
+      format: ini # S: app.ini tiene formato ini
+      section: security # S: la clave está en [security]
+      key: SECRET_KEY # S: nombre de la clave de cifrado
+      expected: "${run:declared.json#secret_key_sha256}"
+  - id: database_encoding
+    verifier: sql_scalar
+    with:
+      database: {component: db, client: psql, user: "${env:POSTGRES_USER}", name: "${env:POSTGRES_DB}"}
+      query: show server_encoding
+      expected: "${run:declared.json#database_encoding}"
+
+  # --- invariantes contra el inventario del backup (antes de cualquier escritura)
+  - id: table_counts
+    verifier: table_counts_match_inventory
+    with:
+      database: {component: db, client: psql, user: "${env:POSTGRES_USER}", name: "${env:POSTGRES_DB}"}
+      schema: public # S: Gitea guarda sus tablas en el esquema public
+      inventory: "${run:inventory.json#table_row_counts}"
+  - id: repositories_db_vs_disk
+    verifier: entities_match_disk
+    with:
+      database: {component: db, client: psql, user: "${env:POSTGRES_USER}", name: "${env:POSTGRES_DB}"}
+      query: "select u.lower_name || '/' || r.lower_name from repository r join \"user\" u on u.id = r.owner_id order by 1" # S: tablas repository y "user", columnas lower_name y owner_id
+      disk:
+        component: app
+        root: /data/git/repositories # S: raíz de los repositorios en disco
+        glob: "*/*.git" # S: un directorio <dueño>/<repo>.git por repositorio
+        strip_suffix: .git # S: el nombre en disco es el lower_name más ".git"
+  - id: refs
+    verifier: git_refs_match_inventory
+    with:
+      inventory: "${run:inventory.json#repository_refs}"
+      disk: {component: app, root: /data/git/repositories, glob: "*/*.git", strip_suffix: .git} # S: mismo diseño de repositorios en disco
+
+  # --- operaciones reales (desde la sonda, en la red de restauración)
+  - id: version_running
+    verifier: http_request
+    with:
+      request: {url: "http://gitea:3000/api/v1/version"} # S: endpoint de versión, sin autenticación
+      expect: {status: 200, json: {version: "${run:declared.json#gitea_version}"}} # S: campo "version"
+  - id: external_dependencies
+    verifier: dependencies_reachable
+    with:
+      from: "${run:declared.json#external_dependencies}"
+      request: {url: "http://{endpoint}/minio/health/live"}
+      expect: {status: 200}
+  - id: witness_attachment
+    verifier: witness_fetch
+    with: {type: attachment, sources: ["${run:witnesses_pre.json#witnesses}"]}
+  - id: witness_lfs
+    verifier: witness_fetch
+    with: {type: lfs, sources: ["${run:witnesses_pre.json#witnesses}"]}
+  - id: witness_issue
+    verifier: witness_fetch
+    with: {type: issue, sources: ["${run:witnesses_pre.json#witnesses}"]}
+  - id: totp_login
+    verifier: login_totp
+    with:
+      request:
+        url: "http://gitea:3000/api/v1/user" # S: endpoint del usuario autenticado
+        auth: {user: "${run:secrets/totp.json#user}", password: "${env:SEED_USER_PASSWORD}"} # S: autenticación básica más el código TOTP
+      totp:
+        secret: "${run:secrets/totp.json#secret_base32}"
+        header: X-Gitea-OTP # S: la API recibe el código TOTP en este encabezado
+      expect: {status: 200, json: {login: "${run:secrets/totp.json#user}"}} # S: campo "login"
+  - id: rpo
+    verifier: rpo
+    with:
+      objective: "${objective:RPO_SECONDS}"
+      incident: "${run:witnesses_post.json#incident_at}"
+      sources: ["${run:witnesses_pre.json#witnesses}", "${run:witnesses_post.json#witnesses}"]
+  - id: git_push
+    verifier: git_push
+    with:
+      url: "http://gitea:3000/${run:witnesses_pre.json#witnesses[type=commit].repo}.git" # S: URL de Git por HTTP
+      auth: {user: "${env:B0_USER}", password: "${env:B0_PASSWORD}"} # S: push por HTTP con autenticación básica
+      file_prefix: contract-push-
+      env: {GIT_LFS_SKIP_SMUDGE: "1"}
+  - id: rto
+    verifier: rto
+    with:
+      objective: "${objective:RTO_SECONDS}"
+      restore_started: "${run:restore.json#restore_started_at}"
+      restore_status: "${run:restore.json#status}"
+      restore_status_ok: ok
+      requires: [components_up, version_running, witness_attachment, witness_lfs, witness_issue, totp_login, git_push]
