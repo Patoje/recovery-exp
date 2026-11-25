@@ -1,0 +1,4 @@
+[ok] el app.ini en uso tiene la SECRET_KEY inyectada
+[ok] la huella en uso difiere de la declarada al hacer el backup
+[ok] el proceso de Gitea arrancó después de escribirse ese app.ini
+[obs] login API de la cuenta con TOTP (código correcto): HTTP 401

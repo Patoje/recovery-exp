@@ -1,0 +1,46 @@
+[shim] 2026-11-25T10:37:16Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:37:16Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools down -v --remove-orphans
+[shim] 2026-11-25T10:43:06Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:06Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env config --format json
+[shim] 2026-11-25T10:43:06Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:06Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --no-lock --no-cache check --read-data
+[shim] 2026-11-25T10:43:07Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:07Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools down -v --remove-orphans
+[shim] 2026-11-25T10:43:07Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:07Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --no-lock --no-cache snapshots --json --latest 1
+[shim] 2026-11-25T10:43:08Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:08Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --no-lock --no-cache restore f4169e9876f6d3e9fe1d16cc00a8cc57ef9cf614d3b1e90f92e2e8c00ffd6a93 --target /
+[shim] 2026-11-25T10:43:09Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:09Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait postgres
+[shim] 2026-11-25T10:43:11Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:11Z restore: pg_restore sin --exit-on-error
+[shim] 2026-11-25T10:43:11Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -ec pg_restore -U "$POSTGRES_USER" -d "$POSTGRES_DB" /dump/gitea.dump
+[shim] 2026-11-25T10:43:12Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:13Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -e PGOPTIONS=-c default_transaction_read_only=on postgres psql -U gitea -d gitea -At -v ON_ERROR_STOP=1 -c select coalesce(json_object_agg(t.table_name, (xpath('/row/c/text()',
+  query_to_xml(format('select count(*) as c from %I.%I', t.table_schema, t.table_name), false, true, '')))[1]::text::bigint
+  order by t.table_name), '{}'::json) from information_schema.tables t
+  where t.table_schema = 'public' and t.table_type = 'BASE TABLE'
+[shim] 2026-11-25T10:43:13Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:13Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -e PGOPTIONS=-c default_transaction_read_only=on postgres psql -U gitea -d gitea -At -v ON_ERROR_STOP=1 -c select u.lower_name || '/' || r.lower_name from repository r join "user" u on u.id = r.owner_id order by 1
+[shim] 2026-11-25T10:43:13Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:13Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -e PGOPTIONS=-c default_transaction_read_only=on postgres psql -U gitea -d gitea -At -v ON_ERROR_STOP=1 -c show server_encoding
+[shim] 2026-11-25T10:43:13Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:13Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T gitea sh -c cd /data/git/repositories && for d in */*.git; do
+    [ -d "$d" ] || continue
+    echo "## ${d%.git}"
+    git -c safe.directory="*" --git-dir "$d" for-each-ref --format="%(refname) %(objectname)"
+  done
+[shim] 2026-11-25T10:43:13Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:13Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T gitea sh -c awk -F" *= *" "/^\[/{s=\$0} s==\"[security]\" && \$1==\"SECRET_KEY\"{printf \"%s\", \$2}" /data/gitea/conf/app.ini | sha256sum | cut -d" " -f1
+[shim] 2026-11-25T10:43:13Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:13Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env ps -q gitea
+[shim] 2026-11-25T10:43:13Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:13Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner python3 /work/baselines/b1/checks.py /runs/20261125T103717Z /work/objectives.env
+[shim] 2026-11-25T10:43:14Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:14Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -c psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Atc "$1" _ show server_encoding
+[shim] 2026-11-25T10:43:14Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:14Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -c psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Atc "$1" _ select count(*) from issue
+[shim] 2026-11-25T10:43:14Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:14Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait --wait-timeout 120 gitea
+[shim] 2026-11-25T10:43:19Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:19Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner curl -s http://gitea:3000/api/v1/version

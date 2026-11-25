@@ -1,0 +1,102 @@
+[10:07:21] paso: stop_gitea
+[shim] 2026-11-25T10:07:21Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-25T10:07:21Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env stop gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[10:07:21] paso: pg_dump
+[shim] 2026-11-25T10:07:21Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-25T10:07:21Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -ec rm -f /dump/gitea.dump; pg_dump -U "$POSTGRES_USER" -Fc -f /dump/gitea.dump "$POSTGRES_DB"; ls -l /dump/gitea.dump
+-rw-r--r--    1 root     root        382723 Nov 25 10:07 /dump/gitea.dump
+[10:07:21] paso: restic_backup
+[shim] 2026-11-25T10:07:21Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-25T10:07:21Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic backup --json --host gitea-original --tag run=cycle-2 --exclude /data/gitea/log --exclude /data/gitea/indexers /dump /data
+ Container recexp-restic-run-9063c186f92d Creating 
+ Container recexp-restic-run-9063c186f92d Created 
+Save(<lock/6fae176f35>) returned error, retrying after 1.115383669s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-2967489148: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 1.026677416s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-695827454: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 5.119039715s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-3773663307: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 4.770799844s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-1681339084: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 22.203976644s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-3543310980: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 35.736465984s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-3880549423: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 36.25469524s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-3948273994: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 53.899157002s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-1462077631: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 1m12.584601027s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-904687575: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 1m25.377703447s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-3017172663: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 1m1.014593236s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-4049334317: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 1m24.301436704s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-3539569143: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 30.375369825s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-3241236197: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 46.015496919s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-236161843: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 1m0.366188407s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-660038870: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 45.719697341s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-980353417: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 1m11.167546582s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-1102891313: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 1m24.947950755s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-3582728059: read-only file system
+Save(<lock/6fae176f35>) returned error, retrying after 1m5.044201323s: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-377422454: read-only file system
+Save(<lock/6fae176f35>) failed: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-4012581367: read-only file system
+{"message_type":"exit_error","code":1,"message":"unable to create lock in backend: open /repo/locks/6fae176f35384fa697f7bec59fd7f07283147e1c7d9a8860e297614cde38a59f-tmp-4012581367: read-only file system"}
+
+[10:21:50] falló: restic_backup (código 1)
+[10:21:50] el backup falló con Gitea detenido: volviendo a arrancarlo
+[10:21:50] paso: start_gitea_after_failure
+[shim] 2026-11-25T10:21:50Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-25T10:21:50Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[10:21:56] backup.json: failed
+[10:21:56] paso: stop_gitea
+[shim] 2026-11-25T10:21:56Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-25T10:21:56Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env stop gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[10:21:56] paso: pg_dump
+[shim] 2026-11-25T10:21:56Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-25T10:21:56Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -ec rm -f /dump/gitea.dump; pg_dump -U "$POSTGRES_USER" -Fc -f /dump/gitea.dump "$POSTGRES_DB"; ls -l /dump/gitea.dump
+-rw-r--r--    1 root     root        382723 Nov 25 10:21 /dump/gitea.dump
+[10:21:56] paso: restic_backup
+[shim] 2026-11-25T10:21:56Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-25T10:21:56Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic backup --json --host gitea-original --tag run=cycle-3 --exclude /data/gitea/log --exclude /data/gitea/indexers /dump /data
+ Container recexp-restic-run-8c95d04cf6ca Creating 
+ Container recexp-restic-run-8c95d04cf6ca Created 
+Save(<lock/3cef85f9bb>) returned error, retrying after 793.847804ms: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-2789026674: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 2.686711672s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-488015843: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 2.070663112s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-3036075600: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 8.422822762s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-3608088245: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 23.764645751s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-17851596: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 45.841314974s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-385578454: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 58.059454855s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-3283902434: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 47.185307999s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-496140164: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 1m26.533579027s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-31548925: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 1m0.877660864s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-2427898387: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 1m28.902512236s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-586750762: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 39.167020591s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-1007646759: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 1m19.760218653s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-1052143314: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 42.125971491s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-3861398570: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 1m8.417494323s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-1332217674: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 34.570417982s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-1094914938: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 1m21.549909424s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-3814722128: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 47.17046726s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-1677872228: read-only file system
+Save(<lock/3cef85f9bb>) returned error, retrying after 37.892454109s: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-4261221862: read-only file system
+Save(<lock/3cef85f9bb>) failed: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-1126011415: read-only file system
+{"message_type":"exit_error","code":1,"message":"unable to create lock in backend: open /repo/locks/3cef85f9bbf7f03837bf728322a0410bcc346d30d82bf7464497e268b3fc901a-tmp-1126011415: read-only file system"}
+
+[10:36:08] falló: restic_backup (código 1)
+[10:36:08] el backup falló con Gitea detenido: volviendo a arrancarlo
+[10:36:08] paso: start_gitea_after_failure
+[shim] 2026-11-25T10:36:08Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml
+[shim] 2026-11-25T10:36:08Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/13-readonly-repo-cron/original.ro.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[10:36:14] backup.json: failed

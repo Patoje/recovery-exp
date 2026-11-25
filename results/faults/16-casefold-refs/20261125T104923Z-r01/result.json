@@ -1,0 +1,130 @@
+{
+  "scenario": "16-casefold-refs",
+  "batch": "20261125T104923Z",
+  "repetition": 1,
+  "run_id": "20261125T104924Z",
+  "baseline": "b1",
+  "env_version": "v2",
+  "status": "fail",
+  "reason": "",
+  "started_at": "2026-11-25T10:49:23.135Z",
+  "finished_at": "2026-11-25T10:55:25.240Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 53
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-25T10:49:23.143Z",
+      "duration_ms": 679
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-25T10:49:23.834Z",
+      "duration_ms": 217
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-25T10:49:24.064Z",
+      "duration_ms": 18191
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-25T10:49:42.267Z",
+      "duration_ms": 9189
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-25T10:49:51.469Z",
+      "duration_ms": 1609
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T10:49:53.090Z",
+      "duration_ms": 1115
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T10:49:54.217Z",
+      "duration_ms": 8946
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-25T10:50:03.177Z",
+      "duration_ms": 1088
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T10:50:04.277Z",
+      "duration_ms": 256
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-25T10:50:04.547Z",
+      "duration_ms": 300552
+    },
+    {
+      "name": "baseline",
+      "exit_code": 1,
+      "started_at": "2026-11-25T10:55:05.111Z",
+      "duration_ms": 18568
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-25T10:55:23.698Z",
+      "duration_ms": 1283
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 1,
+    "result": "fail",
+    "first_failed_step": "refs_vs_inventory"
+  },
+  "restore_to_baseline_end_s": 16.7,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] kernel de la VM con ext4 casefold",
+      "[ok] se crearon las dos ramas",
+      "[ok] el snapshot tiene las dos refs sueltas (2)",
+      "[ok] el directorio de datos restaurado tiene casefold (+F)",
+      "[ok] la restauración usó el volumen casefold",
+      "[ok] en el disco restaurado queda una sola ref (case-test)",
+      "[obs] SHA de la ref que quedó: eeb8b9b53eba62c165450a8ed6d37906343515a5"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-25T10:55:29+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261125T104924Z/witnesses_post.json",
+      "max_gap_s": 60.0,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "fail",
+      "reason": ""
+    }
+  }
+}

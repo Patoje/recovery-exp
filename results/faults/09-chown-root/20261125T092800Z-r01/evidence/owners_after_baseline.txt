@@ -1,0 +1,5 @@
+git /data/git
+git /data/gitea
+root /data/git/repositories
+root /data/gitea/attachments
+root /data/git/lfs

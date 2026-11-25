@@ -1,0 +1,3 @@
+2026/11/25 09:27:45 routers/init.go:97:syncAppConfForGit() [I] re-sync repository hooks ...
+2026/11/25 09:27:54 HTTPRequest [I] router: completed POST /api/internal/hook/pre-receive/alice/witness for 127.0.0.1:0, 200 OK in 3.2ms @ private/hook_pre_receive.go:76(private.HookPreReceive)
+2026/11/25 09:27:54 HTTPRequest [I] router: completed POST /api/internal/hook/post-receive/alice/witness for 127.0.0.1:0, 200 OK in 6.9ms @ private/hook_post_receive.go:80(private.HookPostReceive)

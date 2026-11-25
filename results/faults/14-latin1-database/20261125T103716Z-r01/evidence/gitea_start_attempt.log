@@ -1,0 +1,13 @@
+[shim] 2026-11-25T10:43:14Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-25T10:43:14Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait --wait-timeout 120 gitea
+ Container recexp-restore-postgres-1 Running 
+ Container recexp-restore-gitea-1 Creating 
+ Container recexp-restore-gitea-1 Created 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+ Container recexp-restore-gitea-1 Starting 
+ Container recexp-restore-gitea-1 Started 
+ Container recexp-restore-gitea-1 Waiting 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+ Container recexp-restore-gitea-1 Healthy 

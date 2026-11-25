@@ -1,0 +1,2 @@
+[shim] 2026-11-25T08:57:45Z original: restic backup + --exclude /data/gitea/attachments
+[shim] 2026-11-25T08:57:45Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic backup --exclude /data/gitea/attachments --json --host gitea-original --tag run=20261125T085714Z --exclude /data/gitea/log --exclude /data/gitea/indexers /dump /data

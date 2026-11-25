@@ -52,3 +52,14 @@ No se corrió nada de B1. La tanda espera esta decisión.
 - **A.** Aceptar la evidencia indirecta y empezar la tanda de B1.
 - **B.** Repetir el 01 con B0 en v2, agregando al `confirm` del 01 una observación (`[obs]`, no un criterio) con la huella de la `SECRET_KEY` en uso. La corrida actual se conserva. Si las huellas difieren, empezar la tanda.
 - **C.** Otra forma que definas vos.
+
+## 4. Error de B1: `repositories_db_vs_disk` informa "0 en disco" cuando no pudo leer el disco
+
+**Qué pasó.** En la tanda de B1 en v2 (`b1-v1` sin taggear), cuando Gitea no está en marcha después de la restauración, `b1.sh` no puede listar los repositorios del disco: `b1/raw/disk_refs.err` contiene `service "gitea" is not running` y `disk_refs.txt` queda vacío. `checks.py` solo distingue el caso en que faltan la base **y** el disco ("no se pudo leer la base ni el disco restaurados"). Si falta solo el disco, lo toma como una lista vacía e informa, por ejemplo, `9 en la base, 0 en disco; solo en base [...]`.
+
+Corridas afectadas: `results/faults/11-minio-bucket-excluded/20261125T094017Z-r01` y `results/faults/14-latin1-database/20261125T103716Z-r01`. En las dos el paso falla, que es el resultado correcto (y B1 ya había fallado en `b0`); lo incorrecto es el detalle, que afirma algo que no se midió. No cambia ningún resultado ni el paso de la primera falla. No afecta a las restauraciones sanas.
+
+B1 no se modificó durante la tanda. La corrección iría en una versión nueva de B1. **Opciones:**
+
+- **A.** Corregirlo en B1 v2: si `disk_refs.err` no está vacío o Gitea no está en marcha, informar "no se pudo leer el disco restaurado" (falla igual), y revisar el mismo caso en `refs_vs_inventory`.
+- **B.** Dejarlo documentado en B1 v1 sin versión nueva.

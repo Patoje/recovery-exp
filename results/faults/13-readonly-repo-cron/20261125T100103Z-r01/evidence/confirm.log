@@ -1,0 +1,11 @@
+[ok] el repositorio tiene un solo snapshot (1)
+[ok] ciclo 2: backup.json con status failed
+[ok] ciclo 2: el cron ignoró el código de salida
+[ok] ciclo 3: backup.json con status failed
+[ok] ciclo 3: el cron ignoró el código de salida
+[ok] el shim montó el repositorio en solo lectura en los ciclos 2 y 3
+[ok] latest restaurado = snapshot del ciclo 1
+[ok] witnesses_post.json registra incident_minutes 35
+[obs] intentos de testigo fallidos (Gitea detenido): 29
+[obs] duración de los ciclos 2 y 3 (ms): 874917 857911 
+[obs] error de restic en el ciclo 2: 

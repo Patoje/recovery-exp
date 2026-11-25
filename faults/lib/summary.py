@@ -108,7 +108,43 @@ if b0_by_env.get("v1") and b0_by_env.get("v2"):
         changed = "—" if "—" in (r1, r2) else ("no" if r1 == r2 else "**sí**")
         lines.append(f"| {scen} | {c1} | {r1} | {c2} | {r2} | {t1} | {t2} | {changed} |")
 
+HEALTHY = "00-healthy"
+
+
+def healthy_series(env, b):
+    """Runs of the healthy series: from the first batch with several repetitions on (top-ups included)."""
+    batches = results[env].get(HEALTHY, {}).get(b, {})
+    multi = sorted(k for k, v in batches.items() if len(v) > 1)
+    if not multi:
+        return []
+    return [r for k in sorted(batches) if k >= multi[0] for r in batches[k]]
+
+
+for env in ENVS:
+    series = {b: healthy_series(env, b) for b in BASELINES}
+    if not any(series.values()):
+        continue
+    lines += ["", f"## Restauraciones sanas ({HEALTHY}, entorno {env})", "",
+              "Cada corrida arranca desde `make reset`. Una falsa alarma es un `fail` de la línea base en una "
+              "restauración sana válida.", "",
+              "| Línea base | Corrida | Estado | Resultado | ¿Falsa alarma? | Detalle |", "|---|---|---|---|---|---|"]
+    for b in BASELINES:
+        for r in series[b]:
+            if r["status"] == "invalid":
+                fa, det = "— (invalid)", r["reason"]
+            else:
+                fa = "**sí**" if r["baseline_result"]["result"] != "pass" else "no"
+                det = ""
+            lines.append(f"| {b.upper()} | `{r['batch']}-r{r['repetition']:02d}` | {r['status']} | {step_txt(r)} | {fa} | {det} |")
+    for b in BASELINES:
+        v = [r for r in series[b] if r["status"] != "invalid"]
+        if series[b]:
+            fas = sum(1 for r in v if r["baseline_result"]["result"] != "pass")
+            lines.append(f"\n**{b.upper()}:** {len(v)} válidas de {len(series[b])}; falsas alarmas: {fas} de {len(v)}.")
+
 for env, scen, b, runs in repeated_detail:
+    if scen == HEALTHY:
+        continue
     lines += ["", f"## {scen}: repeticiones ({b.upper()}, entorno {env})", "",
               f"| Corrida | Estado | confirm | {b.upper()} | Detalle |", "|---|---|---|---|---|"]
     for r in runs:

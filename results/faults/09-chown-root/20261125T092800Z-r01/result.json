@@ -1,0 +1,128 @@
+{
+  "scenario": "09-chown-root",
+  "batch": "20261125T092800Z",
+  "repetition": 1,
+  "run_id": "20261125T092801Z",
+  "baseline": "b1",
+  "env_version": "v2",
+  "status": "fail",
+  "reason": "",
+  "started_at": "2026-11-25T09:28:00.516Z",
+  "finished_at": "2026-11-25T09:34:01.333Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 1
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:28:00.531Z",
+      "duration_ms": 1003
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:28:01.546Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:28:01.560Z",
+      "duration_ms": 18771
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:28:20.343Z",
+      "duration_ms": 9342
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:28:29.696Z",
+      "duration_ms": 1596
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:28:31.304Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:28:31.319Z",
+      "duration_ms": 8703
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:28:40.033Z",
+      "duration_ms": 1007
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:28:41.053Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:28:41.069Z",
+      "duration_ms": 301344
+    },
+    {
+      "name": "baseline",
+      "exit_code": 1,
+      "started_at": "2026-11-25T09:33:42.426Z",
+      "duration_ms": 18461
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:34:00.908Z",
+      "duration_ms": 173
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 1,
+    "result": "fail",
+    "first_failed_step": "git_push_witness_repo"
+  },
+  "restore_to_baseline_end_s": 16.7,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] se aplicó el chown después de restic restore",
+      "[ok] /data/git/repositories sigue siendo de root con Gitea en marcha",
+      "[ok] /data/gitea/attachments sigue siendo de root con Gitea en marcha",
+      "[ok] /data/git/lfs sigue siendo de root con Gitea en marcha",
+      "[ok] /data/git y /data/gitea siguen siendo de git (sin auto-reparación)"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-25T09:34:04+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261125T092801Z/witnesses_post.json",
+      "max_gap_s": 60.4,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "fail",
+      "reason": ""
+    }
+  }
+}

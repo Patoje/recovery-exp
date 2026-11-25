@@ -1,0 +1,128 @@
+{
+  "scenario": "00-healthy-large",
+  "batch": "20261125T073833Z",
+  "repetition": 1,
+  "run_id": "20261125T073835Z",
+  "baseline": "b1",
+  "env_version": "v2",
+  "status": "pass",
+  "reason": "",
+  "started_at": "2026-11-25T07:38:33.895Z",
+  "finished_at": "2026-11-25T07:44:47.527Z",
+  "shim": {
+    "enabled": false,
+    "docker_path": "/opt/homebrew/bin/docker",
+    "modifications_logged": 0
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:38:33.904Z",
+      "duration_ms": 1069
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:38:34.987Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:38:35.003Z",
+      "duration_ms": 18272
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:38:53.288Z",
+      "duration_ms": 9789
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:39:03.091Z",
+      "duration_ms": 1640
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:39:04.743Z",
+      "duration_ms": 10554
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:39:15.311Z",
+      "duration_ms": 10244
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:39:25.566Z",
+      "duration_ms": 902
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:39:26.480Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:39:26.497Z",
+      "duration_ms": 301336
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:44:27.846Z",
+      "duration_ms": 19364
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-25T07:44:47.234Z",
+      "duration_ms": 40
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 17.0,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] docker resuelve al binario real",
+      "[ok] no hay registro de modificaciones del shim",
+      "[ok] el log de la corrida no tiene líneas [shim]",
+      "[ok] dataset grande de 536870912 bytes registrado",
+      "[obs] duración de restic restore (ms): 1615"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-25T07:44:50+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261125T073835Z/witnesses_post.json",
+      "max_gap_s": 60.4,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "pass",
+      "reason": ""
+    }
+  }
+}

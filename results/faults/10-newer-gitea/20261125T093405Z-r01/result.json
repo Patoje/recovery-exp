@@ -1,0 +1,128 @@
+{
+  "scenario": "10-newer-gitea",
+  "batch": "20261125T093405Z",
+  "repetition": 1,
+  "run_id": "20261125T093406Z",
+  "baseline": "b1",
+  "env_version": "v2",
+  "status": "fail",
+  "reason": "",
+  "started_at": "2026-11-25T09:34:05.072Z",
+  "finished_at": "2026-11-25T09:40:14.104Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 55
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:34:05.080Z",
+      "duration_ms": 943
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:34:06.034Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:34:06.048Z",
+      "duration_ms": 26130
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:34:32.190Z",
+      "duration_ms": 9184
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:34:41.388Z",
+      "duration_ms": 1566
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:34:42.967Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:34:42.982Z",
+      "duration_ms": 9280
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:34:52.275Z",
+      "duration_ms": 1078
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:34:53.365Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:34:53.381Z",
+      "duration_ms": 301411
+    },
+    {
+      "name": "baseline",
+      "exit_code": 1,
+      "started_at": "2026-11-25T09:39:54.805Z",
+      "duration_ms": 18770
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-25T09:40:13.595Z",
+      "duration_ms": 256
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 1,
+    "result": "fail",
+    "first_failed_step": "gitea_image_before_migrations"
+  },
+  "restore_to_baseline_end_s": 16.9,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] el backup se hizo con 1.27.3 (gitea/gitea@sha256:87a67ee09d3ae0d1df5fda5dcda3e2a1f9236a45b0a59025d6e00e46adc43bef)",
+      "[ok] la restauración usa otra imagen (gitea/gitea@sha256:aa90e8f00b755b0d665214ab9c14447ea44d3190dbe6b6d0cb46cd9c4f55d309)",
+      "[obs] versión declarada: 1.27.3",
+      "[ok] se guardó la base antes del primer arranque",
+      "[ok] las migraciones cambiaron la versión de la base (343 -> 358)"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-25T09:40:17+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261125T093406Z/witnesses_post.json",
+      "max_gap_s": 60.0,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "fail",
+      "reason": ""
+    }
+  }
+}

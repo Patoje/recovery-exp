@@ -1,0 +1,48 @@
+[shim] 2026-11-25T07:50:58Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:50:58Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools down -v --remove-orphans
+[shim] 2026-11-25T07:56:40Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env
+[shim] 2026-11-25T07:56:40Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:56:40Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env config --format json
+[shim] 2026-11-25T07:56:41Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env
+[shim] 2026-11-25T07:56:41Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:56:41Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env --profile tools run --rm --no-deps restic --no-lock --no-cache check --read-data
+[shim] 2026-11-25T07:56:42Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env
+[shim] 2026-11-25T07:56:42Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:56:42Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env --profile tools down -v --remove-orphans
+[shim] 2026-11-25T07:56:42Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env
+[shim] 2026-11-25T07:56:42Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:56:42Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env --profile tools run --rm --no-deps restic --no-lock --no-cache snapshots --json --latest 1
+[shim] 2026-11-25T07:56:43Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env
+[shim] 2026-11-25T07:56:43Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:56:43Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env --profile tools run --rm --no-deps restic --no-lock --no-cache restore d3fcec700929efe8c0233fcd61ac79672fc5e726df5f77965464fa34868f1ec8 --target /
+[shim] 2026-11-25T07:56:44Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env
+[shim] 2026-11-25T07:56:44Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:56:44Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env up -d --wait postgres
+[shim] 2026-11-25T07:56:45Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env
+[shim] 2026-11-25T07:56:45Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:56:45Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env exec -T -e PGOPTIONS=-c default_transaction_read_only=on postgres psql -U gitea -d gitea -At -v ON_ERROR_STOP=1 -c select coalesce(json_object_agg(t.table_name, (xpath('/row/c/text()',
+  query_to_xml(format('select count(*) as c from %I.%I', t.table_schema, t.table_name), false, true, '')))[1]::text::bigint
+  order by t.table_name), '{}'::json) from information_schema.tables t
+  where t.table_schema = 'public' and t.table_type = 'BASE TABLE'
+[shim] 2026-11-25T07:56:45Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env
+[shim] 2026-11-25T07:56:45Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:56:45Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env exec -T -e PGOPTIONS=-c default_transaction_read_only=on postgres psql -U gitea -d gitea -At -v ON_ERROR_STOP=1 -c select u.lower_name || '/' || r.lower_name from repository r join "user" u on u.id = r.owner_id order by 1
+[shim] 2026-11-25T07:56:45Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env
+[shim] 2026-11-25T07:56:45Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:56:45Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env exec -T -e PGOPTIONS=-c default_transaction_read_only=on postgres psql -U gitea -d gitea -At -v ON_ERROR_STOP=1 -c show server_encoding
+[shim] 2026-11-25T07:56:45Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env
+[shim] 2026-11-25T07:56:45Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:56:45Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env exec -T gitea sh -c cd /data/git/repositories && for d in */*.git; do
+    [ -d "$d" ] || continue
+    echo "## ${d%.git}"
+    git -c safe.directory="*" --git-dir "$d" for-each-ref --format="%(refname) %(objectname)"
+  done
+[shim] 2026-11-25T07:56:45Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env
+[shim] 2026-11-25T07:56:45Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:56:45Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env exec -T gitea sh -c awk -F" *= *" "/^\[/{s=\$0} s==\"[security]\" && \$1==\"SECRET_KEY\"{printf \"%s\", \$2}" /data/gitea/conf/app.ini | sha256sum | cut -d" " -f1
+[shim] 2026-11-25T07:56:45Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env
+[shim] 2026-11-25T07:56:45Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:56:45Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env ps -q gitea
+[shim] 2026-11-25T07:56:45Z restore: --env-file /Users/patohe/Desktop/recovery-exp/.env -> /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env
+[shim] 2026-11-25T07:56:45Z restore: entorno sin POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB
+[shim] 2026-11-25T07:56:45Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml --env-file /Users/patohe/Desktop/recovery-exp/results/faults/02-db-creds-missing/20261125T075058Z-r01/evidence/restore.env --profile tools run --rm --no-deps -T runner python3 /work/baselines/b1/checks.py /runs/20261125T075059Z /work/objectives.env

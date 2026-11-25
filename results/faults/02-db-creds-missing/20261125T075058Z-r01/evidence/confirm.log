@@ -1,0 +1,4 @@
+[ok] el env-file de restauración no tiene POSTGRES_*
+[ok] existe el contenedor postgres de restauración
+[ok] el postgres restaurado no recibió POSTGRES_PASSWORD
+[obs] últimas líneas del postgres restaurado:         See PostgreSQL documentation about "trust":        https://www.postgresql.org/docs/current/auth-trust.html 
