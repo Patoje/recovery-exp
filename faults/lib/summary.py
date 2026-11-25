@@ -105,7 +105,8 @@ if b0_by_env.get("v1") and b0_by_env.get("v2"):
     for scen in sorted(set(b0_by_env["v1"]) | set(b0_by_env["v2"])):
         c1, r1, t1 = b0_by_env["v1"].get(scen, ("—", "—", "—"))
         c2, r2, t2 = b0_by_env["v2"].get(scen, ("—", "—", "—"))
-        changed = "—" if "—" in (r1, r2) else ("no" if r1 == r2 else "**sí**")
+        norm = lambda t: "pass" if t.startswith("pass ") and " fail 0/" in t else t  # all valid repetitions passed
+        changed = "—" if "—" in (r1, r2) else ("no" if norm(r1) == norm(r2) else "**sí**")
         lines.append(f"| {scen} | {c1} | {r1} | {c2} | {r2} | {t1} | {t2} | {changed} |")
 
 HEALTHY = "00-healthy"

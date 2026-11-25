@@ -56,7 +56,7 @@ Entornos: **v1** (`b0-v1`, `SECRET_KEY` vacía en `app.ini`) y **v2** (`make up`
 
 | Falla | confirm v1 | B0 v1 | confirm v2 | B0 v2 | t v1 (s) | t v2 (s) | ¿Cambió B0? |
 |---|---|---|---|---|---|---|---|
-| 00-healthy | valid | pass | valid 11/11 corridas | pass 11/11, fail 0/11 (válidas) | 14.4 | — | **sí** |
+| 00-healthy | valid | pass | valid 11/11 corridas | pass 11/11, fail 0/11 (válidas) | 14.4 | — | no |
 | 00-healthy-large | valid | pass | valid | pass | 14.8 | 15.3 | no |
 | 01-appini-excluded | valid | pass | valid | pass | 14.3 | 14.5 | no |
 | 02-db-creds-missing | valid | fail en `restore` | valid | fail en `restore` | 2.7 | 2.6 | no |
