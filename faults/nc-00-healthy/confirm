@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Confirma que el shim estuvo inactivo durante toda la corrida.
+. "$FAULT_DIR/../lib/nc/common.sh"
+check "docker resuelve al binario real ($(type -P docker))" test "$(type -P docker)" = "$FAULT_REAL_DOCKER"
+check "el PATH no contiene el shim" sh -c 'case ":$PATH:" in *faults/lib/shim*) exit 1;; esac'
+check "no hay registro de modificaciones del shim" test ! -e "$FAULT_SHIM_LOG"
+check "el log de la corrida no tiene líneas [shim]" sh -c '! grep -q "^\[shim\]" "$FAULT_RUN_LOG"'
+confirm_done

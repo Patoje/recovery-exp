@@ -3,7 +3,7 @@
 SHELL := /bin/bash
 SNAPSHOT ?= latest
 
-.PHONY: reset up seed witness-pre backup inventory witness-post restore b0 run fault faults summary engine
+.PHONY: reset up seed witness-pre backup inventory witness-post restore b0 run fault faults summary engine nc-fault
 
 reset:        ## borra contenedores, redes y volúmenes (incluye repo Restic)
 	scripts/reset.sh
@@ -42,6 +42,9 @@ faults:       ## todos los escenarios, en orden (00-healthy, 00-healthy-large, 0
 	for s in 00-healthy 00-healthy-large 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16; do \
 	  BASELINE=$(or $(BASELINE),b0) faults/lib/runner.sh $$s; \
 	done; $(MAKE) summary
+
+nc-fault:     ## escenario de Nextcloud: make nc-fault N=nc-01 [BASELINE=b0|b1|contract]
+	BASELINE=$(or $(BASELINE),b0) faults/lib/nc/runner.sh $(N)
 
 summary:      ## genera results/summary.md
 	docker run --rm -v $(CURDIR):/work:ro recexp-runner:local python3 /work/faults/lib/summary.py > results/summary.md

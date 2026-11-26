@@ -43,6 +43,7 @@ def wrapper_version(r):
 # env -> scen -> baseline -> batch -> [r]
 results = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(list))))
 pre_freeze = []  # contract runs before the freeze
+nextcloud = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))  # Nextcloud: scen -> baseline -> batch -> [r]
 hidden = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))  # hidden faults O1..: scen -> baseline -> batch -> [r]
 HIDDEN_ALL = {"O1-secuencias-en-cero": "A", "O2-minio-original": "B", "O3-latest-de-otro": "C",
               "O4-corrupcion-en-retencion": "D"}
@@ -51,6 +52,9 @@ for path in sorted(glob.glob(f"{ROOT}/results/faults/*/*/result.json")):
     with open(path) as f:
         r = json.load(f)
     r["_dir"] = os.path.relpath(os.path.dirname(path), ROOT)
+    if r.get("app") == "nextcloud":
+        nextcloud[r["scenario"]][r["baseline"]][r["batch"]].append(r)
+        continue
     if r["baseline"] == "contract" and contract_version(r) != (FROZEN_ENGINE, FROZEN_CONTRACT_SHA256):
         pre_freeze.append(r)
         continue

@@ -1,0 +1,85 @@
+# Entorno de restauración de Nextcloud: proyecto separado, red interna sin salida y volúmenes nuevos.
+# El repositorio de Restic del entorno original se monta en solo lectura. Nextcloud arranca sin
+# variables de instalación: usa el config.php restaurado.
+name: ncexp-restore
+
+services:
+  postgres:
+    image: postgres@sha256:f2f98726820d0342055351c6e9d36e705f5bfffb3dd53ff556325114b08afb6d # 16.16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      NC_DB_USER: ${NC_DB_USER}
+      NC_DB_PASSWORD: ${NC_DB_PASSWORD}
+    networks: [restore-net]
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d:ro
+      - pg-dump:/dump:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  nextcloud:
+    image: nextcloud@sha256:d8ad0b77c863611b9fab6e72a82a5d35fbcb218b660f9f20fec9941a50806281 # 34.0.5-apache
+    networks: [restore-net]
+    volumes:
+      - nc-html:/var/www/html
+      - nc-config:/var/www/html/config
+      - nc-data:/var/www/html/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost/status.php"]
+      interval: 3s
+      timeout: 5s
+      retries: 100
+      start_period: 10s
+
+  restic:
+    profiles: ["tools"]
+    image: restic/restic@sha256:93999df80d4ac6cb148e82d2ef1fe6a81996f17ff535e772723538211b31555a # 0.20.0
+    network_mode: none
+    environment:
+      RESTIC_REPOSITORY: /repo
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+    volumes:
+      - restic-repo:/repo:ro
+      - nc-data:/data
+      - nc-config:/config
+      - pg-dump:/dump
+
+  runner:
+    profiles: ["tools"]
+    build: ../../tools
+    image: recexp-runner:local
+    entrypoint: ["/work/tools/entrypoint.sh"]
+    env_file: ../.env
+    environment:
+      HOME: /tmp
+      HOST_UID: ${HOST_UID:-1000}
+      HOST_GID: ${HOST_GID:-1000}
+      NC_URL: http://nextcloud
+    networks: [restore-net]
+    working_dir: /work
+    volumes:
+      - ../..:/work:ro
+      - ../../runs:/runs
+
+networks:
+  restore-net:
+    internal: true
+
+volumes:
+  pg-data:
+  pg-dump:
+  nc-html:
+  nc-config:
+  nc-data:
+  restic-repo:
+    external: true
+    name: ncexp_restic-repo
