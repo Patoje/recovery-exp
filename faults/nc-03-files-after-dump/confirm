@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/nc/common.sh"
+L="$FAULT_EVIDENCE/late_files.json"
+check "se subieron archivos después de pg_dump" grep -q '"path": "late/' "$L"
+p="$(json_field "$L" path)"
+insnap="$(snap_ls /data/alice/files/late | grep -c "^/data/alice/files/$p$")"
+check "el snapshot contiene $p en disco ($insnap)" test "$insnap" -eq 1
+indump="$(rest_sql "select count(*) from oc_filecache f join oc_storages s on s.numeric_id = f.storage where s.id = 'home::alice' and f.path like 'files/late/%'")"
+check "la base restaurada (del dump) no conoce ningún archivo de late/ ($indump)" test "$indump" = 0
+ctl="$(rest_sql "select count(*) from oc_filecache f join oc_storages s on s.numeric_id = f.storage where s.id = 'home::alice' and f.path = 'files/Documents/documents-00.txt'")"
+check "la base restaurada se pudo leer (control: Documents/documents-00.txt = $ctl)" test "$ctl" = 1
+ondisk="$(rest_nc sh -c "test -f /var/www/html/data/alice/files/$p && echo sí || echo no")"
+check "el archivo está en el disco restaurado ($ondisk)" test "$ondisk" = sí
+confirm_done

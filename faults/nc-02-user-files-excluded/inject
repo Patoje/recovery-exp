@@ -1,0 +1,2 @@
+. "$FAULT_DIR/../lib/nc/common.sh"
+# La exclusión la aplica el shim a `restic backup` (FAULT_RESTIC_BACKUP_EXTRA).

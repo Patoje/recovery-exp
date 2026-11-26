@@ -1,0 +1,10 @@
+. "$FAULT_DIR/../lib/nc/common.sh"
+on_event() {
+  # Secuencia fija: pg_dump (ya hecho) -> subir archivos nuevos -> copia de datos (restic).
+  # Para subirlos se sale del modo mantenimiento y se vuelve a entrar antes de restic.
+  [ "$1" = after_pg_dump ] || return 0
+  occ ORIG maintenance:mode --off || return
+  "${ORIG[@]}" --profile tools run --rm --no-deps -T runner python3 faults/nc-03-files-after-dump/late.py \
+    > "$FAULT_EVIDENCE/late_files.json" || return
+  occ ORIG maintenance:mode --on
+}

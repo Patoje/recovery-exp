@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/nc/common.sh"
+check "el config.php original existe (control)" orig_nc test -f /var/www/html/config/config.php
+found="$(snap_ls /config | grep -c '^/config/config.php$')"
+check "el snapshot no contiene /config/config.php ($found)" test "$found" -eq 0
+others="$(snap_ls /config | grep -c '^/config/.*\.php$')"
+observe "otros .php de config/ en el snapshot" "$others"
+check "se inspeccionó config/ restaurado antes del primer arranque" grep -qx "# scan ok" "$FAULT_EVIDENCE/config_dir_after_restore.txt"
+check "config/ restaurado no tenía config.php antes del primer arranque" sh -c "! grep -qx config.php \"$FAULT_EVIDENCE/config_dir_after_restore.txt\""
+observe "status.php de la instancia restaurada" "$(rest_curl -s http://nextcloud/status.php)"
+confirm_done

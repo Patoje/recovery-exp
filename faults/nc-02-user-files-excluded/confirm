@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/nc/common.sh"
+check "el shim agregó la exclusión a restic backup" grep -q 'restic backup + --exclude /data/\*/files' "$FAULT_SHIM_LOG"
+n="$(snap_ls /data | grep -c '^/data/[^/]*/files/')"
+check "el snapshot no contiene archivos de usuario bajo /data/<usuario>/files ($n)" test "$n" -eq 0
+ctl="$(snap_ls /data | grep -c '^/data/appdata_')"
+check "el snapshot sí contiene el resto del directorio de datos (appdata_*: $ctl)" test "$ctl" -gt 0
+wpath="$(json_field "$RUN_DIR/witnesses_pre.json" path)"
+indb="$(rest_sql "select count(*) from oc_filecache f join oc_storages s on s.numeric_id = f.storage where s.id = 'home::alice' and f.path = 'files/$wpath'")"
+check "la base restaurada sigue listando el testigo files/$wpath ($indb)" test "$indb" = 1
+ondisk="$(rest_nc sh -c "test -f /var/www/html/data/alice/files/$wpath && echo sí || echo no")"
+check "el testigo no está en el disco restaurado ($ondisk)" test "$ondisk" = no
+observe "archivos de usuario en la base restaurada" "$(rest_sql "select count(*) from oc_filecache f join oc_storages s on s.numeric_id = f.storage where s.id like 'home::%' and f.path like 'files/%'")"
+confirm_done

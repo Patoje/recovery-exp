@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/nc/common.sh"
+declared="$(json_field "$RUN_DIR/declared.json" nextcloud_image)"
+running="$(docker inspect --format '{{.Config.Image}}' "$("${REST[@]}" ps -aq nextcloud)")"
+check "el backup se hizo con 33.0.10 ($declared)" test "$declared" = "$FAULT_BACKUP_IMAGE"
+check "la restauración usa otra imagen ($running)" test -n "$running" -a "$running" != "$declared"
+observe "versión declarada" "$(json_field "$RUN_DIR/declared.json" nextcloud_version)"
+before="$(cat "$FAULT_EVIDENCE/config_version_before_first_start.txt" 2>/dev/null)"
+check "el config.php restaurado es de la 33 ($before)" sh -c "printf '%s' \"\$1\" | grep -q \"'33\\.\"" _ "$before"
+observe "status.php de la instancia restaurada" "$(rest_curl -s http://nextcloud/status.php)"
+observe "versión en config.php después de la restauración" "$(rest_nc grep -o "'version' => '[^']*'" /var/www/html/config/config.php)"
+confirm_done

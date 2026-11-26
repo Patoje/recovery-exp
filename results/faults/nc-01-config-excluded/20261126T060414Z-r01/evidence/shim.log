@@ -1,0 +1,3 @@
+[shim] 2026-11-26T06:05:18Z original: restic backup + --exclude /config/config.php
+[shim] 2026-11-26T06:05:18Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools run --rm --no-deps restic backup --exclude /config/config.php --json --host nextcloud-original --tag run=20261126T060418Z /dump /data /config
+[shim] 2026-11-26T06:10:25Z evento after_restic_restore

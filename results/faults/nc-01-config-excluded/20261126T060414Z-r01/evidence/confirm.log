@@ -1,0 +1,6 @@
+[ok] el config.php original existe (control)
+[ok] el snapshot no contiene /config/config.php (0)
+[obs] otros .php de config/ en el snapshot: 11
+[ok] se inspeccionó config/ restaurado antes del primer arranque
+[ok] config/ restaurado no tenía config.php antes del primer arranque
+[obs] status.php de la instancia restaurada: {"installed":false,"maintenance":false,"needsDbUpgrade":false,"version":"34.0.5.1","versionstring":"34.0.5","edition":"","productname":"Nextcloud","extendedSupport":false}

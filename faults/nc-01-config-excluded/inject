@@ -1,0 +1,6 @@
+. "$FAULT_DIR/../lib/nc/common.sh"
+on_event() {
+  # config/ restaurado antes del primer arranque de Nextcloud.
+  [ "$1" = after_restic_restore ] || return 0
+  vol_sh ncexp-restore_nc-config 'echo "# scan ok"; ls -A /data' > "$FAULT_EVIDENCE/config_dir_after_restore.txt"
+}

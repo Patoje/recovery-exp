@@ -1,0 +1,7 @@
+. "$FAULT_DIR/../lib/nc/common.sh"
+export FAULT_ORIG_OVERRIDE="$FAULT_DIR/original.override.yml"
+on_event() {
+  # Versión registrada en el config.php restaurado, antes del primer arranque de Nextcloud.
+  [ "$1" = after_restic_restore ] || return 0
+  vol_sh ncexp-restore_nc-config "grep -o \"'version' => '[^']*'\" /data/config.php" > "$FAULT_EVIDENCE/config_version_before_first_start.txt"
+}

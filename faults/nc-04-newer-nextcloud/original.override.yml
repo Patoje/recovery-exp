@@ -1,0 +1,4 @@
+# Entorno original con Nextcloud 33.0.10; la restauración usa la de referencia (34.0.5).
+services:
+  nextcloud:
+    image: nextcloud@sha256:81cb09055a20142521a267cea2bc27e6a81a065871c70850d209f08803567dbc # 33.0.10-apache
