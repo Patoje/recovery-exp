@@ -1,0 +1,156 @@
+# Contrato de restauración de Nextcloud para el motor (engine/, engine-v1). Todo lo específico de
+# Nextcloud está acá. Cada línea marcada con "# S:" contiene un supuesto sobre Nextcloud.
+# Referencias: ${run:ARCHIVO#campo} (artefactos de la corrida), ${env:VAR} (nc/.env),
+# ${objective:VAR} (nc/objectives.env). {campo}: campo del testigo actual.
+version: 1
+name: nextcloud
+
+environment:
+  compose_file: nc/compose/restore.yml
+  env_file: nc/.env
+  probe: {service: runner, profiles: [tools]}
+
+objectives_file: nc/objectives.env
+
+components:
+  - {name: db, service: postgres}
+  - {name: app, service: nextcloud} # S: Nextcloud arranca después de su base de datos
+
+# Cómo se reconoce que un testigo fue recuperado (campos de witnesses_*.json).
+witness_types:
+  file:
+    request:
+      url: "http://nextcloud/remote.php/dav/files/alice/{path}" # S: WebDAV de archivos en /remote.php/dav/files/<usuario>/<ruta>
+      auth: {user: alice, password: "${env:SEED_USER_PASSWORD}"} # S: WebDAV acepta autenticación básica
+    expect: {status: 200, sha256_of_body: "{sha256}"}
+  binary:
+    request:
+      url: "http://nextcloud/remote.php/dav/files/alice/{path}" # S: WebDAV de archivos en /remote.php/dav/files/<usuario>/<ruta>
+      auth: {user: alice, password: "${env:SEED_USER_PASSWORD}"} # S: WebDAV acepta autenticación básica
+    expect: {status: 200, sha256_of_body: "{sha256}"}
+  share:
+    request:
+      url: "http://nextcloud/remote.php/dav/files/bob/{recipient_path}" # S: el destinatario ve el archivo compartido en su raíz de WebDAV
+      auth: {user: bob, password: "${env:SEED_USER_PASSWORD}"} # S: WebDAV acepta autenticación básica
+    expect: {status: 200, sha256_of_body: "{sha256}"}
+
+checks:
+  # --- antes de la restauración (antes de cualquier migración)
+  - id: image_before_migrations
+    verifier: component_image
+    with: {component: app, source: configured, expected: "${run:declared.json#nextcloud_image}"}
+  - id: version_before_migrations
+    verifier: component_version
+    with:
+      component: app
+      command: [php, -r, 'require "/usr/src/nextcloud/version.php"; echo implode(".", $OC_Version), PHP_EOL;'] # S: la imagen trae el código en /usr/src/nextcloud y la versión en version.php ($OC_Version)
+      regex: '(\d+(?:\.\d+)+)' # S: la versión tiene cuatro números (34.0.5.1)
+      expected: "${run:declared.json#nextcloud_version}"
+  - id: backup_integrity
+    verifier: restic_check
+    with: {service: restic, profiles: [tools], global_args: [--no-lock, --no-cache], check_args: [--read-data]}
+
+  # --- después de la restauración: estado y valores declarados
+  - id: components_up
+    verifier: components_running
+    with: {require_healthy: true}
+  - id: start_order
+    verifier: start_order
+  - id: image_running
+    verifier: component_image
+    with: {component: app, source: running, expected: "${run:declared.json#nextcloud_image}"}
+  - id: restore_tool_errors
+    verifier: log_patterns
+    with:
+      files: [contract/restore.log, contract/evidence/backup_integrity.log]
+      patterns:
+        - 'pg_restore: error:'
+        - 'pg_restore: warning: errors ignored on restore:'
+        - '^Fatal: '
+        - '^ignoring error for '
+        - '^error: '
+        - '^\s*error for tree '
+      must_match:
+        - 'pg_restore: error: could not execute query: ERROR:  role "oc_admin" does not exist'
+        - 'pg_restore: warning: errors ignored on restore: 2'
+        - 'Fatal: repository contains errors'
+        - 'ignoring error for /data/alice/files/witness/x.txt: ciphertext verification failed'
+      must_not_match:
+        - 'no errors were found'
+        - 'using temporary cache in /tmp/restic-check-cache-123'
+        - 'check snapshots, trees and blobs'
+  - id: database_encoding
+    verifier: sql_scalar
+    with:
+      database: {component: db, client: psql, user: "${env:POSTGRES_USER}", name: "${env:POSTGRES_DB}"}
+      query: show server_encoding
+      expected: "${run:declared.json#database_encoding}"
+
+  # --- invariantes contra el inventario del backup (antes de cualquier escritura)
+  - id: table_counts
+    verifier: table_counts_match_inventory
+    with:
+      database: {component: db, client: psql, user: "${env:POSTGRES_USER}", name: "${env:POSTGRES_DB}"}
+      schema: public # S: Nextcloud guarda sus tablas en el esquema public
+      inventory: "${run:inventory.json#table_row_counts}"
+  - id: files_db_vs_disk
+    verifier: entities_match_disk
+    with:
+      database: {component: db, client: psql, user: "${env:POSTGRES_USER}", name: "${env:POSTGRES_DB}"}
+      # Solo los usuarios del seed: el motor separa los nombres de la base por espacios, y los archivos
+      # de ejemplo del administrador tienen espacios ("Nextcloud Manual.pdf").
+      query: "select substr(s.id, 7) || '/' || f.path from oc_filecache f join oc_storages s on s.numeric_id = f.storage where s.id in ('home::alice', 'home::bob', 'home::carol', 'home::dave', 'home::erin') and f.path ~ '^files/[^/]+(/[^/]+)?$' order by 1" # S: tablas oc_filecache y oc_storages; almacenamiento home::<usuario>; rutas files/...
+      disk:
+        component: app
+        root: /var/www/html/data # S: directorio de datos
+        glob: "alice/files/* alice/files/*/* bob/files/* bob/files/*/* carol/files/* carol/files/*/* dave/files/* dave/files/*/* erin/files/* erin/files/*/*" # S: archivos de usuario en <usuario>/files (dos niveles)
+
+  # --- operaciones reales (desde la sonda, en la red de restauración)
+  - id: status_ready
+    verifier: http_request
+    with:
+      request: {url: "http://nextcloud/status.php"} # S: /status.php sin autenticación
+      expect: {status: 200, json: {installed: "true", maintenance: "false", needsDbUpgrade: "false", version: "${run:declared.json#nextcloud_version}"}} # S: campos installed, maintenance, needsDbUpgrade y version
+  - id: login_page
+    verifier: http_request
+    with:
+      request: {url: "http://nextcloud/index.php/login"} # S: página de login sin URLs reescritas
+      expect: {status: 200}
+  - id: file_list
+    verifier: http_request
+    with:
+      request:
+        method: PROPFIND # S: el listado de archivos es un PROPFIND de WebDAV
+        url: "http://nextcloud/remote.php/dav/files/${env:B0_USER}/" # S: WebDAV de archivos en /remote.php/dav/files/<usuario>/
+        auth: {user: "${env:B0_USER}", password: "${env:B0_PASSWORD}"} # S: WebDAV acepta autenticación básica
+      expect: {status: 207} # S: PROPFIND responde 207 Multi-Status
+  - id: witness_file
+    verifier: witness_fetch
+    with: {type: file, sources: ["${run:witnesses_pre.json#witnesses}"]}
+  - id: witness_binary
+    verifier: witness_fetch
+    with: {type: binary, sources: ["${run:witnesses_pre.json#witnesses}"]}
+  - id: witness_share
+    verifier: witness_fetch
+    with: {type: share, sources: ["${run:witnesses_pre.json#witnesses}"]}
+  - id: rpo
+    verifier: rpo
+    with:
+      objective: "${objective:RPO_SECONDS}"
+      incident: "${run:witnesses_post.json#incident_at}"
+      sources: ["${run:witnesses_pre.json#witnesses}", "${run:witnesses_post.json#witnesses}"]
+  # Escritura: http_request no manda cuerpo (no hay PUT con datos) y git_push es solo para Git.
+  - id: write_probe
+    verifier: custom_check
+    with:
+      component: app
+      command: [su, -s, /bin/sh, www-data, -c, 'f=/alice/files/contract-write-$(date +%s).txt; echo contract write check > /tmp/w && php /var/www/html/occ files:put /tmp/w "$f" && php /var/www/html/occ files:get "$f" | grep -qx "contract write check"'] # S: occ corre como www-data; files:put y files:get escriben y leen por la capa de archivos
+      reason: "escritura de un archivo nuevo: el vocabulario no tiene una petición HTTP con cuerpo"
+  - id: rto
+    verifier: rto
+    with:
+      objective: "${objective:RTO_SECONDS}"
+      restore_started: "${run:restore.json#restore_started_at}"
+      restore_status: "${run:restore.json#status}"
+      restore_status_ok: ok
+      requires: [components_up, status_ready, login_page, file_list, witness_file, witness_binary, witness_share, write_probe]
