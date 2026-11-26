@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 # Línea base "contract": motor de contratos (engine/) con contracts/gitea.yaml.
 #   1. engine verify --phase pre   (configuración tal como va a arrancar e integridad del snapshot)
-#   2. scripts/restore.sh          (procedimiento de restauración de referencia, log en contract/restore.log)
+#   2. scripts/restore.sh          (procedimiento de restauración de referencia, log en contract/restore.log
+#                                   y también en stderr, para que llegue al run.log del harness)
 #   3. engine verify --phase post  (todo lo demás y el reporte: contract.json, contract.md)
 # Todas las llamadas a docker pasan por el PATH, así que el shim de fallas las ve igual que en B0 y B1.
+#
+# Versión 2 del envoltorio: la v1 mandaba la salida de restore.sh solo a contract/restore.log
+# (pregunta 6 de docs/preguntas-pendientes.md).
 #
 # Uso: contract.sh [SNAPSHOT|latest] RUN_DIR      Código 0 solo si el contrato pasa.
 set -uo pipefail
@@ -25,7 +29,7 @@ verify() { "$ENGINE" verify --phase "$1" --contract "$CONTRACT" --run "$RUN_DIR"
 t0="$(now)"; echo "[contract] fase pre $t0" >&2
 verify pre; pre_rc=$?
 t1="$(now)"; echo "[contract] restauración de referencia $t1" >&2
-"$ROOT/scripts/restore.sh" "$SNAPSHOT" "$RUN_DIR" > "$RUN_DIR/contract/restore.log" 2>&1; restore_rc=$?
+"$ROOT/scripts/restore.sh" "$SNAPSHOT" "$RUN_DIR" 2>&1 | tee "$RUN_DIR/contract/restore.log" >&2; restore_rc=${PIPESTATUS[0]}
 t2="$(now)"; echo "[contract] restore.sh salió con $restore_rc; fase post $t2" >&2
 verify post; rc=$?
 t3="$(now)"

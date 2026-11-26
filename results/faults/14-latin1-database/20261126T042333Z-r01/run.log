@@ -1,0 +1,287 @@
+[04:23:33] escenario 14-latin1-database r1, baseline contract, docker=/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker, shim=1
+[04:23:33] == fase: reset
+[04:23:33] borrando proyecto de restauración
+[shim] 2026-11-26T04:23:33Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-26T04:23:33Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools down -v --remove-orphans
+ Container recexp-restore-gitea-1 Stopping 
+ Container recexp-restore-gitea-1 Stopped 
+ Container recexp-restore-gitea-1 Removing 
+ Container recexp-restore-gitea-1 Removed 
+ Container recexp-restore-postgres-1 Stopping 
+ Container recexp-restore-postgres-1 Stopped 
+ Container recexp-restore-postgres-1 Removing 
+ Container recexp-restore-postgres-1 Removed 
+ Volume recexp-restore_pg-dump Removing 
+ Volume recexp-restore_pg-data Removing 
+ Volume recexp-restore_gitea-data Removing 
+ Network recexp-restore_restore-net Removing 
+ Volume recexp-restore_pg-dump Removed 
+ Network recexp-restore_restore-net Removed 
+ Volume recexp-restore_pg-data Removed 
+ Volume recexp-restore_gitea-data Removed 
+[04:23:34] borrando proyecto original
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+ Container recexp-gitea-1 Removing 
+ Container recexp-gitea-1 Removed 
+ Container recexp-postgres-1 Stopping 
+ Container recexp-postgres-1 Stopped 
+ Container recexp-postgres-1 Removing 
+ Container recexp-postgres-1 Removed 
+ Volume recexp_pg-dump Removing 
+ Volume recexp_pg-dump Removed 
+ Volume recexp_pg-data Removing 
+ Volume recexp_restic-repo Removing 
+ Volume recexp_gitea-data Removing 
+ Network recexp_default Removing 
+ Volume recexp_restic-repo Removed 
+ Volume recexp_pg-data Removed 
+ Network recexp_default Removed 
+ Volume recexp_gitea-data Removed 
+[04:23:34] estado limpio
+[04:23:34] == fase: prepare
+[04:23:34] == fase: up
+[04:23:34] corrida 20261126T042334Z
+[04:23:34] construyendo runner
+ Image recexp-runner:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 536B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 462B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#3 DONE 7.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#5 resolve docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b 0.0s done
+#5 DONE 0.0s
+
+#6 [2/2] RUN apt-get update  && apt-get install -y --no-install-recommends git git-lfs curl ca-certificates postgresql-client  && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 resolving provenance for metadata file
+#7 DONE 0.0s
+
+#8 exporting to image
+#8 exporting layers done
+#8 exporting manifest sha256:c7497007937aade70bfbd960dc8fea6a749593ffaf24042fe3fd420d83d8013c done
+#8 exporting config sha256:48acff3cd6334fb3b0a68428004ae571406be6db90ccf0ce5251b8aac6d633bf done
+#8 exporting attestation manifest sha256:d28c657b5290d5d268abff023c9d5f83854eba534edaaa39bc4170cdd33c7e5d done
+#8 exporting manifest list sha256:a6db1a2eba28b18ebe02697d3564ee55a5e37c951e0cae46d6297e99f5040c30 done
+#8 naming to docker.io/library/recexp-runner:local done
+#8 unpacking to docker.io/library/recexp-runner:local done
+#8 DONE 0.0s
+ Image recexp-runner:local Built 
+[04:23:42] levantando postgres + gitea
+ Volume recexp_gitea-data Creating 
+ Volume recexp_pg-dump Creating 
+ Network recexp_default Creating 
+ Volume recexp_pg-data Creating 
+ Volume recexp_gitea-data Created 
+ Volume recexp_pg-dump Created 
+ Volume recexp_pg-data Created 
+ Network recexp_default Created 
+ Container recexp-postgres-1 Creating 
+ Container recexp-postgres-1 Created 
+ Container recexp-gitea-1 Creating 
+ Container recexp-gitea-1 Created 
+ Container recexp-postgres-1 Starting 
+ Container recexp-postgres-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[04:23:51] generando SECRET_KEY en app.ini
+ Container recexp-gitea-1 Restarting 
+ Container recexp-gitea-1 Started 
+ Container recexp-postgres-1 Running 
+ Container recexp-gitea-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[04:23:57] creando administrador
+New user 'exp-admin' has been successfully created!
+[04:23:57] inicializando repositorio de Restic
+ Volume recexp_restic-repo Creating 
+ Volume recexp_restic-repo Created 
+ Container recexp-restic-run-b1ce15a610a4 Creating 
+ Container recexp-restic-run-b1ce15a610a4 Created 
+created restic repository dd735c2357 at /repo
+
+Please note that knowledge of your password is required to access
+the repository. Losing your password means that your data is
+irrecoverably lost.
+ Container recexp-restic-run-41f1ab089140 Creating 
+ Container recexp-restic-run-41f1ab089140 Created 
+[04:24:01] listo: /Users/patohe/Desktop/recovery-exp/runs/20261126T042334Z
+[04:24:01] == fase: seed
+ Container recexp-runner-run-87507c9c2570 Creating 
+ Container recexp-runner-run-87507c9c2570 Created 
+Updated Git hooks.
+Git LFS initialized.
+Updated Git hooks.
+Git LFS initialized.
+seed ok: 8 repos, 29 issues, total 21510348 bytes
+[04:24:10] == fase: witness_pre
+ Container recexp-runner-run-4dda0b53cbe8 Creating 
+ Container recexp-runner-run-4dda0b53cbe8 Created 
+warning: You appear to have cloned an empty repository.
+Updated Git hooks.
+Git LFS initialized.
+witness commit b997290f-d2dc-40dc-b391-b4e10f419122
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (1/1), 33 KB | 0 B/s, done.
+witness lfs 967e63c9-c94d-48c5-ab71-9da5e7dcfa3e
+witness issue 3d6181f8-d064-466c-99fa-98ee4afe53b3
+witness attachment 00f12025-14c6-49b8-ac70-4b404cee3080
+[04:24:12] == fase: before_backup
+ Container recexp-runner-run-29dfeda28f87 Creating 
+ Container recexp-runner-run-29dfeda28f87 Created 
+[04:24:13] == fase: backup
+[04:24:13] paso: stop_gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[04:24:14] hook de inventario: /Users/patohe/Desktop/recovery-exp/scripts/inventory.sh
+ Container recexp-runner-run-64233394206d Creating 
+ Container recexp-runner-run-64233394206d Created 
+inventory ok: 117 tables, 9 repos
+[04:24:15] paso: pg_dump
+-rw-r--r--    1 root     root        382571 Nov 26 04:24 /dump/gitea.dump
+[04:24:15] paso: restic_backup
+ Container recexp-restic-run-721d6726f9ef Creating 
+ Container recexp-restic-run-721d6726f9ef Created 
+ Container recexp-restic-run-4cbbc1f64699 Creating 
+ Container recexp-restic-run-4cbbc1f64699 Created 
+[04:24:17] paso: start_gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[04:24:23] backup.json: ok
+[04:24:23] == fase: declare
+ Container recexp-runner-run-96e0084e81de Creating 
+ Container recexp-runner-run-96e0084e81de Created 
+[04:24:24] declared.json: gitea 28.4.0, encoding UTF8
+[04:24:24] == fase: after_backup
+[04:24:24] == fase: witness_post
+ Container recexp-runner-run-7a11bb50dff8 Creating 
+ Container recexp-runner-run-7a11bb50dff8 Created 
+Updated Git hooks.
+Git LFS initialized.
+witness commit eaa9ea87-31b1-47f1-9bf3-134c6bbc25b1
+witness issue 7faa3f4c-2348-4ff8-a34d-f1e59602ea5e
+witness attachment eb6afe68-9504-4bb3-8609-c4a920b00042
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (1/1), 33 KB | 0 B/s, done.
+witness lfs a0480a0f-6c1a-4df9-958e-81d629d6ca98
+Updated Git hooks.
+Git LFS initialized.
+witness commit a575fe7f-2570-4bfd-88fe-e9639f37974a
+[04:29:26] == fase: baseline
+[contract] fase pre 2026-11-26T04:29:27.463Z
+[contract] pre   pass  image_before_migrations: imagen configured coincide
+[contract] pre   pass  version_before_migrations: versión de la imagen configurada coincide
+[contract] pre   pass  backup_integrity: restic check sin errores
+[contract] restauración de referencia 2026-11-26T04:29:28.656Z
+[04:29:28] paso: fresh_volumes
+[shim] 2026-11-26T04:29:28Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-26T04:29:28Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools down -v --remove-orphans
+ Volume recexp-restore_pg-dump Removing 
+ Volume recexp-restore_gitea-data Removing 
+ Volume recexp-restore_pg-dump Removed 
+ Volume recexp-restore_gitea-data Removed 
+[04:29:28] paso: resolve_snapshot
+[shim] 2026-11-26T04:29:28Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-26T04:29:28Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --no-lock --no-cache snapshots --json --latest 1
+ Volume recexp-restore_pg-dump Creating 
+ Volume recexp-restore_gitea-data Creating 
+ Volume recexp-restore_pg-dump Created 
+ Volume recexp-restore_gitea-data Created 
+ Container recexp-restore-restic-run-67ba5cd6126d Creating 
+ Container recexp-restore-restic-run-67ba5cd6126d Created 
+[04:29:29] paso: restic_restore
+[shim] 2026-11-26T04:29:29Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-26T04:29:29Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --no-lock --no-cache restore 60d3dbe83be4af47b053370692b46e3825b3d23aa52991579756afc633aa18f3 --target /
+ Container recexp-restore-restic-run-6eaf1bd6291c Creating 
+ Container recexp-restore-restic-run-6eaf1bd6291c Created 
+restoring snapshot 60d3dbe8 of [/dump /data] at 2026-11-26 04:24:15.752471104 +0000 UTC by root@gitea-original to /
+Summary: Restored 1670 files/dirs (4.813 MiB) in 0:00
+[04:29:30] paso: start_postgres
+[shim] 2026-11-26T04:29:30Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-26T04:29:30Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait postgres
+ Volume recexp-restore_pg-data Creating 
+ Network recexp-restore_restore-net Creating 
+ Volume recexp-restore_pg-data Created 
+ Network recexp-restore_restore-net Created 
+ Container recexp-restore-postgres-1 Creating 
+ Container recexp-restore-postgres-1 Created 
+ Container recexp-restore-postgres-1 Starting 
+ Container recexp-restore-postgres-1 Started 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+[04:29:33] paso: pg_restore
+[shim] 2026-11-26T04:29:33Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml
+[shim] 2026-11-26T04:29:33Z restore: pg_restore sin --exit-on-error
+[shim] 2026-11-26T04:29:33Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -ec pg_restore -U "$POSTGRES_USER" -d "$POSTGRES_DB" /dump/gitea.dump
+pg_restore: error: COPY failed for table "action": ERROR:  character with byte sequence 0xf0 0x9f 0x98 0x80 in encoding "UTF8" has no equivalent in encoding "LATIN1"
+CONTEXT:  COPY action, line 249
+pg_restore: error: COPY failed for table "issue": ERROR:  character with byte sequence 0xf0 0x9f 0x98 0x80 in encoding "UTF8" has no equivalent in encoding "LATIN1"
+CONTEXT:  COPY issue, line 28
+pg_restore: warning: errors ignored on restore: 2
+[04:29:34] falló: pg_restore (código 1)
+[04:29:34] restore.json: failed
+[contract] restore.sh salió con 1; fase post 2026-11-26T04:29:34.172Z
+[contract] post  error components_up: app: sin contenedor para gitea: [shim] 2026-11-26T04:29:34Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env ps -a -q gitea
+[contract] post  error start_order: app: sin contenedor para gitea: [shim] 2026-11-26T04:29:34Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env ps -a -q gitea
+[contract] post  error image_running: sin contenedor para gitea: [shim] 2026-11-26T04:29:34Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/14-latin1-database/restore.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env ps -a -q gitea
+[contract] post  fail  restore_tool_errors: autoprueba ok (4 sí, 3 no); líneas que no cuentan: "check snapshots, trees and blobs" ×1, "no errors were found" ×1; contract/restore.log:41: pg_restore: error: COPY failed for table "action": ERROR:  character with byte sequence 0xf0 0x9f 0x98 0x80 in encoding "UTF8" has no equivalent in encodi…
+[contract] post  error secret_key: exec en gitea: exit status 1: service "gitea" is not running
+[contract] post  fail  database_encoding: LATIN1; esperado UTF8
+[contract] post  fail  table_counts: diferencias (inventario→restaurada): action: 261→0, issue: 31→0
+[contract] post  error repositories_db_vs_disk: no se pudo leer: disco: exec en gitea: exit status 1: service "gitea" is not running
+[contract] post  error refs: no se pudo leer el disco: exec en gitea: exit status 1: service "gitea" is not running
+[contract] post  error version_running: no se pudo verificar: Get "http://gitea:3000/api/v1/version": dial tcp: lookup gitea on 127.0.0.11:53: server misbehaving
+[contract] post  error home_page: no se pudo verificar: Get "http://gitea:3000/": dial tcp: lookup gitea on 127.0.0.11:53: server misbehaving
+[contract] post  error repo_list: no se pudo verificar: Get "http://gitea:3000/api/v1/repos/search?limit=50": dial tcp: lookup gitea on 127.0.0.11:53: server misbehaving
+[contract] post  pass  external_dependencies: sin dependencias externas declaradas
+[contract] post  error witness_attachment: no se pudo verificar: 00f12025-14c6-49b8-ac70-4b404cee3080: Get "http://gitea:3000/api/v1/repos/alice/witness/issues/1/assets/14": dial tcp: lookup gitea on 127.0.0.11:53: server misbehaving
+[contract] post  error witness_lfs: no se pudo verificar: 967e63c9-c94d-48c5-ab71-9da5e7dcfa3e: Get "http://gitea:3000/alice/witness/media/commit/1f5260690699d7750ee222d0b0e0b69fe6bb119f/lfs/lfs-967e63c9-c94d-48c5-ab71-9da5e7dcfa3e.bin": dial tcp: lookup gitea on 127.0.0.11:53: server misbehaving
+[contract] post  error witness_issue: no se pudo verificar: 3d6181f8-d064-466c-99fa-98ee4afe53b3: Get "http://gitea:3000/api/v1/repos/alice/witness/issues/1": dial tcp: lookup gitea on 127.0.0.11:53: server misbehaving; d1ce47a4-e418-4a8d-9cbd-c18877985c1c: Get "http://gitea:3000/api/v1/repos/alice/witness/issues/2": dial tcp: lookup gi…
+[contract] post  error totp_login: no se pudo verificar: Get "http://gitea:3000/api/v1/user": dial tcp: lookup gitea on 127.0.0.11:53: server misbehaving
+[contract] post  error rpo: no se pudo verificar ningún testigo
+[contract] post  error git_push: no se pudo verificar: clone: fatal: unable to access 'http://gitea:3000/alice/witness.git/': Could not resolve host: gitea
+[contract] post  fail  rto: la restauración no terminó bien (failed)
+[contract] fail (4 pass, 4 fail, 15 error; custom_check: 0)
+[contract] fin 2026-11-26T04:29:35.728Z: fail (/Users/patohe/Desktop/recovery-exp/runs/20261126T042334Z/contract.json)
+[04:29:35] == fase: confirm
+[ok] se creó el testigo con emoji
+[ok] el dump se cargó sin --exit-on-error (shim)
+[ok] el PostgreSQL restaurado usa LATIN1 (LATIN1)
+[ok] pg_restore informó caracteres sin equivalente en LATIN1
+[obs] resumen de pg_restore: pg_restore: warning: errors ignored on restore: 2
+[obs] código de salida de pg_restore en restore.json: 1
+[obs] filas en issue de la base restaurada: 0
+[obs] arranque de Gitea sobre la base LATIN1: healthy; versión {"version":"28.4.0"}
+results/faults/14-latin1-database/20261126T042333Z-r01: status=fail triggered=- max_gap_s=60.0 sleeps=0
+[04:29:47] resultado: fail  -> /Users/patohe/Desktop/recovery-exp/results/faults/14-latin1-database/20261126T042333Z-r01/result.json

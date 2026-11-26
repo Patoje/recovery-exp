@@ -29,6 +29,17 @@ def contract_version(r):
         return None, None
 
 
+def wrapper_version(r):
+    """Version of baselines/contract/contract.sh: v2 also copies restore.sh's output to run.log."""
+    try:
+        with open(f"{ROOT}/runs/{r['run_id']}/contract/restore.log") as f:
+            first = next((l.strip() for l in f if l.strip()), "")
+        with open(f"{ROOT}/{r['_dir']}/run.log") as f:
+            return 2 if first and first in f.read() else 1
+    except OSError:
+        return None
+
+
 # env -> scen -> baseline -> batch -> [r]
 results = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(list))))
 pre_freeze = []  # contract runs before the freeze
@@ -123,6 +134,12 @@ for env in ENVS:
                   "otra línea base fue invalid, su celda lo indica. Contrato: motor `" + FROZEN_ENGINE + "` y "
                   "`contracts/gitea.yaml` sha256 `" + FROZEN_CONTRACT_SHA256[:12] + "…` (tags `engine-v1`, "
                   "`contract-gitea-v1`)."]
+        contract_runs = [r for sc in results[env].values() for runs in sc.get("contract", {}).values() for r in runs]
+        v2_runs = [r for r in contract_runs if wrapper_version(r) == 2]
+        lines.append("Envoltorio `baselines/contract/contract.sh`: v1 en la tanda inicial; la v2 (pregunta 6) copia "
+                     "también la salida de `restore.sh` a `run.log` con `tee`, sin otros cambios. Corridas con la v2: " +
+                     (", ".join(f"`{r['_dir']}`" for r in v2_runs) or "ninguna") + ". Las corridas anteriores con la v1 "
+                     "se conservan (14: `invalid` porque su `confirm` busca la salida de `pg_restore` en `run.log`).")
         if pre_freeze:
             lines.append("Corridas del contrato previas al congelamiento (no cuentan): " + ", ".join(
                 f"`{r['_dir']}` (motor `{contract_version(r)[0]}`, contrato `{(contract_version(r)[1] or '?')[:8]}`)"
