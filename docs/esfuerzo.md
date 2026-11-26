@@ -98,3 +98,84 @@ B1 no comprueba el orden de arranque. Los otros tres los hereda de B0, que no se
 - Limitación: B0 exige además que la búsqueda devuelva al menos un repositorio. El vocabulario del motor no tiene una aserción de tamaño de lista, así que el contrato comprueba el estado y el campo `ok`, no la cantidad.
 - 00-healthy: `pass`, 23 de 23 (`results/faults/00-healthy/20261125T163844Z-r01`). RTO 13,5 s (antes 13,3 s); fase pre 1,1 s; fase post 2,2 s.
 - Esfuerzo: 1 iteración, unos 5 min. Contrato: 173 líneas sin comentarios, 35 líneas `# S:`.
+
+## Etapa 5: port a Nextcloud
+
+Mismo criterio de conteo que en la etapa 3 (`docs/conteo/contar.py`): líneas sin comentarios y líneas
+con `# S:` (supuestos sobre Nextcloud). Tiempos en UTC del 2026-11-26, tomados al empezar y al
+terminar cada port. El entorno (`env-nc-v1`) y las fallas nc-01 a nc-04 se hicieron y se commitearon
+antes de empezar a portar (`6bed8ce`, `9866c4d`).
+
+Advertencia sobre los tiempos: el mismo agente escribió B1, el motor y los dos ports, y leyó el código
+de B1 y el vocabulario del motor mientras esperaba otras corridas (antes de empezar a medir). Los
+tiempos miden la escritura y la prueba, no el aprendizaje. Gran parte de cada tiempo es la espera de la
+corrida sana de prueba (unos 6,5 min cada una, con los 5 min de testigos posteriores).
+
+### B1 (`baselines/b1-nc/`, copia de `b1-v1`)
+
+- Inicio: 06:30:42. Fin: 06:46:04 (`pass` en la segunda corrida sana). Total: 15 min 22 s.
+- Iteraciones:
+  1. Primera versión (06:32): `fail` en la sana (`results/faults/nc-00-healthy/20261126T063204Z-r01`,
+     conservada) por `table_row_counts_vs_inventory`: B0 escribe en la base antes de que B1 cuente
+     filas (`oc_filecache` +2 por la appdata de theming al servir la página de login, `oc_preferences`
+     +1 por el último login). En Gitea B0 no escribe.
+  2. El conteo por tabla deja fuera esas dos tablas (supuesto marcado); los archivos de usuario se
+     comparan aparte (base contra disco y disco contra inventario). `pass`
+     (`results/faults/nc-00-healthy/20261126T063910Z-r01`).
+- Líneas cambiadas (`git diff --stat b1-v1:baselines/b1 5acea8e:baselines/b1-nc`):
+
+```
+ b1.sh     |  45 ++++++------
+ checks.py | 229 ++++++++++++++++++++++++--------------------------------------
+ 2 files changed, 112 insertions(+), 162 deletions(-)
+```
+
+- Líneas sin comentarios: 336 (`b1.sh` 58, `checks.py` 278); B1 de Gitea: 384.
+- Supuestos sobre Nextcloud (`# S:`): 17 (`b1.sh` 6, `checks.py` 11).
+- Qué cambió: imagen y versión antes de B0 (versión desde `version.php` de la imagen), B0 de
+  Nextcloud, estado de `status.php` (nuevo: `installed`, `maintenance`, `needsDbUpgrade`), huella de
+  `secret` de `config.php` en lugar de `SECRET_KEY`, archivos de usuario en la base contra el disco y
+  contra el inventario en lugar de repositorios y refs, testigos por WebDAV (archivo, binario y
+  compartido, este visto por el destinatario), PUT de WebDAV en lugar de `git push`. Sin TOTP (la
+  instalación no tiene la app de segundo factor). Se mantienen sin cambios la autoprueba y la búsqueda
+  de errores en el log, la codificación, las dependencias externas, RTO y RPO.
+
+### Contrato (`contracts/nextcloud.yaml`, motor `engine-v1` sin cambios)
+
+- Inicio: 06:46:51. Fin: 07:00:59 (`pass` en la segunda corrida sana). Total: 14 min 8 s.
+- Iteraciones:
+  1. Primera versión, válida para el motor en el primer intento (`engine check-contract`): `fail` en
+     la sana (`results/faults/nc-00-healthy/20261126T064725Z-r01`, conservada) por `files_db_vs_disk`:
+     el motor separa por espacios los nombres que devuelve la consulta, y los archivos de ejemplo del
+     administrador tienen espacios ("Nextcloud Manual.pdf"); en disco no los separa.
+  2. Consulta y glob limitados a los usuarios del seed (cuyos archivos no tienen espacios). `pass`, 19
+     de 19 (`results/faults/nc-00-healthy/20261126T065422Z-r01`).
+- Líneas: el contrato es un archivo nuevo, 136 líneas sin comentarios (Gitea: 173). Envoltorio
+  (`baselines/contract-nc/contract.sh`, copia del v2): `git diff --stat 2ca370a 939c0ec --
+  baselines/contract-nc` = 5 inserciones, 4 eliminaciones; 26 líneas sin comentarios.
+- Supuestos sobre Nextcloud (`# S:`): 21 (Gitea: 35).
+- `custom_check`: 1 (`write_probe`: escritura y lectura de un archivo con `occ files:put` y
+  `files:get` como www-data).
+- `git diff engine-v1 -- engine/`: vacío (motor sin cambios).
+
+### Lo que Nextcloud necesitaría cambiar en el motor (criterio de descarte 3)
+
+No se cambió el motor. Estas son las cosas que el vocabulario de `engine-v1` no puede expresar, con lo
+que se hizo en cada caso:
+
+1. **Huella de un secreto en un archivo PHP.** `secret_fingerprint` lee `ini`, `env` o `raw`;
+   `config.php` es un arreglo PHP. `custom_check` no sirve de reemplazo: su comando no resuelve
+   referencias (`${run:declared.json#…}`) y corre dentro del contenedor, sin acceso a la corrida. El
+   contrato **no verifica** la huella de `secret` (B1 sí). Necesitaría un formato nuevo o un comando
+   con valor esperado.
+2. **Escritura por HTTP con cuerpo.** `http_request` no manda cuerpo (no hay PUT con datos) y
+   `git_push` es solo para Git. Se usó un `custom_check` (cuenta como derrota).
+3. **Nombres con espacios en `entities_match_disk`.** El motor separa por espacios la salida de la
+   consulta. Se limitó la comparación a los usuarios del seed: los archivos de ejemplo del
+   administrador quedan fuera de esa verificación.
+4. **Autenticación por testigo.** `auth` no admite plantillas `{campo}`. Alcanzó con usuarios fijos
+   porque los testigos son de `alice` y se comparten con `bob`; con testigos de varios usuarios no
+   alcanzaría.
+5. **Encabezados.** `http_request` no manda encabezados, y la API OCS de Nextcloud exige
+   `OCS-APIRequest: true`. El contrato usa WebDAV y `status.php`, que no lo exigen; no hay
+   verificación por OCS (B0 y B1 sí la hacen en el login).

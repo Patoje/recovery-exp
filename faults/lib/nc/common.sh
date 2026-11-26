@@ -42,5 +42,14 @@ json_field() { # archivo campo -> primer valor string
   grep -o "\"$2\": *\"[^\"]*\"" "$1" | head -1 | sed 's/.*: *"//; s/"$//'
 }
 
+# Filas de oc_filecache del dump del backup (volumen del original): "storage<TAB>path" por línea.
+# Se mide sobre el dump y no sobre la base restaurada en marcha, porque Nextcloud corrige su caché de
+# archivos cuando una línea base lee archivos que faltan en disco.
+dump_filecache() {
+  vol_sh ncexp_pg-dump 'cat /data/nextcloud.dump' | docker run --rm -i --entrypoint sh \
+    postgres@sha256:f2f98726820d0342055351c6e9d36e705f5bfffb3dd53ff556325114b08afb6d \
+    -c 'cat > /tmp/d; pg_restore -a -t oc_filecache -t oc_storages -f - /tmp/d'
+}
+
 # Éxito si el comando falla (para checks negativos).
 fails() { ! "$@" >/dev/null 2>&1; }

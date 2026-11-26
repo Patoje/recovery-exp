@@ -1,0 +1,136 @@
+{
+  "scenario": "nc-01-config-excluded",
+  "batch": "20261126T070137Z",
+  "repetition": 1,
+  "run_id": "20261126T070142Z",
+  "baseline": "b1",
+  "app": "nextcloud",
+  "env_version": "nc-v1",
+  "status": "fail",
+  "reason": "",
+  "started_at": "2026-11-26T07:01:37.715Z",
+  "finished_at": "2026-11-26T07:08:02.290Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 3
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:01:37.724Z",
+      "duration_ms": 4482
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:01:42.221Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:01:42.239Z",
+      "duration_ms": 22438
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:02:04.690Z",
+      "duration_ms": 28006
+    },
+    {
+      "name": "after_seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:02:32.796Z",
+      "duration_ms": 5
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:02:32.822Z",
+      "duration_ms": 2483
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:02:35.320Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:02:35.339Z",
+      "duration_ms": 5164
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:02:40.518Z",
+      "duration_ms": 1366
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:02:41.896Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:02:41.911Z",
+      "duration_ms": 301340
+    },
+    {
+      "name": "baseline",
+      "exit_code": 1,
+      "started_at": "2026-11-26T07:07:43.263Z",
+      "duration_ms": 15771
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:07:59.054Z",
+      "duration_ms": 2969
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 1,
+    "result": "fail",
+    "first_failed_step": "b0"
+  },
+  "restore_to_baseline_end_s": 13.7,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] el config.php original existe (control)",
+      "[ok] el snapshot no contiene /config/config.php (0)",
+      "[obs] otros .php de config/ en el snapshot: 11",
+      "[ok] se inspeccionó config/ restaurado antes del primer arranque",
+      "[ok] config/ restaurado no tenía config.php antes del primer arranque",
+      "[obs] status.php de la instancia restaurada: {\"installed\":false,\"maintenance\":false,\"needsDbUpgrade\":false,\"version\":\"34.0.5.1\",\"versionstring\":\"34.0.5\",\"edition\":\"\",\"productname\":\"Nextcloud\",\"extendedSupport\":false}"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-26T07:08:07+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261126T070142Z/witnesses_post.json",
+      "max_gap_s": 60.0,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "fail",
+      "reason": ""
+    }
+  }
+}

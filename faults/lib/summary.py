@@ -243,6 +243,59 @@ for scen, letter in HIDDEN_ALL.items():
 if hidden_dirs:
     lines += ["", "Resultados: " + ", ".join(hidden_dirs) + "."]
 
+# Nextcloud (stage 5): faults, healthy restores and port effort.
+NC_FAULTS = ["nc-01-config-excluded", "nc-02-user-files-excluded", "nc-03-files-after-dump", "nc-04-newer-nextcloud"]
+NC_HEALTHY = "nc-00-healthy"
+if nextcloud:
+    lines += ["", "## Nextcloud", "",
+              "Entorno `env-nc-v1` (`docs/nextcloud.md`). B0: `nc/scripts/b0.sh` (B0 adaptada lo mínimo); B1: "
+              "`baselines/b1-nc`; contrato: `contracts/nextcloud.yaml` con el motor `engine-v1` sin cambios. Mismo "
+              "shim y mismos criterios de invalidez; cada corrida desde `nc/scripts/reset.sh`.", "",
+              "### Fallas", "",
+              "| Falla | confirm | B0 | B1 | Contrato (primer paso que falla) |", "|---|---|---|---|---|"]
+    nc_dirs = []
+    for scen in NC_FAULTS:
+        cells, confirms = {}, []
+        for b in BASELINES:
+            batches = nextcloud[scen].get(b)
+            if not batches:
+                cells[b] = "—"
+                continue
+            r = batches[max(batches)][-1]
+            nc_dirs.append(f"`{r['_dir']}`")
+            cells[b] = step_txt(r) + (" (corrida invalid)" if r["status"] == "invalid" else "")
+            confirms.append((b, "valid" if r["status"] != "invalid" else f"invalid ({r['reason'] or 'confirm'})"))
+        ctxt = ("valid " + "/".join(b.upper() for b, _ in confirms) if confirms and all(c == "valid" for _, c in confirms)
+                else "; ".join(f"{b.upper()}: {c}" for b, c in confirms) or "—")
+        lines.append(f"| {scen} | {ctxt} | {cells['b0']} | {cells['b1']} | {cells['contract']} |")
+    if nc_dirs:
+        lines += ["", "Resultados: " + ", ".join(nc_dirs) + "."]
+    lines += ["", "### Restauraciones sanas (nc-00-healthy)", "",
+              "Serie de 10 por línea base (un lote con repeticiones; las corridas sueltas anteriores son de "
+              "desarrollo del port y no cuentan). Una falsa alarma es un `fail` en una restauración sana válida.", "",
+              "| Línea base | Corrida | Estado | Resultado | ¿Falsa alarma? |", "|---|---|---|---|---|"]
+    totals = []
+    for b in BASELINES:
+        batches = nextcloud[NC_HEALTHY].get(b, {})
+        multi = sorted(k for k, v in batches.items() if len(v) > 1)
+        series = [r for k in sorted(batches) if multi and k >= multi[0] for r in batches[k]]
+        for r in series:
+            fa = "— (invalid)" if r["status"] == "invalid" else ("**sí**" if r["baseline_result"]["result"] != "pass" else "no")
+            lines.append(f"| {b.upper()} | `{r['batch']}-r{r['repetition']:02d}` | {r['status']} | {step_txt(r)} | {fa} |")
+        v = [r for r in series if r["status"] != "invalid"]
+        if series:
+            totals.append(f"**{b.upper()}:** {len(v)} válidas de {len(series)}; falsas alarmas: "
+                          f"{sum(1 for r in v if r['baseline_result']['result'] != 'pass')} de {len(v)}.")
+    lines += [""] + [t + "\n" for t in totals]
+    effort = os.path.join(ROOT, "docs", "conteo", "port-nextcloud.json")
+    if os.path.exists(effort):
+        with open(effort) as f:
+            eff = json.load(f)
+        lines += ["### Esfuerzo del port (B1 frente al contrato)", "", "Detalle y criterio: `docs/esfuerzo.md`.", "",
+                  "| | " + " | ".join(e["name"] for e in eff["rows"]) + " |", "|---|" + "---|" * len(eff["rows"])]
+        for key, label in eff["fields"]:
+            lines.append(f"| {label} | " + " | ".join(str(e.get(key, "—")) for e in eff["rows"]) + " |")
+
 findings = os.path.join(ROOT, "faults", "findings.md")
 if os.path.exists(findings):
     with open(findings) as f:

@@ -1,0 +1,2 @@
+[shim] 2026-11-26T07:22:11Z original: restic backup + --exclude /data/*/files
+[shim] 2026-11-26T07:22:11Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools run --rm --no-deps restic backup --exclude /data/*/files --json --host nextcloud-original --tag run=20261126T072116Z /dump /data /config

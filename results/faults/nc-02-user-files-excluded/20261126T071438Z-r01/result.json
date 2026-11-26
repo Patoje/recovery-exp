@@ -1,0 +1,136 @@
+{
+  "scenario": "nc-02-user-files-excluded",
+  "batch": "20261126T071438Z",
+  "repetition": 1,
+  "run_id": "20261126T071443Z",
+  "baseline": "b1",
+  "app": "nextcloud",
+  "env_version": "nc-v1",
+  "status": "invalid",
+  "reason": "confirm no se cumplió",
+  "started_at": "2026-11-26T07:14:38.776Z",
+  "finished_at": "2026-11-26T07:21:07.597Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 2
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:14:38.784Z",
+      "duration_ms": 4175
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:14:42.974Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:14:42.994Z",
+      "duration_ms": 22897
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:15:05.907Z",
+      "duration_ms": 24112
+    },
+    {
+      "name": "after_seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:15:30.032Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:15:30.052Z",
+      "duration_ms": 2294
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:15:32.365Z",
+      "duration_ms": 5
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:15:32.390Z",
+      "duration_ms": 5046
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:15:37.452Z",
+      "duration_ms": 1436
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:15:38.900Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:15:38.915Z",
+      "duration_ms": 301028
+    },
+    {
+      "name": "baseline",
+      "exit_code": 1,
+      "started_at": "2026-11-26T07:20:39.956Z",
+      "duration_ms": 25226
+    },
+    {
+      "name": "confirm",
+      "exit_code": 1,
+      "started_at": "2026-11-26T07:21:05.204Z",
+      "duration_ms": 2147
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 1,
+    "result": "fail",
+    "first_failed_step": "b0"
+  },
+  "restore_to_baseline_end_s": 23.0,
+  "confirm": {
+    "status": "invalid",
+    "exit_code": 1,
+    "checks": [
+      "[ok] el shim agregó la exclusión a restic backup",
+      "[ok] el snapshot no contiene archivos de usuario bajo /data/<usuario>/files (0)",
+      "[ok] el snapshot sí contiene el resto del directorio de datos (appdata_*: 1)",
+      "[fail] la base restaurada sigue listando el testigo files/witness/file-23cb3495-c117-4d37-aa77-12db95880d5b.txt (0)",
+      "[ok] el testigo no está en el disco restaurado (no)",
+      "[obs] archivos de usuario en la base restaurada: 157"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-26T07:21:12+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261126T071443Z/witnesses_post.json",
+      "max_gap_s": 60.1,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "invalid",
+      "reason": "confirm no se cumplió"
+    }
+  }
+}

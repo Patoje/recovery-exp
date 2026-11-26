@@ -1,0 +1,136 @@
+{
+  "scenario": "nc-03-files-after-dump",
+  "batch": "20261126T072742Z",
+  "repetition": 1,
+  "run_id": "20261126T072746Z",
+  "baseline": "b1",
+  "app": "nextcloud",
+  "env_version": "nc-v1",
+  "status": "fail",
+  "reason": "",
+  "started_at": "2026-11-26T07:27:42.085Z",
+  "finished_at": "2026-11-26T07:34:18.518Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 1
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:27:42.093Z",
+      "duration_ms": 4293
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:27:46.401Z",
+      "duration_ms": 5
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:27:46.419Z",
+      "duration_ms": 27943
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:28:14.373Z",
+      "duration_ms": 24613
+    },
+    {
+      "name": "after_seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:28:39.003Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:28:39.020Z",
+      "duration_ms": 2071
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:28:41.105Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:28:41.122Z",
+      "duration_ms": 7641
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:28:48.777Z",
+      "duration_ms": 1563
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:28:50.352Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:28:50.370Z",
+      "duration_ms": 300949
+    },
+    {
+      "name": "baseline",
+      "exit_code": 1,
+      "started_at": "2026-11-26T07:33:51.333Z",
+      "duration_ms": 25376
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:34:16.732Z",
+      "duration_ms": 1522
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 1,
+    "result": "fail",
+    "first_failed_step": "files_db_vs_disk"
+  },
+  "restore_to_baseline_end_s": 23.1,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] se subieron archivos después de pg_dump",
+      "[ok] el snapshot contiene late/late-35b9b62f-a324-4f20-bdbd-efe247807e38-0.txt en disco (1)",
+      "[ok] el dump (base restaurada) no conoce ningún archivo de late/ (0)",
+      "[ok] el dump se pudo leer (control: Documents/documents-00.txt = 5)",
+      "[obs] filas de late/ en la base restaurada en marcha (después de la línea base): 0",
+      "[ok] el archivo está en el disco restaurado (sí)"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-26T07:34:23+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261126T072746Z/witnesses_post.json",
+      "max_gap_s": 60.2,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "fail",
+      "reason": ""
+    }
+  }
+}

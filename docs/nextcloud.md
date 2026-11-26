@@ -34,3 +34,17 @@ Uso: `make nc-fault N=nc-00 BASELINE=b0|b1|contract`. Los valores de prueba est�
 - **Sin salida a internet.** `has_internet_connection=false`, `appstoreenabled=false`, tareas de fondo
   por cron (no hay cron: no corren).
 - **URLs sin reescritura.** Sin `htaccess.RewriteBase`, la página de login es `/index.php/login`.
+
+## Corrección de confirm en nc-02 y nc-03 (durante la tanda de B1 y el contrato)
+
+El `confirm` de nc-02 ("la base restaurada sigue listando el testigo") y el de nc-03 ("la base
+restaurada no conoce los archivos de `late/`") consultaban la base restaurada en marcha, después de la
+línea base. Pero Nextcloud corrige su caché de archivos cuando alguien lee un archivo que falta en
+disco: después de que B1 descarga los testigos, `oc_filecache` ya no los lista. La corrida
+`results/faults/nc-02-user-files-excluded/20261126T071438Z-r01` (B1) quedó `invalid` por eso, aunque la
+falla ocurrió (el snapshot no tiene archivos de usuario). Con B0 no pasaba: B0 no lee los testigos.
+
+Corrección (sin cambiar la falla ni las líneas base): las dos condiciones se miden sobre el dump del
+backup (`dump_filecache` en `faults/lib/nc/common.sh`, como hace la falla 06 de Gitea), que es lo que
+carga la restauración; el valor de la base en marcha queda como observación. Las corridas `invalid` se
+conservan y nc-02 se repite con B1 y el contrato.

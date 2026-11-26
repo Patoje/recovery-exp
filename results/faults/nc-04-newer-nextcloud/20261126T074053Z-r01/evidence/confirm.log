@@ -1,0 +1,6 @@
+[ok] el backup se hizo con 33.0.10 (nextcloud@sha256:81cb09055a20142521a267cea2bc27e6a81a065871c70850d209f08803567dbc)
+[ok] la restauración usa otra imagen (nextcloud@sha256:d8ad0b77c863611b9fab6e72a82a5d35fbcb218b660f9f20fec9941a50806281)
+[obs] versión declarada: 33.0.10.1
+[ok] el config.php restaurado es de la 33 ('version' => '33.0.10.1')
+[obs] status.php de la instancia restaurada: {"installed":true,"maintenance":false,"needsDbUpgrade":true,"version":"34.0.5.1","versionstring":"34.0.5","edition":"","productname":"Nextcloud","extendedSupport":false}
+[obs] versión en config.php después de la restauración: 'version' => '33.0.10.1'

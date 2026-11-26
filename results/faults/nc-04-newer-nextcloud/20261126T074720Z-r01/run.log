@@ -1,0 +1,310 @@
+[07:47:20] escenario nc-04-newer-nextcloud r1, baseline contract, docker=/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker, shim=1
+[07:47:20] == fase: reset
+[07:47:20] borrando proyecto de restauración (Nextcloud)
+ Container ncexp-restore-nextcloud-1 Stopping 
+ Container ncexp-restore-nextcloud-1 Stopped 
+ Container ncexp-restore-nextcloud-1 Removing 
+ Container ncexp-restore-nextcloud-1 Removed 
+ Container ncexp-restore-postgres-1 Stopping 
+ Container ncexp-restore-postgres-1 Stopped 
+ Container ncexp-restore-postgres-1 Removing 
+ Container ncexp-restore-postgres-1 Removed 
+ Volume ncexp-restore_pg-data Removing 
+ Volume ncexp-restore_nc-html Removing 
+ Volume ncexp-restore_nc-data Removing 
+ Volume ncexp-restore_pg-dump Removing 
+ Volume ncexp-restore_nc-config Removing 
+ Network ncexp-restore_restore-net Removing 
+ Network ncexp-restore_restore-net Removed 
+ Volume ncexp-restore_nc-html Removed 
+ Volume ncexp-restore_pg-data Removed 
+ Volume ncexp-restore_nc-data Removed 
+ Volume ncexp-restore_pg-dump Removed 
+ Volume ncexp-restore_nc-config Removed 
+[07:47:22] borrando proyecto original (Nextcloud)
+[shim] 2026-11-26T07:47:22Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:47:22Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools down -v --remove-orphans
+ Container ncexp-nextcloud-1 Stopping 
+ Container ncexp-nextcloud-1 Stopped 
+ Container ncexp-nextcloud-1 Removing 
+ Container ncexp-nextcloud-1 Removed 
+ Container ncexp-postgres-1 Stopping 
+ Container ncexp-postgres-1 Stopped 
+ Container ncexp-postgres-1 Removing 
+ Container ncexp-postgres-1 Removed 
+ Volume ncexp_nc-config Removing 
+ Volume ncexp_pg-data Removing 
+ Volume ncexp_nc-data Removing 
+ Volume ncexp_restic-repo Removing 
+ Volume ncexp_nc-html Removing 
+ Volume ncexp_pg-dump Removing 
+ Network ncexp_default Removing 
+ Volume ncexp_nc-config Removed 
+ Volume ncexp_restic-repo Removed 
+ Volume ncexp_nc-data Removed 
+ Volume ncexp_pg-dump Removed 
+ Network ncexp_default Removed 
+ Volume ncexp_nc-html Removed 
+ Volume ncexp_pg-data Removed 
+[07:47:25] estado limpio
+[07:47:25] == fase: prepare
+[07:47:25] == fase: up
+[07:47:25] corrida 20261126T074725Z (Nextcloud)
+[07:47:25] construyendo runner
+[shim] 2026-11-26T07:47:25Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:47:25Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools build runner
+ Image recexp-runner:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 535B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 462B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#3 DONE 7.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#5 resolve docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b 0.0s done
+#5 DONE 0.0s
+
+#6 [2/2] RUN apt-get update  && apt-get install -y --no-install-recommends git git-lfs curl ca-certificates postgresql-client  && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 exporting to image
+#7 exporting layers done
+#7 exporting manifest sha256:7e9e715a1009173f909b7be40d248641e348285bb479751f12cf45acf24bb91a done
+#7 exporting config sha256:9fbc7abd50943654d870847d99787206e412a523e461da7cc5afa8484055056a done
+#7 exporting attestation manifest sha256:712ded81fc441bb91a3e0f86f212c4f2cca78b77da9efc51112f295aa68ee752 0.0s done
+#7 exporting manifest list sha256:0d0ff34095d248dc8268c21a62d78170f842a7fafc982461fd5409c020652349 done
+#7 naming to docker.io/library/recexp-runner:local done
+#7 unpacking to docker.io/library/recexp-runner:local done
+#7 DONE 0.1s
+
+#8 resolving provenance for metadata file
+#8 DONE 0.0s
+ Image recexp-runner:local Built 
+[07:47:33] levantando postgres + nextcloud (instalación)
+[shim] 2026-11-26T07:47:33Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:47:33Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env up -d --wait postgres nextcloud
+ Volume ncexp_nc-data Creating 
+ Volume ncexp_nc-html Creating 
+ Volume ncexp_pg-dump Creating 
+ Volume ncexp_pg-data Creating 
+ Network ncexp_default Creating 
+ Volume ncexp_nc-config Creating 
+ Volume ncexp_pg-data Created 
+ Volume ncexp_nc-data Created 
+ Volume ncexp_nc-config Created 
+ Volume ncexp_nc-html Created 
+ Volume ncexp_pg-dump Created 
+ Network ncexp_default Created 
+ Container ncexp-postgres-1 Creating 
+ Container ncexp-postgres-1 Created 
+ Container ncexp-nextcloud-1 Creating 
+ Container ncexp-nextcloud-1 Created 
+ Container ncexp-postgres-1 Starting 
+ Container ncexp-postgres-1 Started 
+ Container ncexp-postgres-1 Waiting 
+ Container ncexp-postgres-1 Healthy 
+ Container ncexp-nextcloud-1 Starting 
+ Container ncexp-nextcloud-1 Started 
+ Container ncexp-nextcloud-1 Waiting 
+ Container ncexp-postgres-1 Waiting 
+ Container ncexp-postgres-1 Healthy 
+ Container ncexp-nextcloud-1 Healthy 
+[shim] 2026-11-26T07:47:49Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:47:49Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env exec -T -u www-data nextcloud php occ background:cron
+Set mode for background jobs to 'cron'
+[shim] 2026-11-26T07:47:50Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:47:50Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env exec -T -u www-data nextcloud php occ config:system:set skeletondirectory --value=
+System config value skeletondirectory set to empty string
+[shim] 2026-11-26T07:47:50Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:47:50Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env exec -T -u www-data nextcloud php occ config:system:set has_internet_connection --type=boolean --value=false
+System config value has_internet_connection set to boolean false
+[shim] 2026-11-26T07:47:50Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:47:50Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env exec -T -u www-data nextcloud php occ config:system:set appstoreenabled --type=boolean --value=false
+System config value appstoreenabled set to boolean false
+[07:47:51] inicializando repositorio de Restic
+[shim] 2026-11-26T07:47:51Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:47:51Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools run --rm --no-deps restic init
+ Volume ncexp_restic-repo Creating 
+ Volume ncexp_restic-repo Created 
+ Container ncexp-restic-run-ba10d6c8b63e Creating 
+ Container ncexp-restic-run-ba10d6c8b63e Created 
+created restic repository 7155984d0c at /repo
+
+Please note that knowledge of your password is required to access
+the repository. Losing your password means that your data is
+irrecoverably lost.
+[shim] 2026-11-26T07:47:54Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:47:54Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools run --rm --no-deps restic version
+ Container ncexp-restic-run-cedd6098db93 Creating 
+ Container ncexp-restic-run-cedd6098db93 Created 
+[shim] 2026-11-26T07:47:55Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:47:55Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools config --images
+[07:47:55] listo: /Users/patohe/Desktop/recovery-exp/runs/20261126T074725Z
+[07:47:55] == fase: seed
+[shim] 2026-11-26T07:47:55Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:47:55Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools run --rm --no-deps -T runner python3 nc/seed/seed.py --run-dir /runs/20261126T074725Z
+ Container ncexp-runner-run-70a44340cd54 Creating 
+ Container ncexp-runner-run-70a44340cd54 Created 
+seed: 5 usuarios, 75 archivos, 6 recursos compartidos
+[07:48:20] == fase: after_seed
+[07:48:20] == fase: witness_pre
+[shim] 2026-11-26T07:48:20Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:48:20Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools run --rm --no-deps -T runner python3 nc/witness/witness.py pre --run-dir /runs/20261126T074725Z
+ Container ncexp-runner-run-46ac77236a09 Creating 
+ Container ncexp-runner-run-46ac77236a09 Created 
+witness file 4b0f8d47-7a17-47b6-b259-d9de58f54b6d
+witness binary c8ba1868-56a6-4f65-ae45-d712a817d500
+witness share 4a6690db-2dfd-48db-a9bb-f4cbeff8ece1
+[07:48:22] == fase: before_backup
+[07:48:22] == fase: backup
+[07:48:22] paso: maintenance_on
+[shim] 2026-11-26T07:48:22Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:48:22Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env exec -T -u www-data nextcloud php occ maintenance:mode --on
+Maintenance mode enabled
+[07:48:23] hook de inventario: /Users/patohe/Desktop/recovery-exp/nc/scripts/inventory.sh
+[shim] 2026-11-26T07:48:23Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:48:23Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools run --rm --no-deps -T runner python3 nc/witness/inventory.py --run-dir /runs/20261126T074725Z
+ Container ncexp-runner-run-1378f76e8e0a Creating 
+ Container ncexp-runner-run-1378f76e8e0a Created 
+inventario: 126 tablas, 142 archivos en la base, 142 en disco
+[07:48:24] paso: pg_dump
+[shim] 2026-11-26T07:48:24Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:48:24Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env exec -T postgres sh -ec rm -f /dump/nextcloud.dump; pg_dump -U "$POSTGRES_USER" -Fc -f /dump/nextcloud.dump "$POSTGRES_DB"; ls -l /dump/nextcloud.dump
+-rw-r--r--    1 root     root       1914138 Nov 26 07:48 /dump/nextcloud.dump
+[07:48:24] paso: restic_backup
+[shim] 2026-11-26T07:48:24Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:48:24Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools run --rm --no-deps restic backup --json --host nextcloud-original --tag run=20261126T074725Z /dump /data /config
+ Container ncexp-restic-run-0c5203e9fbae Creating 
+ Container ncexp-restic-run-0c5203e9fbae Created 
+[shim] 2026-11-26T07:48:26Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:48:26Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools run --rm --no-deps restic snapshots --json 592ece2845f2233a94928ef8d7c6012f4802c2cc0a2dbea55e2c190065b9c335
+ Container ncexp-restic-run-eb5db243673b Creating 
+ Container ncexp-restic-run-eb5db243673b Created 
+[07:48:27] paso: maintenance_off
+[shim] 2026-11-26T07:48:27Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:48:27Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env exec -T -u www-data nextcloud php occ maintenance:mode --off
+Maintenance mode disabled
+[07:48:27] backup.json: ok
+[07:48:27] == fase: declare
+[shim] 2026-11-26T07:48:27Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:48:27Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env ps -q nextcloud
+[shim] 2026-11-26T07:48:27Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:48:27Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools run --rm --no-deps -T runner curl -fsS http://nextcloud/status.php
+ Container ncexp-runner-run-a32cb9f994f0 Creating 
+ Container ncexp-runner-run-a32cb9f994f0 Created 
+[shim] 2026-11-26T07:48:28Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:48:28Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env exec -T -u www-data nextcloud php -r include "/var/www/html/config/config.php"; echo hash("sha256", $CONFIG["secret"] ?? "");
+[shim] 2026-11-26T07:48:28Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:48:28Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env exec -T postgres sh -c psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Atc "show server_encoding"
+[07:48:28] declared.json: nextcloud 33.0.10.1, encoding UTF8
+[07:48:28] == fase: after_backup
+[07:48:28] == fase: witness_post
+[shim] 2026-11-26T07:48:29Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml
+[shim] 2026-11-26T07:48:29Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/nc/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/nc-04-newer-nextcloud/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/nc/.env --profile tools run --rm --no-deps -T runner python3 nc/witness/witness.py post --run-dir /runs/20261126T074725Z
+ Container ncexp-runner-run-899993b047ea Creating 
+ Container ncexp-runner-run-899993b047ea Created 
+witness file abfe9528-55f4-46fd-816f-6edf94afb9b5
+witness binary 627886d4-4d12-49bc-a2ae-cd624f9e4a27
+witness share 763a491b-7445-4ac2-85b5-6a83eb84355a
+witness file 6e197d70-f878-4574-92b4-143722e5f83c
+witness binary c35f2d05-e25f-4203-a16e-9d15a43e500b
+[07:53:30] == fase: baseline
+[contract] fase pre 2026-11-26T07:53:30.594Z
+[contract] pre   fail  image_before_migrations: imagen configured nextcloud@sha256:d8ad0b77c863611b9fab6e72a82a5d35fbcb218b660f9f20fec9941a50806281; esperada nextcloud@sha256:81cb09055a20142521a267cea2bc27e6a81a065871c70850d209f08803567dbc
+[contract] pre   fail  version_before_migrations: versión de la imagen configurada 34.0.5.1; esperada 33.0.10.1
+[contract] pre   pass  backup_integrity: restic check sin errores
+[contract] restauración de referencia 2026-11-26T07:53:31.860Z
+[07:53:31] paso: fresh_volumes
+ Volume ncexp-restore_nc-data Removing 
+ Volume ncexp-restore_nc-config Removing 
+ Volume ncexp-restore_pg-dump Removing 
+ Volume ncexp-restore_nc-data Removed 
+ Volume ncexp-restore_nc-config Removed 
+ Volume ncexp-restore_pg-dump Removed 
+[07:53:31] paso: resolve_snapshot
+ Volume ncexp-restore_pg-dump Creating 
+ Volume ncexp-restore_nc-config Creating 
+ Volume ncexp-restore_nc-data Creating 
+ Volume ncexp-restore_pg-dump Created 
+ Volume ncexp-restore_nc-config Created 
+ Volume ncexp-restore_nc-data Created 
+ Container ncexp-restore-restic-run-da17f376a07b Creating 
+ Container ncexp-restore-restic-run-da17f376a07b Created 
+[07:53:32] paso: restic_restore
+ Container ncexp-restore-restic-run-511d4b3482e4 Creating 
+ Container ncexp-restore-restic-run-511d4b3482e4 Created 
+restoring snapshot 592ece28 of [/dump /data /config] at 2026-11-26 07:48:25.122163262 +0000 UTC by root@nextcloud-original to /
+Summary: Restored 225 files/dirs (65.707 MiB) in 0:00
+[shim] 2026-11-26T07:53:33Z evento after_restic_restore
+[07:53:33] paso: start_postgres
+ Network ncexp-restore_restore-net Creating 
+ Volume ncexp-restore_pg-data Creating 
+ Volume ncexp-restore_pg-data Created 
+ Network ncexp-restore_restore-net Created 
+ Container ncexp-restore-postgres-1 Creating 
+ Container ncexp-restore-postgres-1 Created 
+ Container ncexp-restore-postgres-1 Starting 
+ Container ncexp-restore-postgres-1 Started 
+ Container ncexp-restore-postgres-1 Waiting 
+ Container ncexp-restore-postgres-1 Healthy 
+[07:53:36] paso: pg_restore
+[07:53:37] paso: start_nextcloud
+ Container ncexp-restore-postgres-1 Running 
+ Volume ncexp-restore_nc-html Creating 
+ Volume ncexp-restore_nc-html Created 
+ Container ncexp-restore-nextcloud-1 Creating 
+ Container ncexp-restore-nextcloud-1 Created 
+ Container ncexp-restore-postgres-1 Waiting 
+ Container ncexp-restore-postgres-1 Healthy 
+ Container ncexp-restore-nextcloud-1 Starting 
+ Container ncexp-restore-nextcloud-1 Started 
+ Container ncexp-restore-nextcloud-1 Waiting 
+ Container ncexp-restore-postgres-1 Waiting 
+ Container ncexp-restore-postgres-1 Healthy 
+ Container ncexp-restore-nextcloud-1 Healthy 
+[07:53:43] paso: maintenance_off
+Nextcloud or one of the apps require upgrade - only a limited number of commands are available
+You may use your browser or the occ upgrade command to do the upgrade
+Maintenance mode disabled
+[07:53:43] paso: data_fingerprint
+Nextcloud or one of the apps require upgrade - only a limited number of commands are available
+You may use your browser or the occ upgrade command to do the upgrade
+Updated data-fingerprint to 3bd7ee79389541221096224aeed95b40
+[07:53:43] restore.json: ok
+[contract] restore.sh salió con 0; fase post 2026-11-26T07:53:44.010Z
+[contract] post  pass  components_up: 2 componentes en marcha
+[contract] post  pass  start_order: orden de arranque db → app
+[contract] post  fail  image_running: imagen running nextcloud@sha256:d8ad0b77c863611b9fab6e72a82a5d35fbcb218b660f9f20fec9941a50806281; esperada nextcloud@sha256:81cb09055a20142521a267cea2bc27e6a81a065871c70850d209f08803567dbc
+[contract] post  pass  restore_tool_errors: autoprueba ok (4 sí, 3 no); líneas que no cuentan: "check snapshots, trees and blobs" ×1, "no errors were found" ×1
+[contract] post  pass  database_encoding: valor esperado
+[contract] post  pass  table_counts: 126 tablas iguales
+[contract] post  pass  files_db_vs_disk: 94 en la base, 94 en disco
+[contract] post  fail  status_ready: needsDbUpgrade=true, esperado false
+[contract] post  fail  login_page: HTTP 503, esperado 200
+[contract] post  fail  file_list: HTTP 503, esperado 207
+[contract] post  fail  witness_file: 4b0f8d47-7a17-47b6-b259-d9de58f54b6d: HTTP 503, esperado 200
+[contract] post  fail  witness_binary: c8ba1868-56a6-4f65-ae45-d712a817d500: HTTP 503, esperado 200
+[contract] post  fail  witness_share: 4a6690db-2dfd-48db-a9bb-f4cbeff8ece1: HTTP 503, esperado 200
+[contract] post  fail  rpo: ningún testigo recuperado
+[contract] post  fail  write_probe: exec en nextcloud: exit status 1:   There are no commands defined in the "files" namespace.
+[contract] post  fail  rto: verificaciones requeridas que no pasaron: [status_ready login_page file_list witness_file witness_binary witness_share write_probe]
+[contract] fail (7 pass, 12 fail, 0 error; custom_check: 1)
+[contract] fin 2026-11-26T07:53:46.503Z: fail (/Users/patohe/Desktop/recovery-exp/runs/20261126T074725Z/contract.json)
+[07:53:46] == fase: confirm
+[ok] el backup se hizo con 33.0.10 (nextcloud@sha256:81cb09055a20142521a267cea2bc27e6a81a065871c70850d209f08803567dbc)
+[ok] la restauración usa otra imagen (nextcloud@sha256:d8ad0b77c863611b9fab6e72a82a5d35fbcb218b660f9f20fec9941a50806281)
+[obs] versión declarada: 33.0.10.1
+[ok] el config.php restaurado es de la 33 ('version' => '33.0.10.1')
+[obs] status.php de la instancia restaurada: {"installed":true,"maintenance":false,"needsDbUpgrade":true,"version":"34.0.5.1","versionstring":"34.0.5","edition":"","productname":"Nextcloud","extendedSupport":false}
+[obs] versión en config.php después de la restauración: 'version' => '33.0.10.1'
+results/faults/nc-04-newer-nextcloud/20261126T074720Z-r01: status=fail triggered=- max_gap_s=60.1 sleeps=0
+[07:53:53] resultado: fail  -> /Users/patohe/Desktop/recovery-exp/results/faults/nc-04-newer-nextcloud/20261126T074720Z-r01/result.json

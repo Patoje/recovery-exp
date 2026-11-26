@@ -1,0 +1,22 @@
+{
+  "fields": [
+    ["time", "Tiempo (escritura y prueba)"],
+    ["iterations", "Iteraciones hasta pass en la sana"],
+    ["lines", "Líneas sin comentarios (Nextcloud)"],
+    ["lines_gitea", "Líneas sin comentarios (Gitea)"],
+    ["diff", "Cambios contra la versión de Gitea"],
+    ["assumptions", "Líneas # S: sobre Nextcloud (Gitea)"],
+    ["custom", "custom_check"],
+    ["engine", "Cambios en el motor"],
+    ["gaps", "Verificaciones de B1 que el contrato no puede expresar"]
+  ],
+  "rows": [
+    {"name": "B1 (`baselines/b1-nc`)", "time": "15 min 22 s", "iterations": 2, "lines": 336, "lines_gitea": 384,
+     "diff": "112 inserciones, 162 eliminaciones (`git diff --stat b1-v1`)", "assumptions": "17 (20)",
+     "custom": "—", "engine": "—", "gaps": "—"},
+    {"name": "Contrato (`contracts/nextcloud.yaml`)", "time": "14 min 8 s", "iterations": 2, "lines": "136 (+26 del envoltorio)",
+     "lines_gitea": "173 (+26)", "diff": "archivo nuevo; envoltorio: 5 inserciones, 4 eliminaciones", "assumptions": "21 (35)",
+     "custom": 1, "engine": "ninguno (`git diff engine-v1 -- engine/` vacío); 5 limitaciones registradas (criterio 3)",
+     "gaps": "huella de `secret` (config.php es PHP); escritura solo por `custom_check`"}
+  ]
+}

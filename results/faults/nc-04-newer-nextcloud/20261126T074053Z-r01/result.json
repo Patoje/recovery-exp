@@ -1,0 +1,136 @@
+{
+  "scenario": "nc-04-newer-nextcloud",
+  "batch": "20261126T074053Z",
+  "repetition": 1,
+  "run_id": "20261126T074057Z",
+  "baseline": "b1",
+  "app": "nextcloud",
+  "env_version": "nc-v1",
+  "status": "fail",
+  "reason": "",
+  "started_at": "2026-11-26T07:40:53.754Z",
+  "finished_at": "2026-11-26T07:47:15.536Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 49
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:40:53.762Z",
+      "duration_ms": 4015
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:40:57.794Z",
+      "duration_ms": 8
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:40:57.818Z",
+      "duration_ms": 23092
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:41:20.923Z",
+      "duration_ms": 24946
+    },
+    {
+      "name": "after_seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:41:45.886Z",
+      "duration_ms": 5
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:41:45.905Z",
+      "duration_ms": 2205
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:41:48.124Z",
+      "duration_ms": 5
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:41:48.142Z",
+      "duration_ms": 4916
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:41:53.070Z",
+      "duration_ms": 1412
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:41:54.494Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:41:54.509Z",
+      "duration_ms": 301178
+    },
+    {
+      "name": "baseline",
+      "exit_code": 1,
+      "started_at": "2026-11-26T07:46:55.700Z",
+      "duration_ms": 18275
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-26T07:47:13.995Z",
+      "duration_ms": 1295
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 1,
+    "result": "fail",
+    "first_failed_step": "nextcloud_image_before_migrations"
+  },
+  "restore_to_baseline_end_s": 15.9,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] el backup se hizo con 33.0.10 (nextcloud@sha256:81cb09055a20142521a267cea2bc27e6a81a065871c70850d209f08803567dbc)",
+      "[ok] la restauración usa otra imagen (nextcloud@sha256:d8ad0b77c863611b9fab6e72a82a5d35fbcb218b660f9f20fec9941a50806281)",
+      "[obs] versión declarada: 33.0.10.1",
+      "[ok] el config.php restaurado es de la 33 ('version' => '33.0.10.1')",
+      "[obs] status.php de la instancia restaurada: {\"installed\":true,\"maintenance\":false,\"needsDbUpgrade\":true,\"version\":\"34.0.5.1\",\"versionstring\":\"34.0.5\",\"edition\":\"\",\"productname\":\"Nextcloud\",\"extendedSupport\":false}",
+      "[obs] versión en config.php después de la restauración: 'version' => '33.0.10.1'"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-26T07:47:20+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261126T074057Z/witnesses_post.json",
+      "max_gap_s": 60.1,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "fail",
+      "reason": ""
+    }
+  }
+}

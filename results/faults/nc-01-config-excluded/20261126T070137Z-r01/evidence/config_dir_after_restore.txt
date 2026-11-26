@@ -1,0 +1,13 @@
+# scan ok
+.htaccess
+apache-pretty-urls.config.php
+apcu.config.php
+apps.config.php
+autoconfig.php
+config.sample.php
+redis.config.php
+reverse-proxy.config.php
+s3.config.php
+smtp.config.php
+swift.config.php
+upgrade-disable-web.config.php

@@ -1,0 +1,6 @@
+[ok] se subieron archivos después de pg_dump
+[ok] el snapshot contiene late/late-3b520f4b-bcaf-4089-be28-5595cddcced2-0.txt en disco (1)
+[ok] el dump (base restaurada) no conoce ningún archivo de late/ (0)
+[ok] el dump se pudo leer (control: Documents/documents-00.txt = 5)
+[obs] filas de late/ en la base restaurada en marcha (después de la línea base): 0
+[ok] el archivo está en el disco restaurado (sí)
