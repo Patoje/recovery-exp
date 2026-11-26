@@ -46,5 +46,7 @@ falla ocurrió (el snapshot no tiene archivos de usuario). Con B0 no pasaba: B0 
 
 Corrección (sin cambiar la falla ni las líneas base): las dos condiciones se miden sobre el dump del
 backup (`dump_filecache` en `faults/lib/nc/common.sh`, como hace la falla 06 de Gitea), que es lo que
-carga la restauración; el valor de la base en marcha queda como observación. Las corridas `invalid` se
-conservan y nc-02 se repite con B1 y el contrato.
+carga la restauración; el valor de la base en marcha queda como observación. La corrida `invalid` se
+conserva y nc-02 se repitió con B1 (`20261126T110937Z-r01`, válida). Las corridas del contrato en nc-02 y
+nc-03 y la de B1 en nc-03 ya usaron el confirm corregido; las de B0 (anteriores) usaron el original, que
+con B0 se cumple igual porque B0 no lee los testigos.

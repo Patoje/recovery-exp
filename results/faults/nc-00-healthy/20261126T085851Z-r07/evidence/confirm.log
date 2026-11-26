@@ -1,0 +1,4 @@
+[ok] docker resuelve al binario real (/opt/homebrew/bin/docker)
+[ok] el PATH no contiene el shim
+[ok] no hay registro de modificaciones del shim
+[ok] el log de la corrida no tiene líneas [shim]

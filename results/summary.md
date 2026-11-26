@@ -203,6 +203,80 @@ Escenarios `faults/O1`–`O4` a partir de `docs/fallas-ocultas.md` (fallas A–D
 
 Resultados: `results/faults/O1-secuencias-en-cero/20261126T044906Z-r01`, `results/faults/O1-secuencias-en-cero/20261126T050342Z-r01`, `results/faults/O1-secuencias-en-cero/20261126T051002Z-r01`, `results/faults/O3-latest-de-otro/20261126T045613Z-r01`, `results/faults/O3-latest-de-otro/20261126T052316Z-r01`, `results/faults/O3-latest-de-otro/20261126T053016Z-r01`, `results/faults/O4-corrupcion-en-retencion/20261126T051624Z-r01`, `results/faults/O4-corrupcion-en-retencion/20261126T053655Z-r01`, `results/faults/O4-corrupcion-en-retencion/20261126T054348Z-r01`.
 
+## Nextcloud
+
+Entorno `env-nc-v1` (`docs/nextcloud.md`). B0: `nc/scripts/b0.sh` (B0 adaptada lo mínimo); B1: `baselines/b1-nc`; contrato: `contracts/nextcloud.yaml` con el motor `engine-v1` sin cambios. Mismo shim y mismos criterios de invalidez; cada corrida desde `nc/scripts/reset.sh`.
+
+### Fallas
+
+| Falla | confirm | B0 | B1 | Contrato (primer paso que falla) |
+|---|---|---|---|---|
+| nc-01-config-excluded | valid B0/B1/CONTRACT | fail en `restore` | fail en `b0` | fail en `status_ready` |
+| nc-02-user-files-excluded | valid B0/B1/CONTRACT | fail en `file_download` | fail en `b0` | fail en `files_db_vs_disk` |
+| nc-03-files-after-dump | valid B0/B1/CONTRACT | pass | fail en `files_db_vs_disk` | fail en `files_db_vs_disk` |
+| nc-04-newer-nextcloud | valid B0/B1/CONTRACT | fail en `http_login_page` | fail en `nextcloud_image_before_migrations` | fail en `image_before_migrations` |
+
+Resultados: `results/faults/nc-01-config-excluded/20261126T060414Z-r01`, `results/faults/nc-01-config-excluded/20261126T070137Z-r01`, `results/faults/nc-01-config-excluded/20261126T070807Z-r01`, `results/faults/nc-02-user-files-excluded/20261126T061044Z-r01`, `results/faults/nc-02-user-files-excluded/20261126T110937Z-r01`, `results/faults/nc-02-user-files-excluded/20261126T072112Z-r01`, `results/faults/nc-03-files-after-dump/20261126T061713Z-r01`, `results/faults/nc-03-files-after-dump/20261126T072742Z-r01`, `results/faults/nc-03-files-after-dump/20261126T073423Z-r01`, `results/faults/nc-04-newer-nextcloud/20261126T062344Z-r01`, `results/faults/nc-04-newer-nextcloud/20261126T074053Z-r01`, `results/faults/nc-04-newer-nextcloud/20261126T074720Z-r01`.
+
+### Restauraciones sanas (nc-00-healthy)
+
+Serie de 10 por línea base (un lote con repeticiones; las corridas sueltas anteriores son de desarrollo del port y no cuentan). Una falsa alarma es un `fail` en una restauración sana válida.
+
+| Línea base | Corrida | Estado | Resultado | ¿Falsa alarma? |
+|---|---|---|---|---|
+| B0 | `20261126T075353Z-r01` | pass | pass | no |
+| B0 | `20261126T075353Z-r02` | pass | pass | no |
+| B0 | `20261126T075353Z-r03` | pass | pass | no |
+| B0 | `20261126T075353Z-r04` | pass | pass | no |
+| B0 | `20261126T075353Z-r05` | pass | pass | no |
+| B0 | `20261126T075353Z-r06` | pass | pass | no |
+| B0 | `20261126T075353Z-r07` | pass | pass | no |
+| B0 | `20261126T075353Z-r08` | pass | pass | no |
+| B0 | `20261126T075353Z-r09` | pass | pass | no |
+| B0 | `20261126T075353Z-r10` | pass | pass | no |
+| B1 | `20261126T085851Z-r01` | pass | pass | no |
+| B1 | `20261126T085851Z-r02` | pass | pass | no |
+| B1 | `20261126T085851Z-r03` | pass | pass | no |
+| B1 | `20261126T085851Z-r04` | pass | pass | no |
+| B1 | `20261126T085851Z-r05` | pass | pass | no |
+| B1 | `20261126T085851Z-r06` | pass | pass | no |
+| B1 | `20261126T085851Z-r07` | pass | pass | no |
+| B1 | `20261126T085851Z-r08` | pass | pass | no |
+| B1 | `20261126T085851Z-r09` | pass | pass | no |
+| B1 | `20261126T085851Z-r10` | pass | pass | no |
+| CONTRACT | `20261126T100444Z-r01` | pass | pass | no |
+| CONTRACT | `20261126T100444Z-r02` | pass | pass | no |
+| CONTRACT | `20261126T100444Z-r03` | pass | pass | no |
+| CONTRACT | `20261126T100444Z-r04` | pass | pass | no |
+| CONTRACT | `20261126T100444Z-r05` | pass | pass | no |
+| CONTRACT | `20261126T100444Z-r06` | pass | pass | no |
+| CONTRACT | `20261126T100444Z-r07` | pass | pass | no |
+| CONTRACT | `20261126T100444Z-r08` | pass | pass | no |
+| CONTRACT | `20261126T100444Z-r09` | pass | pass | no |
+| CONTRACT | `20261126T100444Z-r10` | pass | pass | no |
+
+**B0:** 10 válidas de 10; falsas alarmas: 0 de 10.
+
+**B1:** 10 válidas de 10; falsas alarmas: 0 de 10.
+
+**CONTRACT:** 10 válidas de 10; falsas alarmas: 0 de 10.
+
+### Esfuerzo del port (B1 frente al contrato)
+
+Detalle y criterio: `docs/esfuerzo.md`.
+
+| | B1 (`baselines/b1-nc`) | Contrato (`contracts/nextcloud.yaml`) |
+|---|---|---|
+| Tiempo (escritura y prueba) | 15 min 22 s | 14 min 8 s |
+| Iteraciones hasta pass en la sana | 2 | 2 |
+| Líneas sin comentarios (Nextcloud) | 336 | 136 (+26 del envoltorio) |
+| Líneas sin comentarios (Gitea) | 384 | 173 (+26) |
+| Cambios contra la versión de Gitea | 112 inserciones, 162 eliminaciones (`git diff --stat b1-v1`) | archivo nuevo; envoltorio: 5 inserciones, 4 eliminaciones |
+| Líneas # S: sobre Nextcloud (Gitea) | 17 (20) | 21 (35) |
+| custom_check | — | 1 |
+| Cambios en el motor | — | ninguno (`git diff engine-v1 -- engine/` vacío); 5 limitaciones registradas (criterio 3) |
+| Verificaciones de B1 que el contrato no puede expresar | — | huella de `secret` (config.php es PHP); escritura solo por `custom_check` |
+
 ## Hallazgos
 
 - **13 — repositorio de Restic en solo lectura.** Con el repositorio en solo lectura, restic reintenta crear el lock unos 14 min antes de fallar (`Save(<lock/…>) returned error, retrying after …: read-only file system`). Durante todo ese tiempo el procedimiento de referencia deja Gitea detenido, y el cron no lo nota porque no propaga el código de salida. Evidencia: `results/faults/13-readonly-repo-cron/20261124T035656Z-r01/evidence/cron.log` (corrida invalid por la fase backup, conservada).

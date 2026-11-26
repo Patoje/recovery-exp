@@ -1,0 +1,7 @@
+[ok] el shim agregó la exclusión a restic backup
+[ok] el snapshot no contiene archivos de usuario bajo /data/<usuario>/files (0)
+[ok] el snapshot sí contiene el resto del directorio de datos (appdata_*: 1)
+[ok] el dump (base restaurada) lista el testigo files/witness/file-7fc1e0ad-30eb-41f4-8d51-7314030e247a.txt (1)
+[obs] filas del testigo en la base restaurada en marcha (después de la línea base): 0
+[ok] el testigo no está en el disco restaurado (no)
+[obs] archivos de usuario en la base restaurada: 157

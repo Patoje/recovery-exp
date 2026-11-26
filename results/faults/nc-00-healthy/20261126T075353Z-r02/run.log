@@ -1,0 +1,275 @@
+[08:00:20] escenario nc-00-healthy r2, baseline b0, docker=/opt/homebrew/bin/docker, shim=0
+[08:00:20] == fase: reset
+[08:00:20] borrando proyecto de restauración (Nextcloud)
+ Container ncexp-restore-nextcloud-1 Stopping 
+ Container ncexp-restore-nextcloud-1 Stopped 
+ Container ncexp-restore-nextcloud-1 Removing 
+ Container ncexp-restore-nextcloud-1 Removed 
+ Container ncexp-restore-postgres-1 Stopping 
+ Container ncexp-restore-postgres-1 Stopped 
+ Container ncexp-restore-postgres-1 Removing 
+ Container ncexp-restore-postgres-1 Removed 
+ Volume ncexp-restore_pg-data Removing 
+ Volume ncexp-restore_nc-config Removing 
+ Volume ncexp-restore_pg-dump Removing 
+ Volume ncexp-restore_nc-data Removing 
+ Volume ncexp-restore_nc-html Removing 
+ Network ncexp-restore_restore-net Removing 
+ Volume ncexp-restore_pg-data Removed 
+ Volume ncexp-restore_nc-config Removed 
+ Volume ncexp-restore_pg-dump Removed 
+ Volume ncexp-restore_nc-data Removed 
+ Network ncexp-restore_restore-net Removed 
+ Volume ncexp-restore_nc-html Removed 
+[08:00:22] borrando proyecto original (Nextcloud)
+ Container ncexp-nextcloud-1 Stopping 
+ Container ncexp-nextcloud-1 Stopped 
+ Container ncexp-nextcloud-1 Removing 
+ Container ncexp-nextcloud-1 Removed 
+ Container ncexp-postgres-1 Stopping 
+ Container ncexp-postgres-1 Stopped 
+ Container ncexp-postgres-1 Removing 
+ Container ncexp-postgres-1 Removed 
+ Volume ncexp_nc-data Removing 
+ Volume ncexp_restic-repo Removing 
+ Volume ncexp_nc-config Removing 
+ Volume ncexp_pg-data Removing 
+ Volume ncexp_nc-html Removing 
+ Network ncexp_default Removing 
+ Volume ncexp_nc-data Removed 
+ Volume ncexp_pg-dump Removing 
+ Volume ncexp_restic-repo Removed 
+ Volume ncexp_nc-config Removed 
+ Volume ncexp_pg-dump Removed 
+ Volume ncexp_pg-data Removed 
+ Network ncexp_default Removed 
+ Volume ncexp_nc-html Removed 
+[08:00:24] estado limpio
+[08:00:24] == fase: prepare
+[08:00:24] == fase: up
+[08:00:24] corrida 20261126T080024Z (Nextcloud)
+[08:00:24] construyendo runner
+ Image recexp-runner:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 535B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 462B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#5 resolve docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b done
+#5 DONE 0.0s
+
+#6 [2/2] RUN apt-get update  && apt-get install -y --no-install-recommends git git-lfs curl ca-certificates postgresql-client  && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 exporting to image
+#7 exporting layers done
+#7 exporting manifest sha256:7e9e715a1009173f909b7be40d248641e348285bb479751f12cf45acf24bb91a done
+#7 exporting config sha256:9fbc7abd50943654d870847d99787206e412a523e461da7cc5afa8484055056a done
+#7 exporting attestation manifest sha256:3e63c7274e50ca85e03370ec6d52b382dfb9c23ff9f4f8d2cd8a790410c7c298 done
+#7 exporting manifest list sha256:4c027d2a0dedcab373c8454170ea55d36649864dd8a7cfb4b2a2021b5581a908 done
+#7 naming to docker.io/library/recexp-runner:local done
+#7 unpacking to docker.io/library/recexp-runner:local done
+#7 DONE 0.0s
+
+#8 resolving provenance for metadata file
+#8 DONE 0.0s
+ Image recexp-runner:local Built 
+[08:00:25] levantando postgres + nextcloud (instalación)
+ Volume ncexp_nc-config Creating 
+ Volume ncexp_pg-dump Creating 
+ Network ncexp_default Creating 
+ Volume ncexp_pg-data Creating 
+ Volume ncexp_nc-html Creating 
+ Volume ncexp_nc-data Creating 
+ Volume ncexp_nc-html Created 
+ Volume ncexp_nc-config Created 
+ Volume ncexp_nc-data Created 
+ Volume ncexp_pg-dump Created 
+ Volume ncexp_pg-data Created 
+ Network ncexp_default Created 
+ Container ncexp-postgres-1 Creating 
+ Container ncexp-postgres-1 Created 
+ Container ncexp-nextcloud-1 Creating 
+ Container ncexp-nextcloud-1 Created 
+ Container ncexp-postgres-1 Starting 
+ Container ncexp-postgres-1 Started 
+ Container ncexp-postgres-1 Waiting 
+ Container ncexp-postgres-1 Healthy 
+ Container ncexp-nextcloud-1 Starting 
+ Container ncexp-nextcloud-1 Started 
+ Container ncexp-nextcloud-1 Waiting 
+ Container ncexp-postgres-1 Waiting 
+ Container ncexp-postgres-1 Healthy 
+ Container ncexp-nextcloud-1 Healthy 
+Set mode for background jobs to 'cron'
+System config value skeletondirectory set to empty string
+System config value has_internet_connection set to boolean false
+System config value appstoreenabled set to boolean false
+[08:00:43] inicializando repositorio de Restic
+ Volume ncexp_restic-repo Creating 
+ Volume ncexp_restic-repo Created 
+ Container ncexp-restic-run-deaf56272347 Creating 
+ Container ncexp-restic-run-deaf56272347 Created 
+created restic repository 3bfffe32ae at /repo
+
+Please note that knowledge of your password is required to access
+the repository. Losing your password means that your data is
+irrecoverably lost.
+ Container ncexp-restic-run-21488c307a9e Creating 
+ Container ncexp-restic-run-21488c307a9e Created 
+[08:00:47] listo: /Users/patohe/Desktop/recovery-exp/runs/20261126T080024Z
+[08:00:47] == fase: seed
+ Container ncexp-runner-run-e82720fda4bb Creating 
+ Container ncexp-runner-run-e82720fda4bb Created 
+seed: 5 usuarios, 75 archivos, 6 recursos compartidos
+[08:01:12] == fase: after_seed
+[08:01:12] == fase: witness_pre
+ Container ncexp-runner-run-9dfde5727e37 Creating 
+ Container ncexp-runner-run-9dfde5727e37 Created 
+witness file cb471b7a-0cc4-4f66-9d2e-442184e3deb1
+witness binary f900d4a9-4980-45e8-ac5e-828f61f49128
+witness share 0d50624b-e4ec-425a-b324-8ccafd286827
+[08:01:14] == fase: before_backup
+[08:01:14] == fase: backup
+[08:01:14] paso: maintenance_on
+Maintenance mode enabled
+[08:01:14] hook de inventario: /Users/patohe/Desktop/recovery-exp/nc/scripts/inventory.sh
+ Container ncexp-runner-run-649941a9e50b Creating 
+ Container ncexp-runner-run-649941a9e50b Created 
+inventario: 131 tablas, 142 archivos en la base, 142 en disco
+[08:01:15] paso: pg_dump
+-rw-r--r--    1 root     root       1930269 Nov 26 08:01 /dump/nextcloud.dump
+[08:01:16] paso: restic_backup
+ Container ncexp-restic-run-1e57a7e24889 Creating 
+ Container ncexp-restic-run-1e57a7e24889 Created 
+ Container ncexp-restic-run-8609378948a2 Creating 
+ Container ncexp-restic-run-8609378948a2 Created 
+[08:01:18] paso: maintenance_off
+Maintenance mode disabled
+[08:01:19] backup.json: ok
+[08:01:19] == fase: declare
+ Container ncexp-runner-run-59f012347a79 Creating 
+ Container ncexp-runner-run-59f012347a79 Created 
+[08:01:20] declared.json: nextcloud 34.0.5.1, encoding UTF8
+[08:01:20] == fase: after_backup
+[08:01:20] == fase: witness_post
+ Container ncexp-runner-run-6aeb3104a88f Creating 
+ Container ncexp-runner-run-6aeb3104a88f Created 
+witness file 68bb71f5-9e0d-4020-af20-f101636dce90
+witness binary fa2054e2-7867-463a-88b7-d4d36e788855
+witness share 60c67d7f-b0dc-4f05-998e-9e429e658601
+witness file 21044bb3-1182-4c52-a196-16c07cf03690
+witness binary c58a44da-48bd-4853-b284-fea2bdc8c98f
+[08:06:21] == fase: baseline
+[08:06:22] paso: restic_check
+ Volume ncexp-restore_pg-dump Creating 
+ Volume ncexp-restore_nc-config Creating 
+ Volume ncexp-restore_nc-data Creating 
+ Volume ncexp-restore_pg-dump Created 
+ Volume ncexp-restore_nc-config Created 
+ Volume ncexp-restore_nc-data Created 
+ Container ncexp-restore-restic-run-1ea07bdca511 Creating 
+ Container ncexp-restore-restic-run-1ea07bdca511 Created 
+load indexes
+check all packs
+check snapshots, trees and blobs
+[0:00] 100.00%  1 / 1 snapshots
+read all data
+[0:00] 100.00%  5 / 5 packs
+no errors were found
+[08:06:22] paso: restore
+[08:06:22] paso: fresh_volumes
+ Volume ncexp-restore_nc-data Removing 
+ Volume ncexp-restore_nc-config Removing 
+ Volume ncexp-restore_pg-dump Removing 
+ Volume ncexp-restore_nc-data Removed 
+ Volume ncexp-restore_pg-dump Removed 
+ Volume ncexp-restore_nc-config Removed 
+[08:06:23] paso: resolve_snapshot
+ Volume ncexp-restore_nc-config Creating 
+ Volume ncexp-restore_nc-data Creating 
+ Volume ncexp-restore_pg-dump Creating 
+ Volume ncexp-restore_nc-data Created 
+ Volume ncexp-restore_pg-dump Created 
+ Volume ncexp-restore_nc-config Created 
+ Container ncexp-restore-restic-run-4d4afcaadafc Creating 
+ Container ncexp-restore-restic-run-4d4afcaadafc Created 
+[08:06:23] paso: restic_restore
+ Container ncexp-restore-restic-run-7e9a5b8e3634 Creating 
+ Container ncexp-restore-restic-run-7e9a5b8e3634 Created 
+restoring snapshot b02639db of [/dump /data /config] at 2026-11-26 08:01:16.77650083 +0000 UTC by root@nextcloud-original to /
+Summary: Restored 225 files/dirs (68.703 MiB) in 0:00
+[08:06:24] paso: start_postgres
+ Network ncexp-restore_restore-net Creating 
+ Volume ncexp-restore_pg-data Creating 
+ Volume ncexp-restore_pg-data Created 
+ Network ncexp-restore_restore-net Created 
+ Container ncexp-restore-postgres-1 Creating 
+ Container ncexp-restore-postgres-1 Created 
+ Container ncexp-restore-postgres-1 Starting 
+ Container ncexp-restore-postgres-1 Started 
+ Container ncexp-restore-postgres-1 Waiting 
+ Container ncexp-restore-postgres-1 Healthy 
+[08:06:27] paso: pg_restore
+[08:06:28] paso: start_nextcloud
+ Container ncexp-restore-postgres-1 Running 
+ Volume ncexp-restore_nc-html Creating 
+ Volume ncexp-restore_nc-html Created 
+ Container ncexp-restore-nextcloud-1 Creating 
+ Container ncexp-restore-nextcloud-1 Created 
+ Container ncexp-restore-postgres-1 Waiting 
+ Container ncexp-restore-postgres-1 Healthy 
+ Container ncexp-restore-nextcloud-1 Starting 
+ Container ncexp-restore-nextcloud-1 Started 
+ Container ncexp-restore-nextcloud-1 Waiting 
+ Container ncexp-restore-postgres-1 Waiting 
+ Container ncexp-restore-postgres-1 Healthy 
+ Container ncexp-restore-nextcloud-1 Healthy 
+[08:06:34] paso: maintenance_off
+Maintenance mode disabled
+[08:06:34] paso: data_fingerprint
+Updated data-fingerprint to 30ab8817755b199d2e6fd37726f0c81f
+[08:06:34] restore.json: ok
+[08:06:34] paso: compose_up_healthy
+ Container ncexp-restore-postgres-1 Running 
+ Container ncexp-restore-nextcloud-1 Running 
+ Container ncexp-restore-postgres-1 Waiting 
+ Container ncexp-restore-postgres-1 Healthy 
+ Container ncexp-restore-postgres-1 Waiting 
+ Container ncexp-restore-nextcloud-1 Waiting 
+ Container ncexp-restore-nextcloud-1 Healthy 
+ Container ncexp-restore-postgres-1 Healthy 
+[08:06:35] paso: http_login_page
+ Container ncexp-restore-runner-run-58ffd5f5b8cb Creating 
+ Container ncexp-restore-runner-run-58ffd5f5b8cb Created 
+[08:06:37] paso: http_status
+ Container ncexp-restore-runner-run-c14d1a8bb1d2 Creating 
+ Container ncexp-restore-runner-run-c14d1a8bb1d2 Created 
+[08:06:38] paso: api_login
+ Container ncexp-restore-runner-run-3fbdae8bb74f Creating 
+ Container ncexp-restore-runner-run-3fbdae8bb74f Created 
+[08:06:39] paso: file_list
+ Container ncexp-restore-runner-run-940613317243 Creating 
+ Container ncexp-restore-runner-run-940613317243 Created 
+[08:06:40] paso: file_download
+ Container ncexp-restore-runner-run-0b2788f785ad Creating 
+ Container ncexp-restore-runner-run-0b2788f785ad Created 
+[08:06:42] B0 (Nextcloud): pass (/Users/patohe/Desktop/recovery-exp/runs/20261126T080024Z/b0.json)
+[08:06:42] == fase: confirm
+[ok] docker resuelve al binario real (/opt/homebrew/bin/docker)
+[ok] el PATH no contiene el shim
+[ok] no hay registro de modificaciones del shim
+[ok] el log de la corrida no tiene líneas [shim]
+results/faults/nc-00-healthy/20261126T075353Z-r02: status=pass triggered=- max_gap_s=60.1 sleeps=0
+[08:06:47] resultado: pass  -> /Users/patohe/Desktop/recovery-exp/results/faults/nc-00-healthy/20261126T075353Z-r02/result.json
