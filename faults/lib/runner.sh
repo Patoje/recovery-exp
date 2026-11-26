@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Ejecuta un escenario de falla: reset -> up -> seed -> testigos previos -> [inject] ->
+# Ejecuta un escenario de falla: reset -> up -> seed -> [after_seed] -> testigos previos -> [inject] ->
 # backup -> declare -> [inject] -> testigos posteriores -> línea base -> confirm.
 # Uso: runner.sh <NN | nombre-de-carpeta>    (BASELINE=b0 por defecto)
 # Resultados: results/faults/<escenario>/<batch>-rNN/{run.log,result.json,evidence/}.
@@ -52,7 +52,7 @@ pipeline() {
     export PATH="$ROOT/faults/lib/shim:$PATH"
   fi
   # Ganchos por defecto; el escenario los redefine en su archivo inject.
-  prepare() { :; }; before_backup() { :; }; after_backup() { :; }; on_event() { :; }
+  prepare() { :; }; after_seed() { :; }; before_backup() { :; }; after_backup() { :; }; on_event() { :; }
   backup() { INVENTORY_HOOK="$ROOT/scripts/inventory.sh" "$ROOT/scripts/backup.sh" "$RUN_DIR"; }
   witness_post() { "$ROOT/scripts/witness.sh" post "$RUN_DIR"; }
   # shellcheck disable=SC1091
@@ -78,7 +78,7 @@ pipeline() {
 
   run_up() { "$ROOT/scripts/up.sh" && RUN_DIR="$(current_run_dir)" && export RUN_DIR; }
 
-  for ph in reset:"$ROOT/scripts/reset.sh" prepare:prepare up:run_up seed:"$ROOT/scripts/seed.sh" \
+  for ph in reset:"$ROOT/scripts/reset.sh" prepare:prepare up:run_up seed:"$ROOT/scripts/seed.sh" after_seed:after_seed \
             witness_pre:"$ROOT/scripts/witness.sh pre" before_backup:before_backup backup:backup \
             declare:"$ROOT/scripts/declare.sh" after_backup:after_backup witness_post:witness_post; do
     name="${ph%%:*}"; cmd="${ph#*:}"

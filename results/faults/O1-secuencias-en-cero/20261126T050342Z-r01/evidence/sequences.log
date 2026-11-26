@@ -1,0 +1,23 @@
+NOTICE:  desfasada: access_token.id max=1 proximo=1
+NOTICE:  desfasada: action.id max=259 proximo=2
+NOTICE:  desfasada: attachment.id max=14 proximo=1
+NOTICE:  desfasada: branch.id max=22 proximo=1
+NOTICE:  desfasada: comment.id max=50 proximo=1
+NOTICE:  desfasada: email_address.id max=6 proximo=1
+NOTICE:  desfasada: issue_content_history.id max=28 proximo=1
+NOTICE:  desfasada: issue.id max=30 proximo=1
+NOTICE:  desfasada: issue_user.id max=51 proximo=1
+NOTICE:  desfasada: language_stat.id max=9 proximo=1
+NOTICE:  desfasada: lfs_meta_object.id max=11 proximo=1
+NOTICE:  desfasada: notification.id max=76 proximo=1
+NOTICE:  desfasada: oauth2_application.id max=5 proximo=1
+NOTICE:  desfasada: repo_indexer_status.id max=9 proximo=1
+NOTICE:  desfasada: repo_unit.id max=72 proximo=1
+NOTICE:  desfasada: repository.id max=9 proximo=1
+NOTICE:  desfasada: system_setting.id max=1 proximo=1
+NOTICE:  desfasada: two_factor.id max=1 proximo=1
+NOTICE:  desfasada: user.id max=6 proximo=1
+NOTICE:  desfasada: version.id max=1 proximo=1
+NOTICE:  desfasada: watch.id max=9 proximo=1
+NOTICE:  secuencias_desfasadas=21
+DO

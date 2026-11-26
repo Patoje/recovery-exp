@@ -1,0 +1,143 @@
+{
+  "scenario": "O3-latest-de-otro",
+  "batch": "20261126T045613Z",
+  "repetition": 1,
+  "run_id": "20261126T045614Z",
+  "baseline": "b0",
+  "env_version": "v2",
+  "status": "pass",
+  "reason": "",
+  "started_at": "2026-11-26T04:56:13.278Z",
+  "finished_at": "2026-11-26T05:02:52.425Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 12
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:56:13.288Z",
+      "duration_ms": 1441
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:56:14.744Z",
+      "duration_ms": 78
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:56:14.836Z",
+      "duration_ms": 18399
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:56:33.248Z",
+      "duration_ms": 10486
+    },
+    {
+      "name": "after_seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:56:43.749Z",
+      "duration_ms": 21900
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:57:05.663Z",
+      "duration_ms": 2228
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:57:07.905Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:57:07.926Z",
+      "duration_ms": 9680
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:57:17.622Z",
+      "duration_ms": 1542
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:57:19.179Z",
+      "duration_ms": 7153
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:57:26.359Z",
+      "duration_ms": 301778
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:02:28.151Z",
+      "duration_ms": 16968
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:02:45.148Z",
+      "duration_ms": 6977
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 16.2,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] restic snapshots latest: hostname gitea-staging (gitea-staging)",
+      "[ok] el ID de latest coincide con el snapshot restaurado (4f00a34b / 4f00a34b)",
+      "[ok] el snapshot restaurado es el backup de staging",
+      "[ok] testigos de producción | canario de staging = 0|1 (0|1)",
+      "[ok] refs de alice/witness distintas del inventario (disco: '')",
+      "[ok] falta el commit testigo 4bb89376200c",
+      "[ok] GET /api/healthz = 200",
+      "[ok] inicio de sesión (GET /api/v1/user con alice) = 200",
+      "[ok] navegación: página principal = 200",
+      "[ok] navegación: página de alice/notes = 200",
+      "[obs] supuesto: snapshots del repositorio (host, hora): a576ea38 gitea-original 2026-11-26T04:56:44.726; c78d868a gitea-original 2026-11-26T04:57:10.165; 4f00a34b gitea-staging 2026-11-26T04:57:19.820",
+      "[obs] supuesto: 'snapshots latest' (sin filtros) devuelve: gitea-staging 4f00a34b",
+      "[obs] supuesto: 'snapshots --latest 1' (lo que usa restore.sh) devuelve: c78d868a gitea-original; 4f00a34b gitea-staging",
+      "[obs] snapshot viejo de producción usado para el staging: a576ea38"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-26T05:02:56+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261126T045614Z/witnesses_post.json",
+      "max_gap_s": 60.0,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "pass",
+      "reason": ""
+    }
+  }
+}

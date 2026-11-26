@@ -1,0 +1,50 @@
+[04:56:52] paso: fresh_volumes
+[shim] 2026-11-26T04:56:52Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/O3-latest-de-otro/staging.override.yml
+[shim] 2026-11-26T04:56:52Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/O3-latest-de-otro/staging.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools down -v --remove-orphans
+[04:56:52] paso: resolve_snapshot
+[shim] 2026-11-26T04:56:52Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/O3-latest-de-otro/staging.override.yml
+[shim] 2026-11-26T04:56:52Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/O3-latest-de-otro/staging.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --no-lock --no-cache snapshots --json a576ea385811f1fffcf9b1b89238e5af8785b724a5058e4a15827a21c24ac7df
+ Volume recexp-stg_pg-dump Creating 
+ Volume recexp-stg_gitea-data Creating 
+ Volume recexp-stg_pg-dump Created 
+ Volume recexp-stg_gitea-data Created 
+ Container recexp-stg-restic-run-80737ef62b9d Creating 
+ Container recexp-stg-restic-run-80737ef62b9d Created 
+[04:56:52] paso: restic_restore
+[shim] 2026-11-26T04:56:53Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/O3-latest-de-otro/staging.override.yml
+[shim] 2026-11-26T04:56:53Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/O3-latest-de-otro/staging.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic --no-lock --no-cache restore a576ea385811f1fffcf9b1b89238e5af8785b724a5058e4a15827a21c24ac7df --target /
+ Container recexp-stg-restic-run-de75f68d7892 Creating 
+ Container recexp-stg-restic-run-de75f68d7892 Created 
+restoring snapshot a576ea38 of [/dump /data] at 2026-11-26 04:56:44.726214021 +0000 UTC by root@gitea-original to /
+Summary: Restored 1598 files/dirs (4.736 MiB) in 0:00
+[04:56:53] paso: start_postgres
+[shim] 2026-11-26T04:56:53Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/O3-latest-de-otro/staging.override.yml
+[shim] 2026-11-26T04:56:53Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/O3-latest-de-otro/staging.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait postgres
+ Network recexp-stg_restore-net Creating 
+ Volume recexp-stg_pg-data Creating 
+ Volume recexp-stg_pg-data Created 
+ Network recexp-stg_restore-net Created 
+ Container recexp-stg-postgres-1 Creating 
+ Container recexp-stg-postgres-1 Created 
+ Container recexp-stg-postgres-1 Starting 
+ Container recexp-stg-postgres-1 Started 
+ Container recexp-stg-postgres-1 Waiting 
+ Container recexp-stg-postgres-1 Healthy 
+[04:56:56] paso: pg_restore
+[shim] 2026-11-26T04:56:56Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/O3-latest-de-otro/staging.override.yml
+[shim] 2026-11-26T04:56:56Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/O3-latest-de-otro/staging.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -ec pg_restore --exit-on-error -U "$POSTGRES_USER" -d "$POSTGRES_DB" /dump/gitea.dump
+[04:56:58] paso: start_gitea
+[shim] 2026-11-26T04:56:58Z restore: + -f /Users/patohe/Desktop/recovery-exp/faults/O3-latest-de-otro/staging.override.yml
+[shim] 2026-11-26T04:56:58Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/restore.yml -f /Users/patohe/Desktop/recovery-exp/faults/O3-latest-de-otro/staging.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait gitea
+ Container recexp-stg-postgres-1 Running 
+ Container recexp-stg-gitea-1 Creating 
+ Container recexp-stg-gitea-1 Created 
+ Container recexp-stg-postgres-1 Waiting 
+ Container recexp-stg-postgres-1 Healthy 
+ Container recexp-stg-gitea-1 Starting 
+ Container recexp-stg-gitea-1 Started 
+ Container recexp-stg-postgres-1 Waiting 
+ Container recexp-stg-gitea-1 Waiting 
+ Container recexp-stg-postgres-1 Healthy 
+ Container recexp-stg-gitea-1 Healthy 
+[04:57:03] restore.json: ok

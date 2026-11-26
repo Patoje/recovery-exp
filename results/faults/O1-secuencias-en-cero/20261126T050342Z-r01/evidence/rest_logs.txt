@@ -1,0 +1,197 @@
+postgres-1  | The files belonging to this database system will be owned by user "postgres".
+postgres-1  | This user must also own the server process.
+postgres-1  | 
+postgres-1  | The database cluster will be initialized with locale "en_US.utf8".
+postgres-1  | The default database encoding has accordingly been set to "UTF8".
+gitea-1     | Server listening on :: port 22.
+gitea-1     | Server listening on 0.0.0.0 port 22.
+gitea-1     | 2026/11/26 05:09:37 cmd/web.go:273:runWeb() [I] Starting Gitea on PID: 15
+gitea-1     | 2026/11/26 05:09:37 cmd/web.go:117:showWebStartupMessage() [I] Gitea version: 28.4.0 built with go1.27.4 : bindata, timetzdata, 
+gitea-1     | 2026/11/26 05:09:37 cmd/web.go:118:showWebStartupMessage() [I] * RunMode: prod
+gitea-1     | 2026/11/26 05:09:37 cmd/web.go:119:showWebStartupMessage() [I] * AppPath: /usr/local/bin/gitea
+postgres-1  | The default text search configuration will be set to "english".
+postgres-1  | 
+postgres-1  | Data page checksums are disabled.
+postgres-1  | 
+postgres-1  | fixing permissions on existing directory /var/lib/postgresql/data ... ok
+postgres-1  | creating subdirectories ... ok
+gitea-1     | 2026/11/26 05:09:37 cmd/web.go:120:showWebStartupMessage() [I] * WorkPath: /data/gitea
+gitea-1     | 2026/11/26 05:09:37 cmd/web.go:121:showWebStartupMessage() [I] * CustomPath: /data/gitea
+gitea-1     | 2026/11/26 05:09:37 cmd/web.go:122:showWebStartupMessage() [I] * ConfigFile: /data/gitea/conf/app.ini
+gitea-1     | 2026/11/26 05:09:37 cmd/web.go:123:showWebStartupMessage() [I] Prepare to run web server
+gitea-1     | 2026/11/26 05:09:37 routers/init.go:117:InitWebInstalled() [I] Git version: 2.54.1 (home: /data/gitea/home)
+gitea-1     | 2026/11/26 05:09:37 modules/storage/storage.go:241:initAttachments() [I] Initialising Attachment storage with type: local
+gitea-1     | 2026/11/26 05:09:37 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/attachments
+gitea-1     | 2026/11/26 05:09:37 modules/storage/storage.go:231:initAvatars() [I] Initialising Avatar storage with type: local
+gitea-1     | 2026/11/26 05:09:37 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/avatars
+gitea-1     | 2026/11/26 05:09:37 modules/storage/storage.go:257:initRepoAvatars() [I] Initialising Repository Avatar storage with type: local
+postgres-1  | selecting dynamic shared memory implementation ... posix
+postgres-1  | selecting default max_connections ... 100
+postgres-1  | selecting default shared_buffers ... 128MB
+postgres-1  | selecting default time zone ... UTC
+gitea-1     | 2026/11/26 05:09:37 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/repo-avatars
+gitea-1     | 2026/11/26 05:09:37 modules/storage/storage.go:251:initLFS() [I] Initialising LFS storage with type: local
+gitea-1     | 2026/11/26 05:09:37 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/git/lfs
+gitea-1     | 2026/11/26 05:09:37 modules/storage/storage.go:263:initRepoArchives() [I] Initialising Repository Archive storage with type: local
+gitea-1     | 2026/11/26 05:09:37 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/repo-archive
+postgres-1  | creating configuration files ... ok
+postgres-1  | running bootstrap script ... ok
+postgres-1  | sh: locale: not found
+postgres-1  | 2026-11-26 05:09:33.398 UTC [35] WARNING:  no usable system locales were found
+postgres-1  | performing post-bootstrap initialization ... ok
+postgres-1  | syncing data to disk ... ok
+postgres-1  | 
+postgres-1  | 
+postgres-1  | Success. You can now start the database server using:
+postgres-1  | 
+postgres-1  |     pg_ctl -D /var/lib/postgresql/data -l logfile start
+postgres-1  | 
+gitea-1     | 2026/11/26 05:09:37 modules/storage/storage.go:273:initPackages() [I] Initialising Packages storage with type: local
+gitea-1     | 2026/11/26 05:09:37 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/packages
+gitea-1     | 2026/11/26 05:09:37 modules/storage/storage.go:284:initActions() [I] Initialising Actions storage with type: local
+gitea-1     | 2026/11/26 05:09:37 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/actions_log
+gitea-1     | 2026/11/26 05:09:37 modules/storage/storage.go:288:initActions() [I] Initialising ActionsArtifacts storage with type: local
+gitea-1     | 2026/11/26 05:09:37 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/actions_artifacts
+gitea-1     | 2026/11/26 05:09:37 routers/common/db.go:22:InitDBEngine() [I] Beginning ORM engine initialization.
+gitea-1     | 2026/11/26 05:09:37 routers/common/db.go:29:InitDBEngine() [I] ORM engine initialization attempt #1/10...
+gitea-1     | 2026/11/26 05:09:37 cmd/web.go:207:serveInstalled() [I] PING DATABASE postgres
+gitea-1     | 2026/11/26 05:09:38 routers/init.go:138:InitWebInstalled() [I] ORM engine initialization successful!
+gitea-1     | 2026/11/26 05:09:38 .../indexer/issues/indexer.go:78:InitIssueIndexer.1() [I] PID 15: Initializing Issue Indexer: bleve
+postgres-1  | initdb: warning: enabling "trust" authentication for local connections
+postgres-1  | initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+postgres-1  | waiting for server to start....2026-11-26 05:09:33.705 UTC [41] LOG:  starting PostgreSQL 16.16 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+postgres-1  | 2026-11-26 05:09:33.706 UTC [41] LOG:  listening on Unix socket "/run/postgresql/.s.PGSQL.5432"
+postgres-1  | 2026-11-26 05:09:33.709 UTC [44] LOG:  database system was shut down at 2026-11-26 05:09:33 UTC
+postgres-1  | 2026-11-26 05:09:33.712 UTC [41] LOG:  database system is ready to accept connections
+postgres-1  |  done
+postgres-1  | server started
+postgres-1  | CREATE DATABASE
+postgres-1  | 
+postgres-1  | 
+postgres-1  | /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+postgres-1  | 
+postgres-1  | waiting for server to shut down....2026-11-26 05:09:33.852 UTC [41] LOG:  received fast shutdown request
+postgres-1  | 2026-11-26 05:09:33.853 UTC [41] LOG:  aborting any active transactions
+postgres-1  | 2026-11-26 05:09:33.854 UTC [41] LOG:  background worker "logical replication launcher" (PID 47) exited with exit code 1
+postgres-1  | 2026-11-26 05:09:33.855 UTC [42] LOG:  shutting down
+postgres-1  | 2026-11-26 05:09:33.856 UTC [42] LOG:  checkpoint starting: shutdown immediate
+gitea-1     | 2026/11/26 05:09:38 .../indexer/stats/indexer.go:41:populateRepoIndexer() [I] Populating the repo stats indexer with existing repositories
+gitea-1     | 2026/11/26 05:09:38 .../indexer/stats/indexer.go:87:populateRepoIndexer() [I] Done (re)populating the repo stats indexer with existing repositories
+postgres-1  | 2026-11-26 05:09:33.879 UTC [42] LOG:  checkpoint complete: wrote 935 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.012 s, sync=0.010 s, total=0.025 s; sync files=301, longest=0.004 s, average=0.001 s; distance=4355 kB, estimate=4355 kB; lsn=0/1949C50, redo lsn=0/1949C50
+postgres-1  | 2026-11-26 05:09:33.883 UTC [41] LOG:  database system is shut down
+postgres-1  |  done
+postgres-1  | server stopped
+gitea-1     | 2026/11/26 05:09:38 .../indexer/issues/indexer.go:155:InitIssueIndexer.2() [I] Issue Indexer Initialization took 12.496356ms
+gitea-1     | 2026/11/26 05:09:38 cmd/web.go:233:serveInstalled() [I] Audit record output: disabled
+gitea-1     | 2026/11/26 05:09:38 cmd/web.go:339:listen() [I] Listen: http://0.0.0.0:3000
+gitea-1     | 2026/11/26 05:09:38 cmd/web.go:343:listen() [I] AppURL(ROOT_URL): http://gitea:3000/
+gitea-1     | 2026/11/26 05:09:38 cmd/web.go:346:listen() [I] LFS server enabled
+gitea-1     | 2026/11/26 05:09:38 modules/graceful/server.go:53:NewServer() [I] Starting new Web server: tcp:0.0.0.0:3000 on PID: 15
+postgres-1  | 
+postgres-1  | PostgreSQL init process complete; ready for start up.
+postgres-1  | 
+postgres-1  | 2026-11-26 05:09:33.985 UTC [1] LOG:  starting PostgreSQL 16.16 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+postgres-1  | 2026-11-26 05:09:33.985 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+postgres-1  | 2026-11-26 05:09:33.985 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+postgres-1  | 2026-11-26 05:09:33.987 UTC [1] LOG:  listening on Unix socket "/run/postgresql/.s.PGSQL.5432"
+gitea-1     | 2026/11/26 05:09:41 .../src/net/http/server.go:2362:HandlerFunc.ServeHTTP() [I] PING DATABASE postgres
+gitea-1     | 2026/11/26 05:09:41 HTTPRequest [I] router: completed GET /api/healthz for [::1]:60520, 200 OK in 3.7ms @ healthcheck/check.go:76(healthcheck.Check)
+gitea-1     | Received signal 15; terminating.
+postgres-1  | 2026-11-26 05:09:33.990 UTC [57] LOG:  database system was shut down at 2026-11-26 05:09:33 UTC
+postgres-1  | 2026-11-26 05:09:33.993 UTC [1] LOG:  database system is ready to accept connections
+postgres-1  | 2026-11-26 05:09:54.931 UTC [135] ERROR:  duplicate key value violates unique constraint "action_pkey"
+postgres-1  | 2026-11-26 05:09:54.931 UTC [135] DETAIL:  Key (id)=(1) already exists.
+postgres-1  | 2026-11-26 05:09:54.931 UTC [135] STATEMENT:  INSERT INTO "action" ("user_id","op_type","act_user_id","repo_id","comment_id","is_deleted","ref_name","is_private","content","created_unix") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING "id"
+postgres-1  | 2026-11-26 05:09:56.099 UTC [189] ERROR:  duplicate key value violates unique constraint "issue_pkey"
+postgres-1  | 2026-11-26 05:09:56.099 UTC [189] DETAIL:  Key (id)=(1) already exists.
+gitea-1     | 2026/11/26 05:09:42 .../graceful/manager_unix.go:144:(*Manager).handleSignals() [W] PID 15. Received SIGTERM. Shutting down...
+gitea-1     | 2026/11/26 05:09:42 .../graceful/manager_unix.go:154:(*Manager).handleSignals() [W] PID: 15. Background context for manager closed - context canceled - Shutting down...
+gitea-1     | 2026/11/26 05:09:42 cmd/web.go:390:listen() [I] HTTP Listener: 0.0.0.0:3000 Closed
+gitea-1     | 2026/11/26 05:09:42 cmd/web.go:240:serveInstalled() [I] PID: 15 Gitea Web Finished
+gitea-1     | Server listening on :: port 22.
+gitea-1     | Server listening on 0.0.0.0 port 22.
+gitea-1     | 2026/11/26 05:09:43 cmd/web.go:273:runWeb() [I] Starting Gitea on PID: 15
+gitea-1     | 2026/11/26 05:09:43 cmd/web.go:117:showWebStartupMessage() [I] Gitea version: 28.4.0 built with go1.27.4 : bindata, timetzdata, 
+gitea-1     | 2026/11/26 05:09:43 cmd/web.go:118:showWebStartupMessage() [I] * RunMode: prod
+gitea-1     | 2026/11/26 05:09:43 cmd/web.go:119:showWebStartupMessage() [I] * AppPath: /usr/local/bin/gitea
+postgres-1  | 2026-11-26 05:09:56.099 UTC [189] STATEMENT:  INSERT INTO "issue" ("repo_id","index","poster_id","original_author","original_author_id","name","content","content_version","milestone_id","priority","is_closed","is_pull","num_comments","ref","deadline_unix","created_unix","updated_unix","closed_unix","is_locked","time_estimate") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20) RETURNING "id"
+gitea-1     | 2026/11/26 05:09:43 cmd/web.go:120:showWebStartupMessage() [I] * WorkPath: /data/gitea
+gitea-1     | 2026/11/26 05:09:43 cmd/web.go:121:showWebStartupMessage() [I] * CustomPath: /data/gitea
+gitea-1     | 2026/11/26 05:09:43 cmd/web.go:122:showWebStartupMessage() [I] * ConfigFile: /data/gitea/conf/app.ini
+gitea-1     | 2026/11/26 05:09:43 cmd/web.go:123:showWebStartupMessage() [I] Prepare to run web server
+gitea-1     | 2026/11/26 05:09:43 routers/init.go:117:InitWebInstalled() [I] Git version: 2.54.1 (home: /data/gitea/home)
+gitea-1     | 2026/11/26 05:09:43 modules/storage/storage.go:241:initAttachments() [I] Initialising Attachment storage with type: local
+gitea-1     | 2026/11/26 05:09:43 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/attachments
+gitea-1     | 2026/11/26 05:09:43 modules/storage/storage.go:231:initAvatars() [I] Initialising Avatar storage with type: local
+gitea-1     | 2026/11/26 05:09:43 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/avatars
+gitea-1     | 2026/11/26 05:09:43 modules/storage/storage.go:257:initRepoAvatars() [I] Initialising Repository Avatar storage with type: local
+gitea-1     | 2026/11/26 05:09:43 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/repo-avatars
+gitea-1     | 2026/11/26 05:09:43 modules/storage/storage.go:251:initLFS() [I] Initialising LFS storage with type: local
+gitea-1     | 2026/11/26 05:09:43 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/git/lfs
+gitea-1     | 2026/11/26 05:09:43 modules/storage/storage.go:263:initRepoArchives() [I] Initialising Repository Archive storage with type: local
+gitea-1     | 2026/11/26 05:09:43 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/repo-archive
+gitea-1     | 2026/11/26 05:09:43 modules/storage/storage.go:273:initPackages() [I] Initialising Packages storage with type: local
+gitea-1     | 2026/11/26 05:09:43 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/packages
+gitea-1     | 2026/11/26 05:09:43 modules/storage/storage.go:284:initActions() [I] Initialising Actions storage with type: local
+gitea-1     | 2026/11/26 05:09:43 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/actions_log
+gitea-1     | 2026/11/26 05:09:43 modules/storage/storage.go:288:initActions() [I] Initialising ActionsArtifacts storage with type: local
+gitea-1     | 2026/11/26 05:09:43 modules/storage/local.go:49:NewLocalStorage() [I] Creating new Local Storage at /data/gitea/actions_artifacts
+gitea-1     | 2026/11/26 05:09:43 routers/common/db.go:22:InitDBEngine() [I] Beginning ORM engine initialization.
+gitea-1     | 2026/11/26 05:09:43 routers/common/db.go:29:InitDBEngine() [I] ORM engine initialization attempt #1/10...
+gitea-1     | 2026/11/26 05:09:43 cmd/web.go:207:serveInstalled() [I] PING DATABASE postgres
+gitea-1     | 2026/11/26 05:09:44 routers/init.go:138:InitWebInstalled() [I] ORM engine initialization successful!
+gitea-1     | 2026/11/26 05:09:44 .../indexer/issues/indexer.go:78:InitIssueIndexer.1() [I] PID 15: Initializing Issue Indexer: bleve
+gitea-1     | 2026/11/26 05:09:44 .../indexer/stats/indexer.go:41:populateRepoIndexer() [I] Populating the repo stats indexer with existing repositories
+gitea-1     | 2026/11/26 05:09:44 .../indexer/issues/indexer.go:155:InitIssueIndexer.2() [I] Issue Indexer Initialization took 677.581µs
+gitea-1     | 2026/11/26 05:09:44 .../indexer/stats/indexer.go:87:populateRepoIndexer() [I] Done (re)populating the repo stats indexer with existing repositories
+gitea-1     | 2026/11/26 05:09:44 cmd/web.go:233:serveInstalled() [I] Audit record output: disabled
+gitea-1     | 2026/11/26 05:09:44 cmd/web.go:339:listen() [I] Listen: http://0.0.0.0:3000
+gitea-1     | 2026/11/26 05:09:44 cmd/web.go:343:listen() [I] AppURL(ROOT_URL): http://gitea:3000/
+gitea-1     | 2026/11/26 05:09:44 cmd/web.go:346:listen() [I] LFS server enabled
+gitea-1     | 2026/11/26 05:09:44 modules/graceful/server.go:53:NewServer() [I] Starting new Web server: tcp:0.0.0.0:3000 on PID: 15
+gitea-1     | 2026/11/26 05:09:48 .../src/net/http/server.go:2362:HandlerFunc.ServeHTTP() [I] PING DATABASE postgres
+gitea-1     | 2026/11/26 05:09:48 HTTPRequest [I] router: completed GET /api/healthz for [::1]:53478, 200 OK in 5.4ms @ healthcheck/check.go:76(healthcheck.Check)
+gitea-1     | 2026/11/26 05:09:49 HTTPRequest [I] router: completed GET / for 172.19.0.4:46788, 200 OK in 5.0ms @ web/home.go:26(web.Home)
+gitea-1     | 2026/11/26 05:09:50 .../src/net/http/server.go:2362:HandlerFunc.ServeHTTP() [I] PING DATABASE postgres
+gitea-1     | 2026/11/26 05:09:50 HTTPRequest [I] router: completed GET /api/healthz for [::1]:53494, 200 OK in 0.2ms @ healthcheck/check.go:76(healthcheck.Check)
+gitea-1     | 2026/11/26 05:09:50 HTTPRequest [I] router: completed GET /api/v1/version for 172.19.0.4:46798, 200 OK in 0.1ms @ misc/version.go:15(misc.Version)
+gitea-1     | 2026/11/26 05:09:51 HTTPRequest [I] router: completed GET /api/v1/user for 172.19.0.4:46800, 200 OK in 18.4ms @ user/user.go:126(user.GetAuthenticatedUser)
+gitea-1     | 2026/11/26 05:09:51 HTTPRequest [I] router: completed GET /api/v1/repos/search?limit=50 for 172.19.0.4:46806, 200 OK in 32.0ms @ repo/repo.go:48(repo.Search)
+gitea-1     | 2026/11/26 05:09:52 .../src/net/http/server.go:2362:HandlerFunc.ServeHTTP() [I] PING DATABASE postgres
+gitea-1     | 2026/11/26 05:09:52 HTTPRequest [I] router: completed GET /api/healthz for [::1]:53520, 200 OK in 0.8ms @ healthcheck/check.go:76(healthcheck.Check)
+gitea-1     | 2026/11/26 05:09:52 HTTPRequest [I] router: completed GET /alice/notes.git/info/refs?service=git-upload-pack for 172.19.0.4:48614, 200 OK in 2.1ms @ repo/githttp.go:467(repo.GetInfoRefs)
+gitea-1     | 2026/11/26 05:09:52 HTTPRequest [I] router: completed POST /alice/notes.git/git-upload-pack for 172.19.0.4:48614, 200 OK in 2.0ms @ repo/githttp.go:430(repo.ServiceUploadPack)
+gitea-1     | 2026/11/26 05:09:52 HTTPRequest [I] router: completed POST /alice/notes.git/git-upload-pack for 172.19.0.4:48614, 200 OK in 13.0ms @ repo/githttp.go:430(repo.ServiceUploadPack)
+gitea-1     | 2026/11/26 05:09:54 .../src/net/http/server.go:2362:HandlerFunc.ServeHTTP() [I] PING DATABASE postgres
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /api/healthz for [::1]:32904, 200 OK in 1.3ms @ healthcheck/check.go:76(healthcheck.Check)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /api/v1/version for 172.19.0.4:48628, 200 OK in 0.1ms @ misc/version.go:15(misc.Version)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /api/v1/repos/alice/witness/issues/1/assets/14 for 172.19.0.4:48640, 200 OK in 15.8ms @ repo/issue_attachment.go:25(repo.GetIssueAttachment)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /attachments/9bfb4a26-6c46-4719-a70a-03711b590201 for 172.19.0.4:48652, 200 OK in 16.4ms @ repo/attachment.go:218(repo.GetAttachment)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /alice/witness/media/commit/1d1be660f1d7f3f4dcb8479bfa8c2b38f41749bc/lfs/lfs-218aa00b-93a0-4386-8fde-162aa84102e8.bin for 172.19.0.4:48668, 200 OK in 22.3ms @ repo/download.go:112(repo.SingleDownloadOrLFS)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /api/v1/repos/alice/witness/issues/1 for 172.19.0.4:48682, 200 OK in 19.5ms @ repo/issue.go:473(repo.GetIssue)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /api/v1/user for 172.19.0.4:48686, 200 OK in 14.0ms @ user/user.go:126(user.GetAuthenticatedUser)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /alice/witness.git/info/refs?service=git-upload-pack for 172.19.0.4:48698, 200 OK in 1.7ms @ repo/githttp.go:467(repo.GetInfoRefs)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed POST /alice/witness.git/git-upload-pack for 172.19.0.4:48698, 200 OK in 1.4ms @ repo/githttp.go:430(repo.ServiceUploadPack)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed POST /alice/witness.git/git-upload-pack for 172.19.0.4:48698, 200 OK in 3.2ms @ repo/githttp.go:430(repo.ServiceUploadPack)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /alice/witness.git/info/refs?service=git-receive-pack for 172.19.0.4:48706, 401 Unauthorized in 1.3ms @ repo/githttp.go:467(repo.GetInfoRefs)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /alice/witness.git/info/refs?service=git-receive-pack for 172.19.0.4:48706, 200 OK in 15.2ms @ repo/githttp.go:467(repo.GetInfoRefs)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /alice/witness.git/info/refs?service=git-upload-pack for 172.19.0.4:48712, 200 OK in 1.8ms @ repo/githttp.go:467(repo.GetInfoRefs)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed POST /alice/witness.git/git-upload-pack for 172.19.0.4:48712, 200 OK in 1.7ms @ repo/githttp.go:430(repo.ServiceUploadPack)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed POST /api/internal/hook/pre-receive/alice/witness for 127.0.0.1:0, 200 OK in 3.9ms @ private/hook_pre_receive.go:76(private.HookPreReceive)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed POST /api/internal/hook/post-receive/alice/witness for 127.0.0.1:0, 200 OK in 7.2ms @ private/hook_post_receive.go:80(private.HookPostReceive)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed POST /alice/witness.git/git-receive-pack for 172.19.0.4:48706, 200 OK in 191.2ms @ repo/githttp.go:435(repo.ServiceReceivePack)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /api/v1/repos/alice/witness/git/commits/287cabe9162127bb9f76256223071d13d789d6c0 for 172.19.0.4:48718, 200 OK in 19.5ms @ repo/commits.go:24(repo.GetSingleCommit)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /alice/witness/media/commit/1d1be660f1d7f3f4dcb8479bfa8c2b38f41749bc/lfs/lfs-218aa00b-93a0-4386-8fde-162aa84102e8.bin for 172.19.0.4:48722, 200 OK in 19.1ms @ repo/download.go:112(repo.SingleDownloadOrLFS)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /api/v1/repos/alice/witness/issues/1 for 172.19.0.4:48732, 200 OK in 16.4ms @ repo/issue.go:473(repo.GetIssue)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /api/v1/repos/alice/witness/issues/1/assets/14 for 172.19.0.4:48736, 200 OK in 13.9ms @ repo/issue_attachment.go:25(repo.GetIssueAttachment)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /attachments/9bfb4a26-6c46-4719-a70a-03711b590201 for 172.19.0.4:48746, 200 OK in 15.7ms @ repo/attachment.go:218(repo.GetAttachment)
+gitea-1     | 2026/11/26 05:09:54 services/feed/notifier.go:347:(*actionNotifier).PushCommits() [E] NotifyWatchers: insert new actioner: pq: duplicate key value violates unique constraint "action_pkey" (23505)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /api/v1/repos/alice/witness/git/commits/e3d62942f54f517b2eb972dbc2229cfee98fc253 for 172.19.0.4:48754, 404 Not Found in 20.5ms @ repo/commits.go:24(repo.GetSingleCommit)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /api/v1/repos/alice/witness/issues/2 for 172.19.0.4:48760, 404 Not Found in 16.8ms @ repo/issue.go:473(repo.GetIssue)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /api/v1/repos/alice/witness/issues/1/assets/15 for 172.19.0.4:48766, 404 Not Found in 15.5ms @ repo/issue_attachment.go:25(repo.GetIssueAttachment)
+gitea-1     | 2026/11/26 05:09:54 HTTPRequest [I] router: completed GET /alice/witness/media/commit/e6af017b7ec29a1890bb4cf5ef453429a897b615/lfs/lfs-017b5308-72de-4860-b800-0e80e029183c.bin for 172.19.0.4:48774, 404 Not Found in 19.5ms @ context/repo.go:953(context.RepoRefByType.1)
+gitea-1     | 2026/11/26 05:09:55 HTTPRequest [I] router: completed GET /api/v1/repos/alice/witness/git/commits/ba61a9ebefe9dc7de26d12c2400a9ee331494bb5 for 172.19.0.4:48778, 404 Not Found in 14.8ms @ repo/commits.go:24(repo.GetSingleCommit)
+gitea-1     | 2026/11/26 05:09:56 .../api/v1/repo/issue.go:611:CreateIssue() [E] InternalServerError: newIssue: pq: duplicate key value violates unique constraint "issue_pkey" (23505)
+gitea-1     | 2026/11/26 05:09:56 HTTPRequest [I] router: completed POST /api/v1/repos/alice/witness/issues for 172.19.0.4:48782, 500 Internal Server Error in 7.3ms @ repo/issue.go:514(repo.CreateIssue)
+gitea-1     | 2026/11/26 05:09:56 .../src/net/http/server.go:2362:HandlerFunc.ServeHTTP() [I] PING DATABASE postgres
+gitea-1     | 2026/11/26 05:09:56 HTTPRequest [I] router: completed GET /api/healthz for [::1]:32938, 200 OK in 0.4ms @ healthcheck/check.go:76(healthcheck.Check)

@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+STG=(docker compose -f "$ROOT/compose/restore.yml" -f "$FAULT_DIR/staging.override.yml" --env-file "$ROOT/.env")
+RUNNER_REST=("${REST[@]}" --profile tools run --rm --no-deps -T runner)
+
+# a) El snapshot usado no es de producción.
+orig_restic snapshots latest --json > "$FAULT_EVIDENCE/snapshots_latest.json"
+host="$(grep -o '"hostname":"[^"]*"' "$FAULT_EVIDENCE/snapshots_latest.json" | head -1 | cut -d'"' -f4)"
+lid="$(grep -o '"id":"[0-9a-f]\{64\}"' "$FAULT_EVIDENCE/snapshots_latest.json" | head -1 | cut -d'"' -f4)"
+rid="$(json_field "$RUN_DIR/restore.json" snapshot_id)"
+check "restic snapshots latest: hostname gitea-staging ($host)" test "$host" = gitea-staging
+check "el ID de latest coincide con el snapshot restaurado (${lid:0:8} / ${rid:0:8})" test -n "$lid" -a "$lid" = "$rid"
+check "el snapshot restaurado es el backup de staging" test "$rid" = "$(cat "$FAULT_EVIDENCE/stg_snapshot.txt")"
+
+# b) Los testigos de producción no están y el canario de staging sí.
+like="$(grep -o '"id": "[0-9a-f-]\{36\}"' "$RUN_DIR/witnesses_pre.json" | cut -d'"' -f4 | sed "s/.*/name like '%&%'/" | paste -sd'|' - | sed 's/|/ or /g')"
+res="$(rest_sql "select (select count(*) from issue where $like), (select count(*) from issue where name like 'CANARIO-STAGING-%')")"
+check "testigos de producción | canario de staging = 0|1 ($res)" test "$res" = "0|1"
+
+# c) Las refs del repositorio de testigos difieren del inventario: falta el commit testigo.
+wsha="$(grep -o '"commit_sha": "[0-9a-f]*"' "$RUN_DIR/witnesses_pre.json" | head -1 | cut -d'"' -f4)"
+inv="$(python3 -c 'import json,sys; r=json.load(open(sys.argv[1]))["repository_refs"].get("alice/witness",{}); print(" ".join(f"{k}={v}" for k,v in sorted(r.items())))' "$RUN_DIR/inventory.json")"
+disk="$(rest_disk_branches | awk '$1=="alice/witness"{print "refs/heads/"$2"="$3}' | sort | paste -sd' ' -)"
+check "refs de alice/witness distintas del inventario (disco: '${disk}')" test -n "$inv" -a "$inv" != "$disk"
+check "falta el commit testigo ${wsha:0:12}" fails rest_gitea git -c safe.directory='*' --git-dir /data/git/repositories/alice/witness.git cat-file -e "$wsha^{commit}"
+
+# d) La instancia está sana: healthz, inicio de sesión y navegación.
+code() { "${RUNNER_REST[@]}" sh -c 'curl -s -o /dev/null -w "%{http_code}" "$@"' _ "$@"; }
+check "GET /api/healthz = 200" test "$(code http://gitea:3000/api/healthz)" = 200
+check "inicio de sesión (GET /api/v1/user con alice) = 200" test "$("${RUNNER_REST[@]}" sh -c 'curl -s -o /dev/null -w "%{http_code}" -u "alice:$SEED_USER_PASSWORD" http://gitea:3000/api/v1/user')" = 200
+check "navegación: página principal = 200" test "$(code http://gitea:3000/)" = 200
+check "navegación: página de alice/notes = 200" test "$(code http://gitea:3000/alice/notes)" = 200
+
+# Supuesto a verificar: latest sin --host/--path/--tag elige el más nuevo entre todos los hosts.
+observe "supuesto: snapshots del repositorio (host, hora)" "$(orig_restic snapshots --json | python3 -c 'import json,sys; print("; ".join("%s %s %s" % (s["short_id"], s["hostname"], s["time"][:23]) for s in json.load(sys.stdin)))')"
+observe "supuesto: 'snapshots latest' (sin filtros) devuelve" "$host ${lid:0:8}"
+observe "supuesto: 'snapshots --latest 1' (lo que usa restore.sh) devuelve" "$(orig_restic snapshots --json --latest 1 | python3 -c 'import json,sys; print("; ".join("%s %s" % (s["short_id"], s["hostname"]) for s in json.load(sys.stdin)))')"
+observe "snapshot viejo de producción usado para el staging" "$(cut -c1-8 "$FAULT_EVIDENCE/old_prod_snapshot.txt")"
+
+# Limpieza del proyecto de staging (no es un resultado).
+"${STG[@]}" --profile tools down -v --remove-orphans > /dev/null 2>&1
+confirm_done

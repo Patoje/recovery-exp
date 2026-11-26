@@ -1,0 +1,21 @@
+[05:30:46] paso: stop_gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[05:30:46] paso: pg_dump
+-rw-r--r--    1 root     root        381315 Nov 26 05:30 /dump/gitea.dump
+[05:30:47] paso: restic_backup
+ Container recexp-restic-run-3af5755da3cf Creating 
+ Container recexp-restic-run-3af5755da3cf Created 
+ Container recexp-restic-run-df6cb1c0c30c Creating 
+ Container recexp-restic-run-df6cb1c0c30c Created 
+[05:30:49] paso: start_gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[05:30:55] backup.json: ok

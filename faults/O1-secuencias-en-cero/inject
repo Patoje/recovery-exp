@@ -1,0 +1,42 @@
+. "$FAULT_DIR/../lib/common.sh"
+# Falla oculta A (docs/fallas-ocultas.md). Equivalencias con las convenciones del archivo en
+# docs/fallas-ocultas/registro.md: proyecto rest = recexp-restore, db = postgres, -U/-d gitea =
+# $POSTGRES_USER/$POSTGRES_DB, $OWNER/$REPO = alice/witness.
+
+# El evento corre dentro de la restauración: el docker real evita volver a pasar por el shim.
+REST_REAL=("$FAULT_REAL_DOCKER" compose -f "$ROOT/compose/restore.yml" --env-file "$ROOT/.env")
+
+# TOKEN: token de API de un usuario de prueba, creado en origen ANTES del backup.
+before_backup() {
+  mkdir -p "$RUN_DIR/secrets"
+  "${ORIG[@]}" --profile tools run --rm --no-deps -T runner python3 faults/lib/api_token.py alice "falla-oculta-$FAULT_REP" \
+    > "$RUN_DIR/secrets/fallas-ocultas-token" || return
+  test -s "$RUN_DIR/secrets/fallas-ocultas-token"
+}
+
+# Conteos por tabla del esquema public: "tabla n" por línea.
+COUNTS_SQL="select table_name || ' ' || (xpath('/row/c/text()', query_to_xml(format('select count(*) as c from public.%I', table_name), false, true, '')))[1]::text
+            from information_schema.tables where table_schema = 'public' and table_type = 'BASE TABLE' order by 1"
+
+on_event() {
+  [ "$1" = after_gitea_start ] || return 0
+  # 2. Con el proyecto rest en marcha, reiniciar todas las secuencias del esquema public.
+  "${REST_REAL[@]}" exec -T postgres sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -v ON_ERROR_STOP=1' \
+    > "$FAULT_EVIDENCE/setval.log" 2>&1 <<'SQL' || return
+DO $$
+DECLARE r record;
+BEGIN
+  FOR r IN SELECT schemaname, sequencename FROM pg_sequences WHERE schemaname = 'public' LOOP
+    EXECUTE format('SELECT setval(%L::regclass, 1, false)',
+                   format('%I.%I', r.schemaname, r.sequencename));
+  END LOOP;
+END $$;
+SQL
+  # Control: conteos por tabla justo después de la inyección, antes de cualquier verificación.
+  "${REST_REAL[@]}" exec -T postgres sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Atc "$1"' _ "$COUNTS_SQL" \
+    > "$FAULT_EVIDENCE/table_counts_after_injection.txt" || return
+  # 3. Reiniciar Gitea para descartar estado en memoria. El harness espera a que vuelva a estar
+  # healthy antes de seguir con la línea base (el archivo solo pide el reinicio).
+  "${REST_REAL[@]}" restart gitea || return
+  "${REST_REAL[@]}" up -d --wait --wait-timeout 120 gitea
+}

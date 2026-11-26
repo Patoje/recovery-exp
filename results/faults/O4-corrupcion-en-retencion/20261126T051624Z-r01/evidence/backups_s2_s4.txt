@@ -1,0 +1,3 @@
+S2 backup.sh salió con 0, snapshot feae595eea0723e2d0b908a18692765e5ebbdb29033939cae385db68417f178c
+S3 backup.sh salió con 0, snapshot f2de407edd53e55d0e030eb0e72bb5af1388ce1ca45e1c557a736a71ad0aef1d
+S4 backup.sh salió con 0, snapshot d330397eaba56b6ad702dffc8e9dceec907c7c744df890e27ab23a9acc112e46

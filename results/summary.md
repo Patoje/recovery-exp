@@ -190,6 +190,19 @@ Cada corrida arranca desde `make reset`. Una falsa alarma es un `fail` de la lí
 | `20261124T045008Z-r07` | pass | valid | pass | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
 | `20261124T045008Z-r08` | pass | valid | pass | [ok] inconsistencia base/disco en el sistema restaurado (5 diferencias) |
 
+## Fallas ocultas
+
+Escenarios `faults/O1`–`O4` a partir de `docs/fallas-ocultas.md` (fallas A–D). Cada línea base corre en su propia corrida desde `make reset`, con el mismo shim y los mismos criterios de invalidez; `confirm` es el de cada corrida. Se muestra el último lote. Detalle de la implementación y de los supuestos a verificar: `docs/fallas-ocultas/registro.md`.
+
+| Falla | confirm | B0 | B1 | Contrato (primer paso que falla) |
+|---|---|---|---|---|
+| O1-secuencias-en-cero (A) | valid B0/B1/CONTRACT | pass | pass | pass |
+| O2-minio-original (B) | no implementada: el orden de la inyección no se puede seguir (pregunta 7) | — | — | — |
+| O3-latest-de-otro (C) | valid B0/B1/CONTRACT | pass | fail en `table_row_counts_vs_inventory` | fail en `table_counts` |
+| O4-corrupcion-en-retencion (D) | valid B0/B1/CONTRACT | pass | fail en `git_push_witness_repo` | fail en `git_push` |
+
+Resultados: `results/faults/O1-secuencias-en-cero/20261126T044906Z-r01`, `results/faults/O1-secuencias-en-cero/20261126T050342Z-r01`, `results/faults/O1-secuencias-en-cero/20261126T051002Z-r01`, `results/faults/O3-latest-de-otro/20261126T045613Z-r01`, `results/faults/O3-latest-de-otro/20261126T052316Z-r01`, `results/faults/O3-latest-de-otro/20261126T053016Z-r01`, `results/faults/O4-corrupcion-en-retencion/20261126T051624Z-r01`, `results/faults/O4-corrupcion-en-retencion/20261126T053655Z-r01`, `results/faults/O4-corrupcion-en-retencion/20261126T054348Z-r01`.
+
 ## Hallazgos
 
 - **13 — repositorio de Restic en solo lectura.** Con el repositorio en solo lectura, restic reintenta crear el lock unos 14 min antes de fallar (`Save(<lock/…>) returned error, retrying after …: read-only file system`). Durante todo ese tiempo el procedimiento de referencia deja Gitea detenido, y el cron no lo nota porque no propaga el código de salida. Evidencia: `results/faults/13-readonly-repo-cron/20261124T035656Z-r01/evidence/cron.log` (corrida invalid por la fase backup, conservada).

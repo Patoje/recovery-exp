@@ -1,0 +1,13 @@
+[ok] hay secuencias desfasadas (21)
+[ok] la secuencia de issue está desfasada
+ Container recexp-restore-runner-run-cec90d9cf613 Creating 
+ Container recexp-restore-runner-run-cec90d9cf613 Created 
+[ok] crear un issue por API devuelve 5xx (500)
+[ok] los logs tienen 'duplicate key value violates unique constraint'
+[ok] la restricción violada es una clave primaria (*_pkey)
+[obs] restricciones violadas:  2 violates unique constraint "action_pkey"; 2 violates unique constraint "issue_pkey";
+[ok] control: conteos por tabla iguales al inventario
+[obs] supuesto: dependencias de secuencias por tipo (a=serial, i=identity): a=106 
+[obs] supuesto: tipo de las columnas id con secuencia: bigint=106 
+[obs] supuesto: replicación lógica y secuencias en esta versión (publicación sobre una secuencia, en transacción revertida):  PostgreSQL 16.16 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit ERROR:  cannot add relation "issue_id_seq" to publication ERROR:  syntax error at or near "sequences" 
+[obs] supuesto: código exacto de la API al crear el issue: 500

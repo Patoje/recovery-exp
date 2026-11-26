@@ -1,0 +1,392 @@
+[05:43:48] escenario O4-corrupcion-en-retencion r1, baseline contract, docker=/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker, shim=1
+[05:43:48] == fase: reset
+[05:43:48] borrando proyecto de restauración
+ Container recexp-restore-gitea-1 Stopping 
+ Container recexp-restore-gitea-1 Stopped 
+ Container recexp-restore-gitea-1 Removing 
+ Container recexp-restore-gitea-1 Removed 
+ Container recexp-restore-postgres-1 Stopping 
+ Container recexp-restore-postgres-1 Stopped 
+ Container recexp-restore-postgres-1 Removing 
+ Container recexp-restore-postgres-1 Removed 
+ Volume recexp-restore_pg-dump Removing 
+ Volume recexp-restore_pg-data Removing 
+ Volume recexp-restore_gitea-data Removing 
+ Network recexp-restore_restore-net Removing 
+ Volume recexp-restore_pg-dump Removed 
+ Network recexp-restore_restore-net Removed 
+ Volume recexp-restore_pg-data Removed 
+ Volume recexp-restore_gitea-data Removed 
+[05:43:49] borrando proyecto original
+[shim] 2026-11-26T05:43:49Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:43:49Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml -f /Users/patohe/Desktop/recovery-exp/compose/original.minio.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile minio --profile tools down -v --remove-orphans
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+ Container recexp-gitea-1 Removing 
+ Container recexp-gitea-1 Removed 
+ Container recexp-postgres-1 Stopping 
+ Container recexp-postgres-1 Stopped 
+ Container recexp-postgres-1 Removing 
+ Container recexp-postgres-1 Removed 
+ Volume recexp_restic-repo Removing 
+ Volume recexp_gitea-data Removing 
+ Volume recexp_pg-dump Removing 
+ Network recexp_default Removing 
+ Volume recexp_restic-repo Removed 
+ Volume recexp_pg-data Removing 
+ Volume recexp_gitea-data Removed 
+ Volume recexp_pg-dump Removed 
+ Network recexp_default Removed 
+ Volume recexp_pg-data Removed 
+[05:43:49] estado limpio
+[05:43:49] == fase: prepare
+[05:43:49] == fase: up
+[05:43:49] corrida 20261126T054349Z
+[05:43:49] construyendo runner
+[shim] 2026-11-26T05:43:49Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:43:49Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools build runner
+ Image recexp-runner:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 536B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 462B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#3 DONE 3.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#5 resolve docker.io/library/python:3.12.16-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b 0.0s done
+#5 DONE 0.0s
+
+#6 [2/2] RUN apt-get update  && apt-get install -y --no-install-recommends git git-lfs curl ca-certificates postgresql-client  && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 exporting to image
+#7 exporting layers done
+#7 exporting manifest sha256:c7497007937aade70bfbd960dc8fea6a749593ffaf24042fe3fd420d83d8013c done
+#7 exporting config sha256:48acff3cd6334fb3b0a68428004ae571406be6db90ccf0ce5251b8aac6d633bf done
+#7 exporting attestation manifest sha256:06872279a0d5162bdabe5b58e6acc7247b53886e4a1cfbf3bde981abb5a74a3a done
+#7 exporting manifest list sha256:e416379013a0b1ddef17294ef5603e3fe719bd5fce8464403ca69bded5ffbc5b done
+#7 naming to docker.io/library/recexp-runner:local done
+#7 unpacking to docker.io/library/recexp-runner:local done
+#7 DONE 0.0s
+
+#8 resolving provenance for metadata file
+#8 DONE 0.0s
+ Image recexp-runner:local Built 
+[05:43:53] levantando postgres + gitea
+[shim] 2026-11-26T05:43:53Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:43:53Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait postgres gitea
+ Network recexp_default Creating 
+ Volume recexp_pg-data Creating 
+ Volume recexp_pg-dump Creating 
+ Volume recexp_gitea-data Creating 
+ Volume recexp_pg-data Created 
+ Volume recexp_gitea-data Created 
+ Volume recexp_pg-dump Created 
+ Network recexp_default Created 
+ Container recexp-postgres-1 Creating 
+ Container recexp-postgres-1 Created 
+ Container recexp-gitea-1 Creating 
+ Container recexp-gitea-1 Created 
+ Container recexp-postgres-1 Starting 
+ Container recexp-postgres-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[05:44:02] generando SECRET_KEY en app.ini
+[shim] 2026-11-26T05:44:02Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:02Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -u git gitea gitea generate secret SECRET_KEY
+[shim] 2026-11-26T05:44:02Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:02Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -u git gitea sh -c f=/data/gitea/conf/app.ini
+  awk -v k="$1" '/^\[/{s=$0} s=="[security]" && $1=="SECRET_KEY"{print "SECRET_KEY = " k; next} {print}' "$f" > "$f.new" &&
+  cat "$f.new" > "$f" && rm "$f.new" sh S5E1JSXFEZIMJPYQSB5hWDpHWYvlmMTmpoo5H9WvUfskn5fArl2MU9wUPpWCqxPa
+[shim] 2026-11-26T05:44:02Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:02Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env restart gitea
+ Container recexp-gitea-1 Restarting 
+ Container recexp-gitea-1 Started 
+[shim] 2026-11-26T05:44:02Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:02Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-gitea-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[shim] 2026-11-26T05:44:07Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:07Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T gitea awk -F *= * /^\[/{s=$0} s=="[security]" && $1=="SECRET_KEY"{printf "%s", $2} /data/gitea/conf/app.ini
+[05:44:07] creando administrador
+[shim] 2026-11-26T05:44:07Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:07Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -u git gitea gitea admin user create --admin --username exp-admin --password Test-Admin-Pass-1 --email exp-admin@example.test --must-change-password=false
+New user 'exp-admin' has been successfully created!
+[05:44:08] inicializando repositorio de Restic
+[shim] 2026-11-26T05:44:08Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:08Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic init
+ Volume recexp_restic-repo Creating 
+ Volume recexp_restic-repo Created 
+ Container recexp-restic-run-6d6bdae3b13a Creating 
+ Container recexp-restic-run-6d6bdae3b13a Created 
+created restic repository 092888ffdb at /repo
+
+Please note that knowledge of your password is required to access
+the repository. Losing your password means that your data is
+irrecoverably lost.
+[shim] 2026-11-26T05:44:11Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:11Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic version
+ Container recexp-restic-run-1b5b603fad73 Creating 
+ Container recexp-restic-run-1b5b603fad73 Created 
+[shim] 2026-11-26T05:44:11Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:11Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools config --images
+[05:44:12] listo: /Users/patohe/Desktop/recovery-exp/runs/20261126T054349Z
+[05:44:12] == fase: seed
+[shim] 2026-11-26T05:44:12Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:12Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner python3 seed/seed.py --run-dir /runs/20261126T054349Z
+ Container recexp-runner-run-bb689a78c9ab Creating 
+ Container recexp-runner-run-bb689a78c9ab Created 
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (5/5), 1.3 MB | 0 B/s, done.
+Updated Git hooks.
+Git LFS initialized.
+Uploading LFS objects: 100% (5/5), 2.0 MB | 0 B/s, done.
+seed ok: 8 repos, 29 issues, total 21518582 bytes
+[05:44:21] == fase: after_seed
+[05:44:21] == fase: witness_pre
+[shim] 2026-11-26T05:44:22Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:22Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner python3 witness/witness.py pre --run-dir /runs/20261126T054349Z
+ Container recexp-runner-run-a1f952bab88f Creating 
+ Container recexp-runner-run-a1f952bab88f Created 
+warning: You appear to have cloned an empty repository.
+Updated Git hooks.
+Git LFS initialized.
+witness commit a4eaea6c-9987-4c09-bcd2-ea23ea70a975
+Updated Git hooks.
+Git LFS initialized.
+witness lfs 0540d41d-bc62-4391-b4d1-6741a3dcb408
+witness issue d325388b-d9be-493d-a7ca-1d97c5c00942
+witness attachment b3674614-904c-4f01-b3e6-93f4a5811a01
+[05:44:23] == fase: before_backup
+[shim] 2026-11-26T05:44:23Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:23Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner python3 faults/O4-corrupcion-en-retencion/testigos.py 1
+ Container recexp-runner-run-9cb240fb8f6a Creating 
+ Container recexp-runner-run-9cb240fb8f6a Created 
+[05:44:25] == fase: backup
+[05:44:25] paso: stop_gitea
+[shim] 2026-11-26T05:44:25Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:25Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env stop gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[05:44:25] hook de inventario: /Users/patohe/Desktop/recovery-exp/scripts/inventory.sh
+[shim] 2026-11-26T05:44:25Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:25Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner python3 witness/inventory.py --run-dir /runs/20261126T054349Z
+ Container recexp-runner-run-1130755bfbe1 Creating 
+ Container recexp-runner-run-1130755bfbe1 Created 
+inventory ok: 117 tables, 9 repos
+[05:44:26] paso: pg_dump
+[shim] 2026-11-26T05:44:26Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:26Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -ec rm -f /dump/gitea.dump; pg_dump -U "$POSTGRES_USER" -Fc -f /dump/gitea.dump "$POSTGRES_DB"; ls -l /dump/gitea.dump
+-rw-r--r--    1 root     root        382364 Nov 26 05:44 /dump/gitea.dump
+[05:44:27] paso: restic_backup
+[shim] 2026-11-26T05:44:27Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:27Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic backup --json --host gitea-original --tag run=20261126T054349Z --exclude /data/gitea/log --exclude /data/gitea/indexers /dump /data
+ Container recexp-restic-run-6952a23e6919 Creating 
+ Container recexp-restic-run-6952a23e6919 Created 
+[shim] 2026-11-26T05:44:28Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:28Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic snapshots --json 6b40452b60cebf740203637ddf845ab0aa178fdcc5c6bbf1261e7c302b057e7a
+ Container recexp-restic-run-c830bae1efed Creating 
+ Container recexp-restic-run-c830bae1efed Created 
+[05:44:29] paso: start_gitea
+[shim] 2026-11-26T05:44:29Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:29Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[05:44:35] backup.json: ok
+[05:44:35] == fase: declare
+[shim] 2026-11-26T05:44:35Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:35Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env ps -q gitea
+[shim] 2026-11-26T05:44:35Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:35Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner curl -fsS http://gitea:3000/api/v1/version
+ Container recexp-runner-run-b5777ff2b796 Creating 
+ Container recexp-runner-run-b5777ff2b796 Created 
+[shim] 2026-11-26T05:44:36Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:36Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T gitea cat /data/gitea/conf/app.ini
+[shim] 2026-11-26T05:44:36Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:36Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T gitea sha256sum
+[shim] 2026-11-26T05:44:36Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:36Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -c psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Atc "show server_encoding"
+[05:44:36] declared.json: gitea 28.4.0, encoding UTF8
+[05:44:36] == fase: after_backup
+[shim] 2026-11-26T05:44:36Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:36Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -u git gitea git -C /data/git/repositories/alice/witness.git rev-parse HEAD:testigo-4e84dfa5-cd9f-4e3a-932f-f91262974f08.txt
+[shim] 2026-11-26T05:44:36Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:36Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -u git gitea sh -c test -f /data/git/repositories/alice/witness.git/objects/41/4e7523f6192225aa7a967bb92edad4380576d8 && echo suelto || echo empaquetado
+[shim] 2026-11-26T05:44:37Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:37Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -u git gitea sh -c test -f /data/git/repositories/alice/witness.git/objects/41/4e7523f6192225aa7a967bb92edad4380576d8 && chmod u+w /data/git/repositories/alice/witness.git/objects/41/4e7523f6192225aa7a967bb92edad4380576d8 && printf '\377\377\377\377' | dd of=/data/git/repositories/alice/witness.git/objects/41/4e7523f6192225aa7a967bb92edad4380576d8 bs=1 seek=8 conv=notrunc 2>/dev/null && chmod a-w /data/git/repositories/alice/witness.git/objects/41/4e7523f6192225aa7a967bb92edad4380576d8
+[shim] 2026-11-26T05:44:37Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:37Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -c psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Atc "$1" _ SELECT uuid FROM attachment WHERE name='testigo-4e84dfa5-cd9f-4e3a-932f-f91262974f08.bin'
+[shim] 2026-11-26T05:44:37Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:37Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -u git gitea sh -c test -f /data/gitea/attachments/d/1/d199d207-57e7-4557-865b-6b6fdd158b83 && echo existe || echo no-existe
+[shim] 2026-11-26T05:44:37Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:37Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -u git gitea sh -c sha256sum /data/gitea/attachments/d/1/d199d207-57e7-4557-865b-6b6fdd158b83; stat -c '%s %Y' /data/gitea/attachments/d/1/d199d207-57e7-4557-865b-6b6fdd158b83
+[shim] 2026-11-26T05:44:37Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:37Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -u git gitea sh -c head -c $(stat -c%s /data/gitea/attachments/d/1/d199d207-57e7-4557-865b-6b6fdd158b83) /dev/urandom > /tmp/x && cat /tmp/x > /data/gitea/attachments/d/1/d199d207-57e7-4557-865b-6b6fdd158b83 && rm /tmp/x
+[shim] 2026-11-26T05:44:37Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:44:37Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T -u git gitea sh -c sha256sum /data/gitea/attachments/d/1/d199d207-57e7-4557-865b-6b6fdd158b83; stat -c '%s %Y' /data/gitea/attachments/d/1/d199d207-57e7-4557-865b-6b6fdd158b83
+[05:45:05] == fase: witness_post
+[shim] 2026-11-26T05:45:05Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:45:05Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps -T runner python3 witness/witness.py post --run-dir /runs/20261126T054349Z
+ Container recexp-runner-run-5866ac6f770b Creating 
+ Container recexp-runner-run-5866ac6f770b Created 
+remote: error: inflate: data stream error (invalid code lengths set)        
+remote: error: unable to unpack 414e7523f6192225aa7a967bb92edad4380576d8 header        
+remote: error: inflate: data stream error (invalid code lengths set)        
+remote: error: unable to unpack 414e7523f6192225aa7a967bb92edad4380576d8 header        
+remote: fatal: loose object 414e7523f6192225aa7a967bb92edad4380576d8 (stored in ./objects/41/4e7523f6192225aa7a967bb92edad4380576d8) is corrupt        
+remote: aborting due to possible repository corruption on the remote side.
+fatal: early EOF
+fatal: fetch-pack: invalid index-pack output
+witness commit failed at minute 1: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmp20kgo8j8'])
+witness issue 74c713c7-4ab0-474c-8811-a01f1036d7a9
+witness attachment 7b3dbcbd-ec57-4989-b9f1-3201a8e7a519
+remote: error: inflate: data stream error (invalid code lengths set)        
+remote: error: unable to unpack 414e7523f6192225aa7a967bb92edad4380576d8 header        
+remote: error: inflate: data stream error (invalid code lengths set)        
+remote: error: unable to unpack 414e7523f6192225aa7a967bb92edad4380576d8 header        
+remote: fatal: loose object 414e7523f6192225aa7a967bb92edad4380576d8 (stored in ./objects/41/4e7523f6192225aa7a967bb92edad4380576d8) is corrupt        
+remote: aborting due to possible repository corruption on the remote side.
+fatal: early EOF
+fatal: fetch-pack: invalid index-pack output
+witness lfs failed at minute 4: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmp255kfkob'])
+remote: error: inflate: data stream error (invalid code lengths set)        
+remote: error: unable to unpack 414e7523f6192225aa7a967bb92edad4380576d8 header        
+remote: error: inflate: data stream error (invalid code lengths set)        
+remote: error: unable to unpack 414e7523f6192225aa7a967bb92edad4380576d8 header        
+remote: fatal: loose object 414e7523f6192225aa7a967bb92edad4380576d8 (stored in ./objects/41/4e7523f6192225aa7a967bb92edad4380576d8) is corrupt        
+remote: aborting due to possible repository corruption on the remote side.
+fatal: early EOF
+fatal: fetch-pack: invalid index-pack output
+witness commit failed at minute 5: CalledProcessError(128, ['git', 'clone', '-q', 'http://alice:Test-User-Pass-1@gitea:3000/alice/witness.git', '/tmp/tmpdrykqdtg'])
+[05:50:07] == fase: baseline
+[contract] fase pre 2026-11-26T05:50:07.092Z
+[contract] pre   pass  image_before_migrations: imagen configured coincide
+[contract] pre   pass  version_before_migrations: versión de la imagen configurada coincide
+[contract] pre   pass  backup_integrity: restic check sin errores
+[contract] restauración de referencia 2026-11-26T05:50:08.375Z
+[05:50:08] paso: fresh_volumes
+ Volume recexp-restore_gitea-data Removing 
+ Volume recexp-restore_pg-dump Removing 
+ Volume recexp-restore_gitea-data Removed 
+ Volume recexp-restore_pg-dump Removed 
+[05:50:08] paso: resolve_snapshot
+ Volume recexp-restore_pg-dump Creating 
+ Volume recexp-restore_gitea-data Creating 
+ Volume recexp-restore_pg-dump Created 
+ Volume recexp-restore_gitea-data Created 
+ Container recexp-restore-restic-run-887cf8ae4de2 Creating 
+ Container recexp-restore-restic-run-887cf8ae4de2 Created 
+[05:50:09] paso: restic_restore
+ Container recexp-restore-restic-run-c9417cf91410 Creating 
+ Container recexp-restore-restic-run-c9417cf91410 Created 
+restoring snapshot 5d6a55f8 of [/dump /data] at 2026-11-26 05:44:56.816106908 +0000 UTC by root@gitea-original to /
+Summary: Restored 1680 files/dirs (4.770 MiB) in 0:00
+[05:50:10] paso: start_postgres
+ Network recexp-restore_restore-net Creating 
+ Volume recexp-restore_pg-data Creating 
+ Volume recexp-restore_pg-data Created 
+ Network recexp-restore_restore-net Created 
+ Container recexp-restore-postgres-1 Creating 
+ Container recexp-restore-postgres-1 Created 
+ Container recexp-restore-postgres-1 Starting 
+ Container recexp-restore-postgres-1 Started 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+[05:50:12] paso: pg_restore
+[05:50:13] paso: start_gitea
+ Container recexp-restore-postgres-1 Running 
+ Container recexp-restore-gitea-1 Creating 
+ Container recexp-restore-gitea-1 Created 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+ Container recexp-restore-gitea-1 Starting 
+ Container recexp-restore-gitea-1 Started 
+ Container recexp-restore-gitea-1 Waiting 
+ Container recexp-restore-postgres-1 Waiting 
+ Container recexp-restore-postgres-1 Healthy 
+ Container recexp-restore-gitea-1 Healthy 
+[05:50:19] restore.json: ok
+[contract] restore.sh salió con 0; fase post 2026-11-26T05:50:19.760Z
+[contract] post  pass  components_up: 2 componentes en marcha
+[contract] post  pass  start_order: orden de arranque db → app
+[contract] post  pass  image_running: imagen running coincide
+[contract] post  pass  restore_tool_errors: autoprueba ok (4 sí, 3 no); líneas que no cuentan: "check snapshots, trees and blobs" ×1, "no errors were found" ×1
+[contract] post  pass  secret_key: la huella en uso coincide con la declarada
+[contract] post  pass  database_encoding: valor esperado
+[contract] post  pass  table_counts: 117 tablas iguales
+[contract] post  pass  repositories_db_vs_disk: 9 en la base, 9 en disco
+[contract] post  pass  refs: refs de 9 repositorios iguales
+[contract] post  pass  version_running: HTTP 200
+[contract] post  pass  home_page: HTTP 200
+[contract] post  pass  repo_list: HTTP 200
+[contract] post  pass  external_dependencies: sin dependencias externas declaradas
+[contract] post  pass  witness_attachment: 1 testigos attachment recuperados
+[contract] post  pass  witness_lfs: 1 testigos lfs recuperados
+[contract] post  pass  witness_issue: 1 testigos issue recuperados
+[contract] post  pass  totp_login: HTTP 200
+[contract] post  pass  rpo: 343.2 s (T 2026-11-26T05:50:06.438Z; testigo más reciente recuperado attachment 2026-11-26T05:44:23.195Z; 4/6 recuperados); RPO 600 s
+[contract] post  error git_push: no se pudo verificar: clone: fatal: fetch-pack: invalid index-pack output
+[contract] post  fail  rto: verificaciones requeridas que no pasaron: [git_push]
+[contract] fail (21 pass, 1 fail, 1 error; custom_check: 0)
+[contract] fin 2026-11-26T05:50:21.685Z: fail (/Users/patohe/Desktop/recovery-exp/runs/20261126T054349Z/contract.json)
+[05:50:21] == fase: confirm
+[ok] S1 (6b40452b) no está entre los snapshots de gitea-original (e7bd8ba8 abf7debd 5d6a55f8)
+[ok] restic check --read-data termina con código 0
+[ok] snapshot e7bd8ba8: git fsck --full termina con código distinto de 0 (3)
+[ok] snapshot e7bd8ba8: git fsck reporta el blob 414e7523f619
+[ok] snapshot e7bd8ba8: sha256 del adjunto testigo distinto del registrado (dd4ecde08f2c)
+[ok] snapshot abf7debd: git fsck --full termina con código distinto de 0 (3)
+[ok] snapshot abf7debd: git fsck reporta el blob 414e7523f619
+[ok] snapshot abf7debd: sha256 del adjunto testigo distinto del registrado (dd4ecde08f2c)
+[ok] snapshot 5d6a55f8: git fsck --full termina con código distinto de 0 (3)
+[ok] snapshot 5d6a55f8: git fsck reporta el blob 414e7523f619
+[ok] snapshot 5d6a55f8: sha256 del adjunto testigo distinto del registrado (dd4ecde08f2c)
+ Container recexp-restore-runner-run-24756f560a7b Creating 
+ Container recexp-restore-runner-run-24756f560a7b Created 
+[ok] GET /api/healthz = 200
+ Container recexp-restore-runner-run-2559ad5fc8bf Creating 
+ Container recexp-restore-runner-run-2559ad5fc8bf Created 
+[ok] página del repositorio alice/witness = 200
+ Container recexp-restore-runner-run-f297e56da022 Creating 
+ Container recexp-restore-runner-run-f297e56da022 Created 
+[ok] ver testigo-4e84dfa5-cd9f-4e3a-932f-f91262974f08.txt en la web da 500 (404) o git clone falla con 'is corrupt' (yes)
+[obs] git clone:  Container recexp-restore-runner-run-3c30d2131a6c Creating   Container recexp-restore-runner-run-3c30d2131a6c Created  remote: error: inflate: data stream error (invalid code lengths set)         remote: error: unable to unpack 414e7523f6192225aa7a967bb92edad4380576d8 header         remote: error: i
+ Container recexp-restore-runner-run-c71b59bba83d Creating 
+ Container recexp-restore-runner-run-c71b59bba83d Created 
+[ok] descargar el adjunto devuelve 200 con bytes incorrectos (200 dd4ecde08f2cc23d5234fb0bb68dd3bc60f96184495aef554d04713e04beeada)
+[obs] supuesto: objeto del push (test -f): suelto
+[obs] supuesto: transfer.unpackLimit / receive.unpackLimit en el Gitea de origen: (vacío = valor por defecto)
+[obs] supuesto: ruta local attachments/<uuid[0]>/<uuid[1]>/<uuid>: existe
+[obs] supuesto: restic diff S1 S2 (archivos modificados): M    /data/git/repositories/alice/witness.git/objects/41/4e7523f6192225aa7a967bb92edad4380576d8 M    /data/gitea/attachments/d/1/d199d207-57e7-4557-865b-6b6fdd158b83 
+[obs] backups S2-S4: S2 backup.sh salió con 0, snapshot e7bd8ba899ef655b8bdb88dfe3faa5a9c73aa08044e412146d0ef8722aed2aca;S3 backup.sh salió con 0, snapshot abf7debd27fb5b2674a733d2b87ec67219c9fb10ea2af960b8495c82becd4bd6;S4 backup.sh salió con 0, snapshot 5d6a55f85953bf8cc16e30f38f6f9473c0d74863fecc282492d821c90f2a2efe;
+results/faults/O4-corrupcion-en-retencion/20261126T054348Z-r01: status=fail triggered=- max_gap_s=60.1 sleeps=0
+[05:50:37] resultado: fail  -> /Users/patohe/Desktop/recovery-exp/results/faults/O4-corrupcion-en-retencion/20261126T054348Z-r01/result.json

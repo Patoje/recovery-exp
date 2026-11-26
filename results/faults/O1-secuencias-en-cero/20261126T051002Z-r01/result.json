@@ -1,0 +1,140 @@
+{
+  "scenario": "O1-secuencias-en-cero",
+  "batch": "20261126T051002Z",
+  "repetition": 1,
+  "run_id": "20261126T051003Z",
+  "baseline": "contract",
+  "env_version": "v2",
+  "status": "pass",
+  "reason": "",
+  "started_at": "2026-11-26T05:10:02.114Z",
+  "finished_at": "2026-11-26T05:16:10.398Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 1
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:10:02.122Z",
+      "duration_ms": 1114
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:10:03.250Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:10:03.267Z",
+      "duration_ms": 19156
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:10:22.436Z",
+      "duration_ms": 9652
+    },
+    {
+      "name": "after_seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:10:32.101Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:10:32.116Z",
+      "duration_ms": 1915
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:10:34.043Z",
+      "duration_ms": 875
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:10:34.930Z",
+      "duration_ms": 9663
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:10:44.605Z",
+      "duration_ms": 1412
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:10:46.032Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:10:46.049Z",
+      "duration_ms": 301714
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:15:47.775Z",
+      "duration_ms": 20807
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:16:08.606Z",
+      "duration_ms": 1543
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 19.5,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] hay secuencias desfasadas (21)",
+      "[ok] la secuencia de issue está desfasada",
+      "[ok] crear un issue por API devuelve 5xx (500)",
+      "[ok] los logs tienen 'duplicate key value violates unique constraint'",
+      "[ok] la restricción violada es una clave primaria (*_pkey)",
+      "[obs] restricciones violadas:  2 violates unique constraint \"action_pkey\"; 2 violates unique constraint \"issue_pkey\";",
+      "[ok] control: conteos por tabla iguales al inventario",
+      "[obs] supuesto: dependencias de secuencias por tipo (a=serial, i=identity): a=106 ",
+      "[obs] supuesto: tipo de las columnas id con secuencia: bigint=106 ",
+      "[obs] supuesto: replicación lógica y secuencias en esta versión (publicación sobre una secuencia, en transacción revertida):  PostgreSQL 16.16 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit ERROR:  cannot add relation \"issue_id_seq\" to publication ERROR:  syntax error at or near \"sequences\" ",
+      "[obs] supuesto: código exacto de la API al crear el issue: 500"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-26T05:16:15+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261126T051003Z/witnesses_post.json",
+      "max_gap_s": 60.1,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "pass",
+      "reason": ""
+    }
+  }
+}

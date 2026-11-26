@@ -1,0 +1,22 @@
+[ok] restic snapshots latest: hostname gitea-staging (gitea-staging)
+[ok] el ID de latest coincide con el snapshot restaurado (be7c7eda / be7c7eda)
+[ok] el snapshot restaurado es el backup de staging
+[ok] testigos de producción | canario de staging = 0|1 (0|1)
+[ok] refs de alice/witness distintas del inventario (disco: '')
+[ok] falta el commit testigo 39703bde4dd0
+ Container recexp-restore-runner-run-c831ae0c781f Creating 
+ Container recexp-restore-runner-run-c831ae0c781f Created 
+[ok] GET /api/healthz = 200
+ Container recexp-restore-runner-run-050fe73dbf56 Creating 
+ Container recexp-restore-runner-run-050fe73dbf56 Created 
+[ok] inicio de sesión (GET /api/v1/user con alice) = 200
+ Container recexp-restore-runner-run-94c2309c7488 Creating 
+ Container recexp-restore-runner-run-94c2309c7488 Created 
+[ok] navegación: página principal = 200
+ Container recexp-restore-runner-run-3f7364292ab8 Creating 
+ Container recexp-restore-runner-run-3f7364292ab8 Created 
+[ok] navegación: página de alice/notes = 200
+[obs] supuesto: snapshots del repositorio (host, hora): 4cf3bba6 gitea-original 2026-11-26T05:23:59.649; 626bf957 gitea-original 2026-11-26T05:24:26.147; be7c7eda gitea-staging 2026-11-26T05:24:36.157
+[obs] supuesto: 'snapshots latest' (sin filtros) devuelve: gitea-staging be7c7eda
+[obs] supuesto: 'snapshots --latest 1' (lo que usa restore.sh) devuelve: 626bf957 gitea-original; be7c7eda gitea-staging
+[obs] snapshot viejo de producción usado para el staging: 4cf3bba6

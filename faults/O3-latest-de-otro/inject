@@ -1,0 +1,45 @@
+. "$FAULT_DIR/../lib/common.sh"
+# Falla oculta C (docs/fallas-ocultas.md). Equivalencias en docs/fallas-ocultas/registro.md:
+# producción = proyecto recexp (host de Restic gitea-original, el del procedimiento de referencia),
+# staging = proyecto recexp-stg (host gitea-staging); ambas pilas se respaldan como /dump y /data.
+STG=(docker compose -f "$ROOT/compose/restore.yml" -f "$FAULT_DIR/staging.override.yml" --env-file "$ROOT/.env")
+
+prepare() {
+  docker compose -f "$ROOT/compose/restore.yml" -f "$FAULT_DIR/staging.override.yml" --env-file "$ROOT/.env" \
+    --profile tools down -v --remove-orphans
+}
+
+# 1. Clon de staging: snapshot viejo de producción (antes de los testigos), restaurado y levantado
+#    como proyecto stg, con un canario único.
+after_seed() {
+  mkdir -p "$RUN_DIR/stg-source" "$RUN_DIR/stg"
+  "$ROOT/scripts/backup.sh" "$RUN_DIR/stg-source" > "$FAULT_EVIDENCE/stg_source_backup.log" 2>&1 || return
+  local old canary
+  old="$(json_field "$RUN_DIR/stg-source/backup.json" id)"
+  [ -n "$old" ] || return 1
+  echo "$old" > "$FAULT_EVIDENCE/old_prod_snapshot.txt"
+  FAULT_RESTORE_OVERRIDE="$FAULT_DIR/staging.override.yml" "$ROOT/scripts/restore.sh" "$old" "$RUN_DIR/stg" \
+    > "$FAULT_EVIDENCE/stg_restore.log" 2>&1 || return
+  canary="CANARIO-STAGING-$(uuidgen | tr 'A-Z' 'a-z')"
+  echo "$canary" > "$FAULT_EVIDENCE/canary.txt"
+  "${STG[@]}" --profile tools run --rm --no-deps -T -e CANARY="$canary" runner sh -c \
+    'curl -fsS -u "alice:$SEED_USER_PASSWORD" -X POST -H "Content-Type: application/json" \
+       -d "{\"title\":\"$CANARY\"}" http://gitea:3000/api/v1/repos/alice/notes/issues' > "$FAULT_EVIDENCE/canary_issue.json"
+}
+
+# 4. Después del backup de producción, el backup de staging: mismos pasos y la misma línea de
+#    Restic que scripts/backup.sh (mismas rutas, exclusiones y etiqueta), con --host gitea-staging.
+after_backup() {
+  local out="$FAULT_EVIDENCE/stg_backup.jsonl"
+  "${STG[@]}" stop gitea || return
+  "${STG[@]}" exec -T postgres sh -ec \
+    'rm -f /dump/gitea.dump; pg_dump -U "$POSTGRES_USER" -Fc -f /dump/gitea.dump "$POSTGRES_DB"; ls -l /dump/gitea.dump' || return
+  docker run --rm -e RESTIC_REPOSITORY=/repo -e RESTIC_PASSWORD -v recexp_restic-repo:/repo \
+    -v recexp-stg_gitea-data:/data:ro -v recexp-stg_pg-dump:/dump:ro "$RESTIC_IMG" backup --json \
+    --host gitea-staging --tag "run=$(basename "$RUN_DIR")" \
+    --exclude /data/gitea/log --exclude /data/gitea/indexers \
+    /dump /data > "$out" || return
+  grep -o '"snapshot_id":"[0-9a-f]*"' "$out" | cut -d'"' -f4 > "$FAULT_EVIDENCE/stg_snapshot.txt"
+  test -s "$FAULT_EVIDENCE/stg_snapshot.txt" || return
+  "${STG[@]}" up -d --wait gitea
+}

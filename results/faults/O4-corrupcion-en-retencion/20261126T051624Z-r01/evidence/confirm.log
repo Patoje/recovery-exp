@@ -1,0 +1,29 @@
+[ok] S1 (fa7c858b) no está entre los snapshots de gitea-original (feae595e f2de407e d330397e)
+[ok] restic check --read-data termina con código 0
+[ok] snapshot feae595e: git fsck --full termina con código distinto de 0 (3)
+[ok] snapshot feae595e: git fsck reporta el blob db3b214b1981
+[ok] snapshot feae595e: sha256 del adjunto testigo distinto del registrado (189d05e00587)
+[ok] snapshot f2de407e: git fsck --full termina con código distinto de 0 (3)
+[ok] snapshot f2de407e: git fsck reporta el blob db3b214b1981
+[ok] snapshot f2de407e: sha256 del adjunto testigo distinto del registrado (189d05e00587)
+[ok] snapshot d330397e: git fsck --full termina con código distinto de 0 (3)
+[ok] snapshot d330397e: git fsck reporta el blob db3b214b1981
+[ok] snapshot d330397e: sha256 del adjunto testigo distinto del registrado (189d05e00587)
+ Container recexp-restore-runner-run-1c38065ac4d0 Creating 
+ Container recexp-restore-runner-run-1c38065ac4d0 Created 
+[ok] GET /api/healthz = 200
+ Container recexp-restore-runner-run-47a5b8b538a3 Creating 
+ Container recexp-restore-runner-run-47a5b8b538a3 Created 
+[ok] página del repositorio alice/witness = 200
+ Container recexp-restore-runner-run-03ee9618c2f7 Creating 
+ Container recexp-restore-runner-run-03ee9618c2f7 Created 
+[ok] ver testigo-3bca3d0d-247a-4d07-976b-ba39375cfdca.txt en la web da 500 (404) o git clone falla con 'is corrupt' (yes)
+[obs] git clone:  Container recexp-restore-runner-run-2f580b9fc357 Creating   Container recexp-restore-runner-run-2f580b9fc357 Created  remote: error: inflate: data stream error (invalid code lengths set)         remote: error: unable to unpack db3b214b1981402c7dcc5362b1ab8cda7a064f39 header         remote: error: i
+ Container recexp-restore-runner-run-26f8db9b67b6 Creating 
+ Container recexp-restore-runner-run-26f8db9b67b6 Created 
+[ok] descargar el adjunto devuelve 200 con bytes incorrectos (200 189d05e00587780059579f32bd520e47c1fd84911d548d7cee0b7d0654a5f694)
+[obs] supuesto: objeto del push (test -f): suelto
+[obs] supuesto: transfer.unpackLimit / receive.unpackLimit en el Gitea de origen: (vacío = valor por defecto)
+[obs] supuesto: ruta local attachments/<uuid[0]>/<uuid[1]>/<uuid>: existe
+[obs] supuesto: restic diff S1 S2 (archivos modificados): M    /data/git/repositories/alice/witness.git/objects/db/3b214b1981402c7dcc5362b1ab8cda7a064f39 M    /data/gitea/attachments/2/d/2d3818b9-eed7-4b09-ae2a-9e4076f6a689 
+[obs] backups S2-S4: S2 backup.sh salió con 0, snapshot feae595eea0723e2d0b908a18692765e5ebbdb29033939cae385db68417f178c;S3 backup.sh salió con 0, snapshot f2de407edd53e55d0e030eb0e72bb5af1388ce1ca45e1c557a736a71ad0aef1d;S4 backup.sh salió con 0, snapshot d330397eaba56b6ad702dffc8e9dceec907c7c744df890e27ab23a9acc112e46;

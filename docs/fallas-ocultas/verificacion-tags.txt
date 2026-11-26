@@ -1,0 +1,22 @@
+# verificación contra tags, 2026-11-26T04:46:24Z, HEAD e10a404
+$ git diff --stat b0-v1 -- scripts/b0.sh
+  -> rc=0 idéntico
+$ git diff --stat b0-v1 -- scripts/restore.sh
+  -> rc=0 idéntico
+$ git diff --stat b0-v1 -- scripts/backup.sh
+  -> rc=0 idéntico
+$ git diff --stat b1-v1 -- baselines/b1
+  -> rc=0 idéntico
+$ git diff --stat engine-v1 -- engine
+  -> rc=0 idéntico
+$ git diff --stat contract-gitea-v1 -- contracts
+  -> rc=0 idéntico
+$ git diff 3275da6 e10a404 -- baselines/contract/contract.sh  (envoltorio v2)
+ baselines/contract/contract.sh | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+$ git diff e10a404 -- baselines/contract/contract.sh
+  -> idéntico a v2
+ce967cb56d5def858e79c00224bae1df60a02cca075848fc4f4398463d641c17  engine/bin/engine-darwin-arm64
+25fe5e6e976ceb5a42fae97549656fc1a90c3cdd195f7ca6cafa8fe530c046b5  engine/bin/engine-linux-arm64
+f393f6d65e2f9f1136cdb7b9e14628ad77d9b4903562af242c2aca83d9582240  contracts/gitea.yaml
+f705b55b6debac97e63f901b3d89cd58a2094a6b0e6deeb9cc9c3216d9ff593e  docs/fallas-ocultas.md

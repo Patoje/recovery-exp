@@ -1,0 +1,6 @@
+# El archivo de la falla sube el adjunto testigo como testigo-$WID.bin; la lista por defecto de
+# Gitea 28.4.0 no admite .bin (HTTP 422, "forbidden file extension"). Se admiten todos los tipos.
+services:
+  gitea:
+    environment:
+      GITEA__attachment__ALLOWED_TYPES: "*/*"

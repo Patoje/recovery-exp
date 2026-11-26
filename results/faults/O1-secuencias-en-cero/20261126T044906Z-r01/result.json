@@ -1,0 +1,140 @@
+{
+  "scenario": "O1-secuencias-en-cero",
+  "batch": "20261126T044906Z",
+  "repetition": 1,
+  "run_id": "20261126T044908Z",
+  "baseline": "b0",
+  "env_version": "v2",
+  "status": "pass",
+  "reason": "",
+  "started_at": "2026-11-26T04:49:06.736Z",
+  "finished_at": "2026-11-26T04:55:27.773Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 1
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:49:06.747Z",
+      "duration_ms": 1232
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:49:07.993Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:49:08.011Z",
+      "duration_ms": 24193
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:49:32.216Z",
+      "duration_ms": 9754
+    },
+    {
+      "name": "after_seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:49:41.984Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:49:42.004Z",
+      "duration_ms": 1992
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:49:44.011Z",
+      "duration_ms": 1140
+    },
+    {
+      "name": "backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:49:45.168Z",
+      "duration_ms": 9789
+    },
+    {
+      "name": "declare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:49:54.970Z",
+      "duration_ms": 1598
+    },
+    {
+      "name": "after_backup",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:49:56.580Z",
+      "duration_ms": 5
+    },
+    {
+      "name": "witness_post",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:49:56.598Z",
+      "duration_ms": 301865
+    },
+    {
+      "name": "baseline",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:54:58.476Z",
+      "duration_ms": 25129
+    },
+    {
+      "name": "confirm",
+      "exit_code": 0,
+      "started_at": "2026-11-26T04:55:23.631Z",
+      "duration_ms": 3858
+    }
+  ],
+  "baseline_result": {
+    "exit_code": 0,
+    "result": "pass",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": 24.2,
+  "confirm": {
+    "status": "valid",
+    "exit_code": 0,
+    "checks": [
+      "[ok] hay secuencias desfasadas (21)",
+      "[ok] la secuencia de issue está desfasada",
+      "[ok] crear un issue por API devuelve 5xx (500)",
+      "[ok] los logs tienen 'duplicate key value violates unique constraint'",
+      "[ok] la restricción violada es una clave primaria (*_pkey)",
+      "[obs] restricciones violadas:  2 violates unique constraint \"issue_pkey\";",
+      "[ok] control: conteos por tabla iguales al inventario",
+      "[obs] supuesto: dependencias de secuencias por tipo (a=serial, i=identity): ",
+      "[obs] supuesto: tipo de las columnas id con secuencia: ",
+      "[obs] supuesto: replicación lógica y secuencias en esta versión (publicación sobre una secuencia, en transacción revertida):  PostgreSQL 16.16 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit ERROR:  cannot add relation \"issue_id_seq\" to publication ERROR:  syntax error at or near \"sequences\" ",
+      "[obs] supuesto: código exacto de la API al crear el issue: 500"
+    ]
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-26T04:55:32+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": "runs/20261126T044908Z/witnesses_post.json",
+      "max_gap_s": 60.1,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "pass",
+      "reason": ""
+    }
+  }
+}

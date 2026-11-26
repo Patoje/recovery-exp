@@ -1,0 +1,8 @@
+using temporary cache in /tmp/restic-check-cache-382318180
+load indexes
+check all packs
+check snapshots, trees and blobs
+[0:00] 100.00%  3 / 3 snapshots
+read all data
+[0:00] 100.00%  8 / 8 packs
+no errors were found

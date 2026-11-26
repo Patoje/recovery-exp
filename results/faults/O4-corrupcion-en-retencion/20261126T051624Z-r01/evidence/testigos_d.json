@@ -1,0 +1,18 @@
+{
+  "wid": "3bca3d0d-247a-4d07-976b-ba39375cfdca",
+  "repo": "alice/witness",
+  "created_at": "2026-11-26T05:16:57.823Z",
+  "txt": {
+    "path": "testigo-3bca3d0d-247a-4d07-976b-ba39375cfdca.txt",
+    "commit_sha": "a00726505a4ce53594201692a6e06000e8893f10",
+    "blob_sha": "db3b214b1981402c7dcc5362b1ab8cda7a064f39",
+    "sha256": "f4bfdb3bd7b3dd86382fbdb3f3c8987a786bd296b706ab26ca78ce114b27b39d"
+  },
+  "bin": {
+    "name": "testigo-3bca3d0d-247a-4d07-976b-ba39375cfdca.bin",
+    "uuid": "2d3818b9-eed7-4b09-ae2a-9e4076f6a689",
+    "issue_number": 1,
+    "size": 8192,
+    "sha256": "fcc896c92084bb4ae7f9976145d3667a32585e8f7f825b386552394339292f09"
+  }
+}

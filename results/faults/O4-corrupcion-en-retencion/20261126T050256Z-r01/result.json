@@ -1,0 +1,92 @@
+{
+  "scenario": "O4-corrupcion-en-retencion",
+  "batch": "20261126T050256Z",
+  "repetition": 1,
+  "run_id": "20261126T050258Z",
+  "baseline": "b0",
+  "env_version": "v2",
+  "status": "invalid",
+  "reason": "harness: falló la fase before_backup",
+  "started_at": "2026-11-26T05:02:57.028Z",
+  "finished_at": "2026-11-26T05:03:37.911Z",
+  "shim": {
+    "enabled": true,
+    "docker_path": "/Users/patohe/Desktop/recovery-exp/faults/lib/shim/docker",
+    "modifications_logged": 0
+  },
+  "phases": [
+    {
+      "name": "reset",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:02:57.040Z",
+      "duration_ms": 1040
+    },
+    {
+      "name": "prepare",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:02:58.095Z",
+      "duration_ms": 4
+    },
+    {
+      "name": "up",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:02:58.112Z",
+      "duration_ms": 26572
+    },
+    {
+      "name": "seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:03:24.695Z",
+      "duration_ms": 9925
+    },
+    {
+      "name": "after_seed",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:03:34.633Z",
+      "duration_ms": 3
+    },
+    {
+      "name": "witness_pre",
+      "exit_code": 0,
+      "started_at": "2026-11-26T05:03:34.649Z",
+      "duration_ms": 1849
+    },
+    {
+      "name": "before_backup",
+      "exit_code": 1,
+      "started_at": "2026-11-26T05:03:36.511Z",
+      "duration_ms": 1387
+    }
+  ],
+  "baseline_result": {
+    "exit_code": -1,
+    "result": "not-run",
+    "first_failed_step": ""
+  },
+  "restore_to_baseline_end_s": null,
+  "confirm": {
+    "status": "invalid",
+    "exit_code": -1,
+    "checks": []
+  },
+  "host_suspension": {
+    "checked_at": "2026-11-26T05:03:42+00:00",
+    "invalid": false,
+    "triggered_by": [],
+    "pmset_sleep": {
+      "available": true,
+      "events_in_run": []
+    },
+    "witness_gap": {
+      "limit_s": 90,
+      "measured_over": "attempts",
+      "witness_file": null,
+      "max_gap_s": null,
+      "gaps_over_limit": []
+    },
+    "status_before_check": {
+      "status": "invalid",
+      "reason": "harness: falló la fase before_backup"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+# Staging: clon de producción restaurado con el procedimiento de referencia, como proyecto aparte.
+# Su postgres escribe el dump de su propio backup en su volumen pg-dump.
+name: recexp-stg
+services:
+  postgres:
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - pg-dump:/dump

@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+RUNNER_REST=("${REST[@]}" --profile tools run --rm --no-deps -T)
+
+# a) Al menos una secuencia con próximo valor <= max(id) de su tabla, y entre ellas la de issue.
+"${REST[@]}" exec -T postgres sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"' > "$FAULT_EVIDENCE/sequences.log" 2>&1 <<'SQL'
+DO $$
+DECLARE r record; m bigint; nxt bigint; n int := 0;
+BEGIN
+  FOR r IN
+    SELECT t.relname AS tbl, a.attname AS col, s.relname AS seq
+    FROM pg_class s
+    JOIN pg_depend d    ON d.objid = s.oid AND d.classid = 'pg_class'::regclass AND d.deptype IN ('a','i')
+    JOIN pg_class t     ON t.oid = d.refobjid
+    JOIN pg_attribute a ON a.attrelid = t.oid AND a.attnum = d.refobjsubid
+    WHERE s.relkind = 'S'
+  LOOP
+    EXECUTE format('SELECT coalesce(max(%I),0) FROM %I', r.col, r.tbl) INTO m;
+    EXECUTE format('SELECT CASE WHEN is_called THEN last_value+1 ELSE last_value END FROM %I', r.seq) INTO nxt;
+    IF m >= nxt THEN n := n + 1; RAISE NOTICE 'desfasada: %.% max=% proximo=%', r.tbl, r.col, m, nxt; END IF;
+  END LOOP;
+  RAISE NOTICE 'secuencias_desfasadas=%', n;
+END $$;
+SQL
+n="$(grep -o 'secuencias_desfasadas=[0-9]*' "$FAULT_EVIDENCE/sequences.log" | cut -d= -f2)"
+check "hay secuencias desfasadas (${n:-?})" test "${n:-0}" -ge 1
+check "la secuencia de issue está desfasada" grep -q 'desfasada: issue\.id ' "$FAULT_EVIDENCE/sequences.log"
+
+# b) Crear un issue por API devuelve 5xx.
+code="$("${RUNNER_REST[@]}" -e TOKEN="$(cat "$RUN_DIR/secrets/fallas-ocultas-token")" runner sh -c \
+  'curl -s -o /dev/null -w "%{http_code}\n" -X POST "http://gitea:3000/api/v1/repos/alice/witness/issues" \
+     -H "Authorization: token $TOKEN" -H "Content-Type: application/json" \
+     -d "{\"title\":\"sonda-$(cat /proc/sys/kernel/random/uuid)\"}"')"
+check "crear un issue por API devuelve 5xx ($code)" test "${code:0:1}" = 5
+
+# c) El log de Gitea o de PostgreSQL contiene "duplicate key value violates unique constraint" para una PK.
+"${REST[@]}" logs postgres gitea > "$FAULT_EVIDENCE/rest_logs.txt" 2>&1
+check "los logs tienen 'duplicate key value violates unique constraint'" grep -q 'duplicate key value violates unique constraint' "$FAULT_EVIDENCE/rest_logs.txt"
+check "la restricción violada es una clave primaria (*_pkey)" grep -q 'duplicate key value violates unique constraint "[a-z_]*_pkey"' "$FAULT_EVIDENCE/rest_logs.txt"
+observe "restricciones violadas" "$(grep -o 'violates unique constraint "[a-z_]*"' "$FAULT_EVIDENCE/rest_logs.txt" | sort | uniq -c | tr -s ' ' | tr '\n' ';')"
+
+# Control: los conteos por tabla (medidos justo después de la inyección) coinciden con el inventario.
+diffs="$(python3 - "$RUN_DIR/inventory.json" "$FAULT_EVIDENCE/table_counts_after_injection.txt" <<'PY'
+import json, sys
+inv = json.load(open(sys.argv[1]))["table_row_counts"]
+got = dict(l.split() for l in open(sys.argv[2]) if l.strip())
+print(" ".join(f"{t}:{inv.get(t)}->{got.get(t)}" for t in sorted(set(inv) | set(got)) if str(inv.get(t)) != str(got.get(t))))
+PY
+)"
+check "control: conteos por tabla iguales al inventario${diffs:+ ($diffs)}" test -z "$diffs" -a -s "$FAULT_EVIDENCE/table_counts_after_injection.txt"
+
+# Supuestos a verificar.
+observe "supuesto: dependencias de secuencias por tipo (a=serial, i=identity)" "$(rest_sql "select d.deptype::text || '=' || count(*) from pg_class s join pg_depend d on d.objid = s.oid and d.classid = 'pg_class'::regclass and d.deptype in ('a','i') where s.relkind = 'S' group by d.deptype order by 1" | tr '\n' ' ')"
+observe "supuesto: tipo de las columnas id con secuencia" "$(rest_sql "select data_type::text || '=' || count(*) from information_schema.columns where table_schema = 'public' and column_default like 'nextval(%' group by data_type" | tr '\n' ' ')"
+pubtest="$("${REST[@]}" exec -T postgres sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"' 2>&1 <<'SQL'
+select version();
+begin;
+create publication sonda_secuencias for table issue_id_seq;
+rollback;
+begin;
+create publication sonda_secuencias for all sequences;
+rollback;
+SQL
+)"
+observe "supuesto: replicación lógica y secuencias en esta versión (publicación sobre una secuencia, en transacción revertida)" "$(printf '%s' "$pubtest" | grep -E 'PostgreSQL [0-9]|ERROR' | tr '\n' ' ')"
+observe "supuesto: código exacto de la API al crear el issue" "$code"
+confirm_done

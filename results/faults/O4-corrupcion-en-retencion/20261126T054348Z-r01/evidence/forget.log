@@ -1,0 +1,53 @@
+[shim] 2026-11-26T05:45:04Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:45:04Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic forget --host gitea-original --keep-last 3 --prune
+ Container recexp-restic-run-ae6fe6e10ea1 Creating 
+ Container recexp-restic-run-ae6fe6e10ea1 Created 
+Applying Policy: keep 3 latest snapshots
+keep 3 snapshots:
+ID        Time                 Host            Tags         Reasons        Paths  Size
+-------------------------------------------------------------------------------------------
+e7bd8ba8  2026-11-26 05:44:38  gitea-original  run=cycle-2  last snapshot  /data  4.769 MiB
+                                                                           /dump
+
+abf7debd  2026-11-26 05:44:48  gitea-original  run=cycle-3  last snapshot  /data  4.769 MiB
+                                                                           /dump
+
+5d6a55f8  2026-11-26 05:44:56  gitea-original  run=cycle-4  last snapshot  /data  4.770 MiB
+                                                                           /dump
+-------------------------------------------------------------------------------------------
+Timestamps shown in UTC
+3 snapshots
+
+remove 1 snapshots:
+ID        Time                 Host            Tags                  Paths  Size
+-------------------------------------------------------------------------------------
+6b40452b  2026-11-26 05:44:27  gitea-original  run=20261126T054349Z  /data  4.822 MiB
+                                                                     /dump
+-------------------------------------------------------------------------------------
+Timestamps shown in UTC
+1 snapshots
+
+[0:00] 100.00%  1 / 1 files deleted
+1 snapshots have been removed, running prune
+loading all snapshots...
+finding data that is still in use for 3 snapshots
+[0:00] 100.00%  3 / 3 snapshots
+searching used packs...
+collecting packs for deletion and repacking
+[0:00] 100.00%  8 / 8 packs processed
+
+to repack:           721 blobs / 258.778 KiB
+this removes:         17 blobs / 7.851 KiB
+to delete:             0 blobs / 0 B
+total prune:          17 blobs / 7.851 KiB
+remaining:          1465 blobs / 4.728 MiB
+unused size after prune: 81.972 KiB (1.69% of remaining size)
+
+repacking packs
+[0:00] 100.00%  1 / 1 packs repacked
+rebuilding index
+[0:00] 100.00%  5 / 5 indexes processed
+[0:00] 100.00%  5 / 5 old indexes deleted
+removing 1 old packs
+[0:00] 100.00%  1 / 1 files deleted
+done

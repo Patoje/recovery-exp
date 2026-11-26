@@ -43,12 +43,19 @@ def wrapper_version(r):
 # env -> scen -> baseline -> batch -> [r]
 results = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(list))))
 pre_freeze = []  # contract runs before the freeze
+hidden = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))  # hidden faults O1..: scen -> baseline -> batch -> [r]
+HIDDEN_ALL = {"O1-secuencias-en-cero": "A", "O2-minio-original": "B", "O3-latest-de-otro": "C",
+              "O4-corrupcion-en-retencion": "D"}
+HIDDEN_NOT_RUN = {"O2-minio-original": "no implementada: el orden de la inyección no se puede seguir (pregunta 7)"}
 for path in sorted(glob.glob(f"{ROOT}/results/faults/*/*/result.json")):
     with open(path) as f:
         r = json.load(f)
     r["_dir"] = os.path.relpath(os.path.dirname(path), ROOT)
     if r["baseline"] == "contract" and contract_version(r) != (FROZEN_ENGINE, FROZEN_CONTRACT_SHA256):
         pre_freeze.append(r)
+        continue
+    if r["scenario"] in HIDDEN_ALL:
+        hidden[r["scenario"]][r["baseline"]][r["batch"]].append(r)
         continue
     results[r.get("env_version", "v1")][r["scenario"]][r["baseline"]][r["batch"]].append(r)
 
@@ -202,6 +209,36 @@ for env, scen, b, runs in repeated_detail:
         else:
             det = "; ".join(c for c in r["confirm"]["checks"] if "inconsistencia" in c or c.startswith("[fail]"))
         lines.append(f"| `{r['batch']}-r{r['repetition']:02d}` | {r['status']} | {r['confirm']['status']} | {step_txt(r)} | {det} |")
+# Hidden faults (docs/fallas-ocultas.md), apart from the known scenarios.
+lines += ["", "## Fallas ocultas", "",
+          "Escenarios `faults/O1`–`O4` a partir de `docs/fallas-ocultas.md` (fallas A–D). Cada línea base corre "
+          "en su propia corrida desde `make reset`, con el mismo shim y los mismos criterios de invalidez; "
+          "`confirm` es el de cada corrida. Se muestra el último lote. Detalle de la implementación y de los "
+          "supuestos a verificar: `docs/fallas-ocultas/registro.md`.", "",
+          "| Falla | confirm | B0 | B1 | Contrato (primer paso que falla) |", "|---|---|---|---|---|"]
+hidden_dirs = []
+for scen, letter in HIDDEN_ALL.items():
+    if scen in HIDDEN_NOT_RUN and not hidden.get(scen):
+        lines.append(f"| {scen} ({letter}) | {HIDDEN_NOT_RUN[scen]} | — | — | — |")
+        continue
+    cells, confirms = {}, []
+    for b in BASELINES:
+        batches = hidden[scen].get(b)
+        if not batches:
+            cells[b] = "—"
+            continue
+        r = batches[max(batches)][-1]
+        hidden_dirs.append(f"`{r['_dir']}`")
+        cells[b] = step_txt(r) + (" (corrida invalid)" if r["status"] == "invalid" else "")
+        confirms.append((b, "valid" if r["status"] != "invalid" else f"invalid ({r['reason'] or 'confirm'})"))
+    if confirms and all(c == "valid" for _, c in confirms):
+        ctxt = "valid " + "/".join(b.upper() for b, _ in confirms)
+    else:
+        ctxt = "; ".join(f"{b.upper()}: {c}" for b, c in confirms) or "—"
+    lines.append(f"| {scen} ({letter}) | {ctxt} | {cells['b0']} | {cells['b1']} | {cells['contract']} |")
+if hidden_dirs:
+    lines += ["", "Resultados: " + ", ".join(hidden_dirs) + "."]
+
 findings = os.path.join(ROOT, "faults", "findings.md")
 if os.path.exists(findings):
     with open(findings) as f:

@@ -92,3 +92,17 @@ El error está en el envoltorio, no en el motor ni en el contrato. No se modific
 - **A.** Corregir el envoltorio (versión nueva, sin tocar motor ni contrato): copiar la salida de `restore.sh` también a stderr (`tee`), para que llegue a `run.log`, y repetir solo el 14 con el contrato desde `make reset`.
 - **B.** Dejar el 14 del contrato como `invalid` y documentarlo.
 
+
+## 7. Falla oculta B (O2): no se puede seguir el orden de la inyección tal como está escrito
+
+**Qué pasa.** `docs/fallas-ocultas.md`, falla B, pide: (2) restaurar con el procedimiento de referencia, que levanta el proyecto `rest` con el `app.ini` restaurado tal cual (`MINIO_ENDPOINT = minio-orig:9000`), y recién después (3) conectar el Gitea restaurado a la red de origen y reiniciarlo. En este entorno, Gitea 28.4.0 no arranca si el endpoint de almacenamiento no es alcanzable: lo muestra la falla 11 (`runs/<id>/restore.json` de `results/faults/11-minio-bucket-excluded/20261125T191338Z-r01`: `start_gitea` en `failed`, con el `app.ini` apuntando a un MinIO que no resuelve desde la red de restauración). Entonces, en el paso 2, `restore.sh` falla en `start_gitea` antes de que exista el alcance de red del paso 3, y la premisa de la falla ("todo funciona, los adjuntos y el LFS se sirven bien") no se da en la restauración que ven las líneas base.
+
+El propio archivo lo prevé solo para el corte del paso 3.b ("Si el endpoint no es alcanzable al arrancar, según la versión Gitea puede no iniciar"), no para el arranque inicial.
+
+No se implementó ni se corrió O2. O1, O3 y O4 no dependen de esto.
+
+**Opciones:**
+
+- **A.** Dar el alcance de red antes del primer arranque: el Gitea restaurado se conecta a la red de origen al crearse (equivale a "el host de restauración comparte red o DNS con producción"), y el resto de la falla y su `confirm` quedan como están escritos.
+- **B.** Seguir el orden literal: la restauración de referencia falla en `start_gitea`, después se conecta la red y se reinicia Gitea. Las líneas base ven la restauración fallida.
+- **C.** No implementar O2 y registrarlo como no implementable en este entorno.

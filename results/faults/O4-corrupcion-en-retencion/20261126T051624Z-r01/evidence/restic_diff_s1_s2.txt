@@ -1,0 +1,21 @@
+comparing snapshot fa7c858b to feae595e:
+
+M    /data/git/repositories/alice/witness.git/objects/db/3b214b1981402c7dcc5362b1ab8cda7a064f39
+M    /data/gitea/attachments/2/d/2d3818b9-eed7-4b09-ae2a-9e4076f6a689
+-    /data/gitea/queues/common/000003.log
++    /data/gitea/queues/common/000005.ldb
++    /data/gitea/queues/common/000006.log
+M    /data/gitea/queues/common/CURRENT
+M    /data/gitea/queues/common/CURRENT.bak
+M    /data/gitea/queues/common/LOG
+-    /data/gitea/queues/common/MANIFEST-000004
++    /data/gitea/queues/common/MANIFEST-000007
+M    /dump/gitea.dump
+
+Files:           3 new,     2 removed,     6 changed
+Dirs:            0 new,     0 removed
+Others:          0 new,     0 removed
+Data Blobs:      7 new,     7 removed
+Tree Blobs:     17 new,    17 removed
+  Added:   423.286 KiB
+  Removed: 477.369 KiB

@@ -13,6 +13,7 @@
 #   FAULT_STRIP_PG_RESTORE_EXIT    =1: quita --exit-on-error de pg_restore
 #   FAULT_SKIP_GITEA_STOP          =1: `compose stop gitea` del proyecto original no hace nada
 #   FAULT_EVENTS                   eventos habilitados: after_pg_dump after_restic_restore before_gitea_start
+#                                  after_gitea_start (después de un `up -d --wait gitea` exitoso de la restauración)
 set -u
 
 REAL="${FAULT_REAL_DOCKER:?FAULT_REAL_DOCKER no definido}"
@@ -136,6 +137,11 @@ fi
 if [ "$project" = restore ] && event_enabled after_restic_restore; then
   case "$joined" in
     *" restic "*" restore "*) fire_event after_restic_restore || exit 1 ;;
+  esac
+fi
+if [ "$project" = restore ] && event_enabled after_gitea_start; then
+  case "$joined" in
+    *" up -d --wait gitea "*) fire_event after_gitea_start || exit 1 ;;
   esac
 fi
 exit 0

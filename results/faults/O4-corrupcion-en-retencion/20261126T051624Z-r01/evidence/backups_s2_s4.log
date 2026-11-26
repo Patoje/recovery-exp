@@ -1,0 +1,93 @@
+[05:17:11] paso: stop_gitea
+[shim] 2026-11-26T05:17:11Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:11Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env stop gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[05:17:11] paso: pg_dump
+[shim] 2026-11-26T05:17:11Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:11Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -ec rm -f /dump/gitea.dump; pg_dump -U "$POSTGRES_USER" -Fc -f /dump/gitea.dump "$POSTGRES_DB"; ls -l /dump/gitea.dump
+-rw-r--r--    1 root     root        382352 Nov 26 05:17 /dump/gitea.dump
+[05:17:11] paso: restic_backup
+[shim] 2026-11-26T05:17:11Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:11Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic backup --json --host gitea-original --tag run=cycle-2 --exclude /data/gitea/log --exclude /data/gitea/indexers /dump /data
+ Container recexp-restic-run-f17a5aedcb3a Creating 
+ Container recexp-restic-run-f17a5aedcb3a Created 
+[shim] 2026-11-26T05:17:12Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:12Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic snapshots --json feae595eea0723e2d0b908a18692765e5ebbdb29033939cae385db68417f178c
+ Container recexp-restic-run-e0468a5e2d88 Creating 
+ Container recexp-restic-run-e0468a5e2d88 Created 
+[05:17:13] paso: start_gitea
+[shim] 2026-11-26T05:17:13Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:13Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[05:17:19] backup.json: ok
+[05:17:20] paso: stop_gitea
+[shim] 2026-11-26T05:17:20Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:20Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env stop gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[05:17:20] paso: pg_dump
+[shim] 2026-11-26T05:17:20Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:20Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -ec rm -f /dump/gitea.dump; pg_dump -U "$POSTGRES_USER" -Fc -f /dump/gitea.dump "$POSTGRES_DB"; ls -l /dump/gitea.dump
+-rw-r--r--    1 root     root        382352 Nov 26 05:17 /dump/gitea.dump
+[05:17:21] paso: restic_backup
+[shim] 2026-11-26T05:17:21Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:21Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic backup --json --host gitea-original --tag run=cycle-3 --exclude /data/gitea/log --exclude /data/gitea/indexers /dump /data
+ Container recexp-restic-run-4e698f397004 Creating 
+ Container recexp-restic-run-4e698f397004 Created 
+[shim] 2026-11-26T05:17:22Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:22Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic snapshots --json f2de407edd53e55d0e030eb0e72bb5af1388ce1ca45e1c557a736a71ad0aef1d
+ Container recexp-restic-run-3a1a7c6a7711 Creating 
+ Container recexp-restic-run-3a1a7c6a7711 Created 
+[05:17:23] paso: start_gitea
+[shim] 2026-11-26T05:17:23Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:23Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[05:17:29] backup.json: ok
+[05:17:29] paso: stop_gitea
+[shim] 2026-11-26T05:17:29Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:29Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env stop gitea
+ Container recexp-gitea-1 Stopping 
+ Container recexp-gitea-1 Stopped 
+[05:17:29] paso: pg_dump
+[shim] 2026-11-26T05:17:29Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:29Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env exec -T postgres sh -ec rm -f /dump/gitea.dump; pg_dump -U "$POSTGRES_USER" -Fc -f /dump/gitea.dump "$POSTGRES_DB"; ls -l /dump/gitea.dump
+-rw-r--r--    1 root     root        382352 Nov 26 05:17 /dump/gitea.dump
+[05:17:29] paso: restic_backup
+[shim] 2026-11-26T05:17:29Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:29Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic backup --json --host gitea-original --tag run=cycle-4 --exclude /data/gitea/log --exclude /data/gitea/indexers /dump /data
+ Container recexp-restic-run-a8f350ecf952 Creating 
+ Container recexp-restic-run-a8f350ecf952 Created 
+[shim] 2026-11-26T05:17:30Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:30Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env --profile tools run --rm --no-deps restic snapshots --json d330397eaba56b6ad702dffc8e9dceec907c7c744df890e27ab23a9acc112e46
+ Container recexp-restic-run-2f1d6aae7c25 Creating 
+ Container recexp-restic-run-2f1d6aae7c25 Created 
+[05:17:31] paso: start_gitea
+[shim] 2026-11-26T05:17:31Z original: + -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml
+[shim] 2026-11-26T05:17:31Z comando: docker compose -f /Users/patohe/Desktop/recovery-exp/compose/original.yml -f /Users/patohe/Desktop/recovery-exp/faults/O4-corrupcion-en-retencion/original.override.yml --env-file /Users/patohe/Desktop/recovery-exp/.env up -d --wait gitea
+ Container recexp-postgres-1 Running 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Starting 
+ Container recexp-gitea-1 Started 
+ Container recexp-postgres-1 Waiting 
+ Container recexp-gitea-1 Waiting 
+ Container recexp-postgres-1 Healthy 
+ Container recexp-gitea-1 Healthy 
+[05:17:37] backup.json: ok

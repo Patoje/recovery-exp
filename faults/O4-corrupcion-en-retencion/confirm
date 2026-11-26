@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+. "$FAULT_DIR/../lib/common.sh"
+T="$FAULT_EVIDENCE/testigos_d.json"
+tj() { python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); print(eval("d"+sys.argv[2]))' "$T" "$1"; }
+WID="$(tj '["wid"]')"; BLOB="$(cat "$FAULT_EVIDENCE/blob.txt")"; S1="$(cat "$FAULT_EVIDENCE/s1.txt")"
+UUID="$(tj '["bin"]["uuid"]')"; BIN_SHA="$(tj '["bin"]["sha256"]')"
+ATT=data/gitea/attachments/${UUID:0:1}/${UUID:1:1}/$UUID
+RUNNER_REST=("${REST[@]}" --profile tools run --rm --no-deps -T runner)
+
+# a) El único snapshot limpio (S1) ya no existe.
+ids="$(orig_restic snapshots --host gitea-original --json | grep -o '"short_id":"[0-9a-f]*"' | cut -d'"' -f4 | paste -sd' ' -)"
+check "S1 (${S1:0:8}) no está entre los snapshots de gitea-original ($ids)" test -n "$ids" -a -n "$S1" -a "${ids/${S1:0:8}/}" = "$ids"
+
+# b) El repositorio de Restic está íntegro.
+orig_restic check --read-data > "$FAULT_EVIDENCE/restic_check.log" 2>&1
+check "restic check --read-data termina con código 0" test $? -eq 0
+
+# c) Todos los snapshots que quedan tienen los testigos corruptos.
+for id in $(orig_restic snapshots --host gitea-original --json | grep -o '"id":"[0-9a-f]\{64\}"' | cut -d'"' -f4); do
+  vol="recexp-o4-check"
+  docker volume rm -f "$vol" > /dev/null 2>&1
+  docker run --rm -e RESTIC_REPOSITORY=/repo -e RESTIC_PASSWORD -v recexp_restic-repo:/repo:ro -v "$vol:/restore" \
+    "$RESTIC_IMG" --no-lock --no-cache restore "$id" --target /restore > "$FAULT_EVIDENCE/restore_${id:0:8}.log" 2>&1
+  docker run --rm -v "$vol:/r:ro" --entrypoint git "$RUNNER_IMG" -c safe.directory='*' \
+    --git-dir /r/data/git/repositories/alice/witness.git fsck --full > "$FAULT_EVIDENCE/fsck_${id:0:8}.log" 2>&1
+  frc=$?
+  check "snapshot ${id:0:8}: git fsck --full termina con código distinto de 0 ($frc)" test "$frc" -ne 0
+  check "snapshot ${id:0:8}: git fsck reporta el blob ${BLOB:0:12}" grep -q "$BLOB" "$FAULT_EVIDENCE/fsck_${id:0:8}.log"
+  sha="$(vol_sh "$vol" "sha256sum /data/$ATT" | cut -d' ' -f1)"
+  check "snapshot ${id:0:8}: sha256 del adjunto testigo distinto del registrado (${sha:0:12})" test -n "$sha" -a "$sha" != "$BIN_SHA"
+  docker volume rm -f "$vol" > /dev/null 2>&1
+done
+
+# d) El servicio responde pese al daño (restauración de latest hecha por la línea base).
+code() { "${RUNNER_REST[@]}" sh -c 'curl -s -o /dev/null -w "%{http_code}" -u "alice:$SEED_USER_PASSWORD" "$@"' _ "$@"; }
+check "GET /api/healthz = 200" test "$(code http://gitea:3000/api/healthz)" = 200
+check "página del repositorio alice/witness = 200" test "$(code http://gitea:3000/alice/witness)" = 200
+web="$(code "http://gitea:3000/alice/witness/src/branch/main/testigo-$WID.txt")"
+"${RUNNER_REST[@]}" sh -c 'git clone -q "http://alice:$SEED_USER_PASSWORD@gitea:3000/alice/witness.git" /tmp/c 2>&1; echo "rc=$?"' \
+  > "$FAULT_EVIDENCE/clone.log" 2>&1
+clone_corrupt=no; grep -q 'is corrupt' "$FAULT_EVIDENCE/clone.log" && ! grep -q '^rc=0$' "$FAULT_EVIDENCE/clone.log" && clone_corrupt=yes
+check "ver testigo-$WID.txt en la web da 500 ($web) o git clone falla con 'is corrupt' ($clone_corrupt)" test "$web" = 500 -o "$clone_corrupt" = yes
+observe "git clone" "$(tr '\n' ' ' < "$FAULT_EVIDENCE/clone.log" | cut -c1-300)"
+dl="$("${RUNNER_REST[@]}" sh -c 'curl -s -o /tmp/a -w "%{http_code}" -u "alice:$SEED_USER_PASSWORD" "http://gitea:3000/attachments/$1"; echo " $(sha256sum /tmp/a | cut -d" " -f1)"' _ "$UUID")"
+check "descargar el adjunto devuelve 200 con bytes incorrectos ($dl)" test "${dl%% *}" = 200 -a "${dl#* }" != "$BIN_SHA"
+
+# Supuestos a verificar.
+observe "supuesto: objeto del push (test -f)" "$(cat "$FAULT_EVIDENCE/blob_loose.txt")"
+observe "supuesto: transfer.unpackLimit / receive.unpackLimit en el Gitea de origen" "$(orig_gitea sh -c 'git config --system --get transfer.unpackLimit; git config --global --get transfer.unpackLimit; git config --global --get receive.unpackLimit; git -C /data/git/repositories/alice/witness.git config --get receive.unpackLimit; true' | tr '\n' ' ')(vacío = valor por defecto)"
+observe "supuesto: ruta local attachments/<uuid[0]>/<uuid[1]>/<uuid>" "$(cat "$FAULT_EVIDENCE/attachment_path.txt")"
+observe "supuesto: restic diff S1 S2 (archivos modificados)" "$(grep -E "objects/${BLOB:0:2}/${BLOB:2}|$UUID" "$FAULT_EVIDENCE/restic_diff_s1_s2.txt" | tr '\n' ' ')"
+observe "backups S2-S4" "$(tr '\n' ';' < "$FAULT_EVIDENCE/backups_s2_s4.txt")"
+confirm_done
